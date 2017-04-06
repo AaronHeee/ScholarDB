@@ -24,13 +24,16 @@ def scholar_register(UNAME,PWD,MAIL,AGE,GENDER,NATION,CITY,INST,TTYPE,USERTYPE,M
     print sql1,sql2
     try:
         cursor.execute(sql1)
+        print 1
         cursor.execute(sql2)
+        print 2
         db.commit()
         db.close()
         return (True,'Success')
     except:
         print 'fail'
         db.rollback()
-        db.close(False,'Unknown reason')
+        db.close()
+        return (False,'Unknown reason')
 
 
