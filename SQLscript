@@ -25,7 +25,7 @@ alter table USERINFO ADD PWD VARCHAR(45)
 alter table USERINFO convert to character set utf8;
 
 insert into USERINFO(UNO,UNAME,MAIL,AGE,USERTYPE,GENDER,NATION,CITY,MONEY,PWD)
-values (1000,'金熙森','2474010692@qq.com',19,'Scholar','M','China','Shanghai',500,'abcdef');
-
+values (1000,'金熙森','2474010692@qq.com',19,'Scholar','Male','中国','上海',500,'abcdef');
+alter table SCHOLAR convert to character set utf8;
 insert into SCHOLAR(UNO,TYPE,INST,RATE)
 VALUES (1000,'Student','复旦大学',1)

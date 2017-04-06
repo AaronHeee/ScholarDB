@@ -1,10 +1,10 @@
-# -*- coding:utf-8 -*-
+#encoding=utf-8
 import MySQLdb
 
 def scholar_register(UNAME,PWD,MAIL,AGE,GENDER,NATION,CITY,INST,TTYPE,USERTYPE,MONEY=0):
     AGE = int(AGE)
 
-    db = MySQLdb.connect("localhost","root","dbpjdbpj","ScholarDB")
+    db = MySQLdb.connect("localhost","root","dbpjdbpj","ScholarDB",charset = 'utf8')
     cursor = db.cursor()
 # 邮箱是否已注册？
     sql = 'SELECT MAIL FROM USERINFO WHERE MAIL ="%s"' % MAIL
@@ -15,7 +15,10 @@ def scholar_register(UNAME,PWD,MAIL,AGE,GENDER,NATION,CITY,INST,TTYPE,USERTYPE,M
 
     sql = 'SELECT MAX(UNO) FROM USERINFO'
     cursor.execute(sql)
-    max_uno = cursor.fetchall()[0][0] #return ((1000L,),)
+    try:
+        max_uno = cursor.fetchall()[0][0] #return ((1000L,),)
+    except:
+        max_uno = 1000
 
     new_uno = max_uno + 1
     sql1 = "INSERT INTO USERINFO(UNO,UNAME,MAIL,AGE,USERTYPE,GENDER,NATION,CITY,MONEY,PWD)" \
@@ -30,10 +33,11 @@ def scholar_register(UNAME,PWD,MAIL,AGE,GENDER,NATION,CITY,INST,TTYPE,USERTYPE,M
         db.commit()
         db.close()
         return (True,'Success')
-    except:
+    except Exception as e:
         print 'fail'
         db.rollback()
         db.close()
+        print e.args
         return (False,'Unknown reason')
 
 
