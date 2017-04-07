@@ -22,5 +22,5 @@ urlpatterns = [
     url(r'register/scholars',views.scholars_register,name = 'scholars_register'),
     url(r'register/scholars/action',views.scholars_register,name = "scholars_register_action"),
     url(r'register/volunteers',admin.site.urls,name = 'volunteers_register'),
-    url(r'login/',admin.site.urls,name = "login")
+    url(r'login/',views.login,name = "login")
 ]

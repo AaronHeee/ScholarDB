@@ -29,3 +29,10 @@ values (1000,'金熙森','2474010692@qq.com',19,'Scholar','Male','中国','上�
 alter table SCHOLAR convert to character set utf8;
 insert into SCHOLAR(UNO,TYPE,INST,RATE)
 VALUES (1000,'Student','复旦大学',1)
+
+create table VOLUNTEER(
+    UNO INTEGER PRIMARY KEY,
+    CRED SMALLINT,
+    FOREIGN KEY(UNO) REFERENCES USERINFO(UNO)
+);
+alter table VOLUNTEER convert to character set utf8;
