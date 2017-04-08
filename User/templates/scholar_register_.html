@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+  <head>
+	<meta charset="utf-8">
+    <title>ScholarDB-学者注册</title>
+    <!-- 包含头部信息用于适应不同设备 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 包含 bootstrap 样式表 -->
+    <link rel="stylesheet" href="https://apps.bdimg.com/libs/bootstrap/3.2.0/css/bootstrap.min.css">
+      {% load staticfiles %}
+      <script src = "{% static "js/form_validate.js"%}"></script>
+      <script>
+        function eleNull(eleid)
+        {
+        return document.getElementById(eleid) == null
+            ||!isNotNull(document.getElementById(eleid).value);
+        }
+        function validate_form()
+        {
+            var err = false;
+            var errtext = "";
+            if(!isNotNull(document.getElementById("usrname").value)) {
+                err = true;
+                errtext +="用户名不能为空<br/>";
+            }
+            if(!isNotNull(document.getElementById("pwd").value)) {
+                err = true;
+                errtext += "密码不能为空<br/>";
+            }
+            if(!isSame(document.getElementById("pwd").value,document.getElementById("pwd2").value))
+            {
+                err = true;
+                errtext += "两次密码不同<br/>";
+            }
+            if(eleNull("nation") || eleNull("city")||eleNull("inst"))
+            {
+                err = true;
+                errtext += "国家/地区/教育机构不完整<br/>";
+            }
+            var gen = document.getElementsByName("gender");
+            var generr = true;
+            for(i = 0;i<gen.length;++i)
+            {
+                if(gen[i].checked)
+                {
+                    generr = false;
+                }
+            }
+            var type = document.getElementsByName("gender");
+            var typeerr = true;
+            for(i = 0;i<type.length;++i)
+            {
+                if(type[i].checked)
+                {
+                    typeerr = false;
+                }
+            }
+            if(generr)
+            {
+                err = true;
+                errtext += "性别未选择<br/>"
+            }
+            if(!isEmail(document.getElementById("mail").value))
+            {
+                err = true;
+                errtext += "邮件地址不正确<br/>"
+            }
+            if(!isNumber(document.getElementById("age").value))
+            {
+                err = true;
+                errtext += "年龄必须是数字<br/>"
+            }
+            if(err)
+            {
+                document.getElementById("errortext").style.visibility = "visible";
+                document.getElementById("errortext").innerHTML = errtext;
+                return false;
+            }
+            else
+                return true;
+        }
+      </script>
+  </head>
+
+  <body>
+    <div class="col-md-6 col-sm-6 col-xs-12">
+               <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3>注册信息</h3>
+                        </div>
+                        <div class="panel-body">
+                            <form role="form" name = "regform" method="POST">
+                                {% csrf_token %}
+                                 <div class="form-group" id = "usrname_form">
+                                            <label>用户名</label>
+                                            <input class="form-control" type="text" name ="usrname" id = "usrname" />
+                                     <p class="help-block">我们希望您以真实姓名注册</p>
+                                </div>
+                                <div class="form-group" id = "pwd_form">
+                                    <label>密码</label>
+                                    <input class="form-control" type="password" name = "pwd" id = "pwd" />
+                                    <label>确认密码</label>
+                                    <input class="form-control"  type="password" id = "pwd2" />
+                                </div>
+                                <div class="form-group">
+                                    <label>类型</label>
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" name="type" value="Prof">教授/导师
+                                        </label>
+                                    </div>
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" name="type"  value="Student">学生
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>教育机构</label>
+                                    <input class="form-control"  type="text" name = "inst" id = "inst"/>
+                                </div>
+                                <div class="form-group">
+                                    <label>电子邮件</label>
+                                    <input class="form-control"  type="text" name = "mail" id = "mail" />
+                                    <p class="help-block">使用.edu邮箱以加快验证速度</p>
+                                </div>
+                                <div class="form-group">
+                                    <label>性别</label>
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" name="gender" value="Male">男
+                                        </label>
+                                    </div>
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" name="gender" value="Female">女
+                                        </label>
+                                    </div>
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" name="gender"  value="Others">其他
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>年龄</label>
+                                    <input class="form-control"  type="number" name = "age" id = "age" />
+                                </div>
+                                <div class="form-group">
+                                    <label>国家</label>
+                                    <input class="form-control"  type="text"  name = "nation" id = "nation"/>
+                                </div>
+                                <div class="form-group">
+                                    <label>城市</label>
+                                    <input class="form-control"  type="text" name = "city" id = "city"/>
+                                </div>
+                                <div class="alert alert-danger" id = "errortext" style = "visibility: hidden"></div>
+                                <button type="submit"  class="btn btn-primary" onclick="return validate_form()" >注册</button>
+
+                            </form>
+                        </div>
+               </div>
+    </div>
+
+    <!-- JavaScript 放置在文档最后面可以使页面加载速度更快 -->
+    <!-- 可选: 包含 jQuery 库 -->
+    <script src="https://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+    <!-- 可选: 合并了 Bootstrap JavaScript 插件 -->
+    <script src="https://apps.bdimg.com/libs/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+  </body>
+
+</html>
