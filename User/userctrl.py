@@ -27,8 +27,8 @@ def register(UNAME,PWD,MAIL,AGE,GENDER,NATION,CITY,INST,TTYPE,USERTYPE,MONEY=0):
           "VALUES(%d,'%s','%s',%d,'%s','%s','%s','%s',%d,'%s')" % (new_uno,UNAME,MAIL,AGE,USERTYPE,GENDER,NATION,CITY,0,PWD)
     if USERTYPE == 'Scholar':
         sql2 = "INSERT INTO SCHOLAR(UNO,TYPE,INST,RATE) VALUES(%d,'%s','%s',%d)" % (new_uno,TTYPE,INST,1)
-    elif USERTYPE == 'VOLUNTEER':
-        sql2 = "INSERT INTO VOLUNTEER(UNO,CRED) VALUES(%d,'%s')" % (new_uno,100)
+    elif USERTYPE == 'Volunteer':
+        sql2 = "INSERT INTO VOLUNTEER(UNO,CRED) VALUES(%d,%d)" % (new_uno,100)
     else:
         raise ValueError('Unknown usertype: %s' % USERTYPE)
 
@@ -70,7 +70,7 @@ def login_mail(MAIL,PWD):
     l = cursor.fetchall()
     if not l or l[0][0] != PWD:
         db.close()
-        return (False, 'Incorrect username or password')
+        return (False, '用户名或者密码不正确')
     else:
         db.close()
         return (True, 'Success')
