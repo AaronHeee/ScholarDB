@@ -19,6 +19,6 @@ from CreateQ import views as CreateQ_view
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^$',CreateQ_view.home,name = 'home'),
-    url(r'^users/',include('User.urls'))
+    url(r'^users/',include('User.urls')),
+    url(r'^project/',include('CreateQ.urls'))
 ]

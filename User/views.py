@@ -4,6 +4,7 @@ from django.http import HttpResponse
 # Create your views here.
 
 def scholars_register(request):
+    login_user = request.session.get("username", "")
     if request.method == 'POST':
         query = ['usrname','pwd','mail','age','gender','nation','city','inst','type']
         result = [request.POST[i] for i in query]
@@ -13,7 +14,19 @@ def scholars_register(request):
             return HttpResponse("Success")
         else:
             return HttpResponse("Fail due to:"+log)
-    return render(request,"scholar_register_.html")
+    return render(request,"scholar_register_.html",{"username":login_user})
+
+def volunteer_register(request):
+    login_user = request.session.get("username", "")
+    if request.method == 'POST':
+        query = ['usrname','pwd','mail','age','gender','nation','city']
+        result = [request.POST[i] for i in query]
+        sqlres,log = register(result[0],result[1],result[2],result[3],result[4],result[5],result[6],'','','Volunteer',0)
+        if(sqlres):
+            return HttpResponse("Success")
+        else:
+            return HttpResponse("Fail due to:"+log)
+    return render(request,"volunteer_register_.html",{"username":login_user})
 
 def login(request):
     login_user = request.session.get("username","")
@@ -25,9 +38,16 @@ def login(request):
         res,log = login_mail(mail,pwd)
         print mail,pwd
         if not res:
-            return HttpResponse("Fail" + log)
+            return render(request,"good_login.html",{"errtext":log})
         else:
             if 'auto' in request.POST:
                 login_user = request.session["username"] = get_name(mail)
             return HttpResponse("Success" + login_user)
-    return render(request,"login.html",{"username:":login_user})
+    return render(request,"good_login.html",{"username:":login_user})
+
+def logout(request):
+    try:
+        del request.session["username"]
+    except KeyError:
+        pass
+    return HttpResponse("logged out")
