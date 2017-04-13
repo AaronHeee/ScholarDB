@@ -1,0 +1,77 @@
+{% load staticfiles %}
+<script src = "{% static "js/survey_chart.js" %}">
+
+</script>
+
+
+<div id = "qa-ele" class = "panel panel-default qa">
+    <div class="panel-heading">
+        <h3 class="panel-title">
+            问题
+        </h3>
+    </div>
+    <div class="panel-body">
+        <input type="text" class = "span12 inline-input des" placeholder = "题干描述" id = "qa-ele-des">
+    </div>
+    <div class="panel-body">
+        <input type="text" class = "span12 inline-input sup" placeholder = "题目补充" id = "qa-ele-det">
+    </div>
+    <div class="panel-body">
+        <div class="ui-select">
+            <select class="supplement-type">
+                <option value="text" selected=""/>文字补充
+                <option value="number"/>图像链接补充
+            </select>
+        </div>
+    </div>
+    <div class = panel-footer>
+        <div class="ui-select">
+            <select class="inputtype">
+                <option value="text" selected=""/>文字
+                <option value="number"/>数字
+            </select>
+        </div>
+    </div>
+</div>
+
+<div id = "qsc-ele" class = "panel panel-default qsc">
+    <div class="panel-heading">
+        <h3 class="panel-title">
+            问题
+        </h3>
+    </div>
+    <div class="panel-body">
+        <input type="text" class = "span12 inline-input des" placeholder = "题干描述" id = "qsc-des">
+    </div>
+    <div class="panel-body">
+        <input type="text" class = "span12 inline-input sup" placeholder = "题目补充" id = "qsc-detail">
+    </div>
+    <div class="panel-body">
+        <div class="ui-select">
+            <select class="supplement-type">
+                <option value="text" selected=""/>文字补充
+                <option value="number"/>图像链接补充
+            </select>
+        </div>
+    </div>
+    <div class = "choice" id = "qsc-choice" >
+        <div class="panel-body">
+            <input type="text" class = "span12 input choice" placeholder = "选项" id = "qsc-c1">
+        </div>
+    </div>
+
+    <div class = panel-footer>
+        <button class = "btn-flat" id = "qsc-btn" onclick="return add_choice(this)">增加选项</button>
+        <div class="ui-select">
+            <select class="inputtype">
+                <option value="single" selected=""/>单选
+                <option value="multiple"/>多选
+            </select>
+        </div>
+    </div>
+</div>
+
+
+<div class="panel-body qsc-choice-ele" id = "choice">
+    <input type="text" class = "span12 input choice" placeholder = "选项" id = "qa-ele-det">
+</div>

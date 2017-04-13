@@ -19,45 +19,16 @@
     <!-- libraries -->
 
     <link rel="stylesheet" type="text/css" href="{% static "css/lib/font-awesome.css"%}" />
+    <link href="{% static "css/lib/bootstrap-wysihtml5.css"%}" type="text/css" rel="stylesheet" />
+    <link href="{% static "css/lib/uniform.default.css"%}" type="text/css" rel="stylesheet" />
+    <link href="{% static "css/lib/select2.css"%}" type="text/css" rel="stylesheet" />
+    <link href="{% static "css/lib/bootstrap.datepicker.css" %}" type="text/css" rel="stylesheet" />
+    <link href="{% static "css/lib/font-awesome.css"%}" type="text/css" rel="stylesheet" />
 
     <!-- this page specific styles -->
-    <link rel="stylesheet" href="{% static  "css/compiled/new-user.css"%}" type="text/css" media="screen" />
-    <script src = "{% static "js/survey_chart.js" %}"></script>
-    <script>
-        var types = new array(100);
-        var choicenum = new array(100);
-        function reg_question(type){
-            var par = document.getElementById("qform");
-            if(type == "qa")
-            {
-                add_qa(par,qid);
-            }
-            else if(type == "qsc")
-            {
-                add_radio_sel(par,qid);
-            }
-            qid++;
-            types[qid] = type;
-        }
-        function  pop_question() {
-            var ele = document.getElementById(String(qid));
-            ele.parentNode.removeChild(ele);
-            qid--;
-        }
-        function add_choice(parentid)
-        {
-            var ele = document.getElementByid(String(parentid));
-            add_radio_sel(ele);
-            choicenum[parentid]++;
-        }
-        function del_choice(parentid)
-        {
-            var ele = document.getElementById("#"+String(choicenum[parentid]));
-            ele.parentNode.removeChild(ele);
-            choicenum[parentid]--;
-        }
+    <link rel="stylesheet" href="{% static "css/compiled/form-showcase.css"%}" type="text/css" media="screen" />
+    <link rel="stylesheet" href="{% static "css/compiled/form-wizard.css"%}" type="text/css" media="screen" />
 
-    </script>
 
     <!--[if lt IE 9]>
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -65,9 +36,11 @@
 
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /></head>
 <body>
-
 {% include "common_nav_bar.html" %}
 {% include "common_side_bar.html" %}
+<div style = "display: none">
+    {% include "elements.html" %}
+</div>
 	<!-- main container -->
     <div class="content">
 
@@ -80,8 +53,6 @@
                 <span class="icon"></span><span class="text">Dark skin</span>
             </a>
         </div>
-        <button onclick="add_qa(document.getElementById('qform'),qid);qid++;"> test </button>
-        <button onclick="add_radio(document.getElementById('qform'),qid,333);qid++;"> test2 </button>
         <div class="container-fluid">
             <div id="pad-wrapper" class="new-user">
                 <div class="row-fluid header">
@@ -90,56 +61,374 @@
 
                 <div class="row-fluid form-wrapper">
                     <!-- left column -->
-                    <div class="span9">
-                            <form role="form" method="post" id = "qform">
-                                {% csrf_token %}
-                            </form>
-                    </div>
-                    <!-- side right column -->
-                    <div class="span3 form-sidebar pull-right">
-                        <div class="alert alert-info hidden-tablet">
-                            <i class="icon-lightbulb pull-left"></i>
-                            若没有账户，可以现在注册！协助完成数据集以获得报酬或者发布数据集！
+                    <div class="span12">
+                            <div id="fuelux-wizard" class="wizard row-fluid">
+                                <ul class="wizard-steps">
+                                    <li data-target="#step1" class="active">
+                                        <span class="step">1</span>
+                                        <span class="title">基础信息</span>
+                                    </li>
+                                    <li data-target="#step2">
+                                        <span class="step">2</span>
+                                        <span class="title">权限设置</span>
+                                    </li>
+                                    <li data-target="#step3">
+                                        <span class="step">3</span>
+                                        <span class="title">问题编辑</span>
+                                    </li>
+                                    <li data-target="#step4">
+                                        <span class="step">4</span>
+                                        <span class="title">完成发布</span>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div class="step-content">
+                                <div class="step-pane active" id="step1">
+                                     <div class="row-fluid form-wrapper">
+                                         <div class="span10">
+                                         <div class = "alert alert-success hidden-tablet">
+                                            欢迎使用ScholarDB创建问卷，首先请你完善问卷基础信息。
+                                        </div>
+                                        <h5 class="panel-heading">
+                                            第一步 调研概况
+                                        </h5>
+                                        <div class="panel-body">
+                                            <input type="text" class = "span10 inline-input" placeholder = "调研课题" id = "topic">
+                                        </div>
+                                        <div class="panel-body">
+                                            <input type="text" class = "span12 inline-input" placeholder = "详细信息" id = "description">
+                                        </div>
+                                        <div class="panel-body">
+                                            <div class="field-box">
+                                                <label>学科标签</label>
+                                                <select style="width:300px" multiple="" id = "subject" class="select2">
+                                                    <option />
+                                                    <option value="dat" selected=""/>数据科学
+                                                    <option value="cv"/>计算机视觉
+                                                    <option value="nlp" />自然语言处理
+                                                    <option value="soc" />社会学
+                                                    <option value="eco" />经济管理
+                                                    <option value="psy" />心理学
+                                                    <option value="sci" />自然科学
+                                                    <option value="med" />医学
+                                                </select>
+                                            </div>
+                                            <p class="help-block">请至多选择3个</p>
+                                        </div>
+                                         </div>
+                                     </div>
+                                </div>
+                                <div class="step-pane" id="step2">
+                                    <div class="row-fluid form-wrapper">
+                                        <div class="span9">
+                                            <h5 class="panel-heading">
+                                                第二步 权限设置
+                                            </h5>
+                                            <div class="panel-body">
+                                                <div class="field-box">
+                                                    <label>必须获得的用户隐私</label>
+                                                    <select style="width:300px" multiple="" class="select2" id="privacy">
+                                                        <option />
+                                                        <option value="name"/>真实姓名
+                                                        <option value="age"/>年龄
+                                                        <option value="gender" selected=""/>性别
+                                                        <option value="job" selected=""/>工作
+                                                    </select>
+                                                    <p class="help-block">志愿者填写问卷说明同意共享这些个人信息，学者可以直接读取</p>
+                                                </div>
+                                            </div>
+                                            <div class="panel-body">
+                                                <div class="field-box">
+                                                        <label>年龄限制</label>
+                                                            <input class="span3 inline-input" placeholder="最小年龄"  type="number" id="min-age" />
+                                                            <input class="span3 inline-input" placeholder="最大年龄"  type="number" id="max-age" />
+                                                </div>
+                                            </div>
+                                            <div class ="panel-body">
+                                                <div class="field-box">
+                                                    <label>性别限制</label>
+                                                    <div class="ui-select">
+                                                        <select id="gender-restrict">
+                                                            <option selected="" value="any"/>不限制
+                                                            <option value="male"/>男
+                                                            <option value="female"/>女
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class ="panel-body">
+                                                <div class="field-box">
+                                                    <label>授权限制</label>
+                                                    <div class="ui-select">
+                                                        <select id="auth-restrict">
+                                                            <option selected="" value="open"/>开源数据集
+                                                            <option value ="auth"/>授权使用
+                                                            <option value="private"/>完全私密
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class ="panel-body">
+                                                <div class="field-box">
+                                                    <label>调研开放性</label>
+                                                    <div class="ui-select" >
+                                                        <select id="survey-restrict">
+                                                            <option selected="" value="any"/>任何人
+                                                            <option value ="restrict"/>仅学者
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="step-pane" id="step3">
+                                    <div class ="span9">
+                                        <form role="form" method="post" id = "qform">
+                                            {% csrf_token %}
+                                        </form>
+                                        <div class="btn-group">
+                                            <button class = "btn-glow" onclick="add_qa(document.getElementById('qform'),qid);qid++;"> 添加问答题 </button>
+                                            <button class = "btn-glow" onclick="add_radio(document.getElementById('qform'),qid);qid++;"> 添加选择题 </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="step-pane" id="step4">
+                                    <div class ="span9">
+                                        <h5 class="panel-heading">
+                                            即将完成!
+                                        </h5>
+                                        <div class="panel-body">
+                                            <p class="help-block">是否为问卷设置金额奖励？</p>
+                                            <input type="number" class = "span10 inline-input" value = "0" id = "payment">
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
                         </div>
-                        <ul>
-                            <li><a onclick="reg_question(qa)">增加基本问题</a></li>
-                        </ul>
-                        <ul>
-                            <li><a onclick="reg_question(qsc)">增加选择题</a></li>
-                        </ul>
-                    </div>
                 </div>
             </div>
         </div>
+        <div class="wizard-actions">
+            <button type="button" disabled="" class="btn-glow primary btn-prev">
+                <i class="icon-chevron-left"></i> 上一步
+            </button>
+            <button type="button" class="btn-glow primary btn-next" data-last="Finish">
+                下一步 <i class="icon-chevron-right"></i>
+            </button>
+
+            <button type="submit" class="btn-glow success btn-finish">
+                发布！
+            </button>
+        </div>
+
+                    <!-- side right column -->
     </div>
+
     <!-- end main container -->
-
-
 	<!-- scripts -->
     <script src="{% static "js/jquery-latest.js" %}"></script>
     <script src="{% static "js/bootstrap.min.js"%}"></script>
     <script src="{% static "js/theme.js"%}"></script>
+    <script src="{% static "js/wysihtml5-0.3.0.js"%}"></script>
+    <script src="{% static "js/bootstrap-wysihtml5-0.0.2.js"%}"></script>
+    <script src="{% static "js/jquery.uniform.min.js"%}"></script>
+    <script src="{% static "js/select2.min.js"%}"></script>
+    <script src="{% static "js/theme.js"%}"></script>
 
+        <!-- call this page plugins -->
+
+    <script src = "{% static "js/survey_chart.js" %}"></script>
+
+    <script>
+        var qid = 1;
+        var JSONstep1,JSONstep2;
+        var JSONstep3 = "{";
+        function get_mult_choice(id)
+        {
+            var str = "";
+            var o = document.getElementById(id);
+            for(i=0;i<o.length;i++){
+                if(o.options[i].selected){
+                    str+=o.options[i].value+",";
+                }
+            }
+            return str;
+        }
+        function step1()
+        {
+            JSONstep1 ={
+                "title":document.getElementById("topic").value,
+                "description":document.getElementById("description").value,
+                "subject":get_mult_choice("subject")
+            }
+        }
+        function step2()
+        {
+            JSONstep2={
+                "privacy":get_mult_choice("privacy"),
+                "min-age":document.getElementById("min-age").value,
+                "max-age":document.getElementById("max-age").value,
+                "survey-restrict":document.getElementById("survey-restrict").value,
+                "auth-restrict":document.getElementById("auth-restrict").value,
+                "gender-restrict":document.getElementById("gender-restrict").value
+            }
+        }
+        function step3()
+        {
+            JSONstep3 = "{";
+            for(i=1;i<qid;++i)
+            {
+                var qjson = {};
+                var qroot = document.getElementById(String(i));
+                if(qroot.className == "panel panel-default qa")
+                {
+                    qjson.type = "qa";
+                    qjson.title = qroot.getElementsByClassName("span12 inline-input des")[0].value;
+                    qjson.supplement = qroot.getElementsByClassName("span12 inline-input sup")[0].value;
+                    qjson.inputtype = qroot.getElementsByClassName("inputtype")[0].value;
+                    qjson.suptype = qroot.getElementsByClassName("supplement-type")[0].value;
+                }
+                else if(qroot.className == "panel panel-default qsc")
+                {
+                    qjson.type = "qsc";
+                    qjson.title = qroot.getElementsByClassName("span12 inline-input des")[0].value;
+                    qjson.supplement = qroot.getElementsByClassName("span12 inline-input sup")[0].value;
+                    qjson.inputtype = qroot.getElementsByClassName("inputtype")[0].value;
+                    var eles = qroot.getElementsByClassName("span12 input choice");
+                    var str = "";
+                    for(j = 0;j<eles.length;++j)
+                    {
+                        str= str + eles[j].value+",";
+                    }
+                    qjson.choice = str;
+                    qjson.suptype = qroot.getElementsByClassName("supplement-type")[0].value;
+                }
+                JSONstep3 = JSONstep3 + String(i) +":" +  JSON.stringify(qjson) + ",";
+            }
+            JSONstep3 += "}";
+            JSONstep3 =eval("(" + JSONstep3 + ")");
+        }
+        function step4()
+        {
+            JSONstep2.payment = document.getElementById("payment").value;
+        }
+        $(document).ajaxSend(function(event, xhr, settings) {
+          function getCookie(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie != '') {
+              var cookies = document.cookie.split(';');
+              for (var i = 0; i < cookies.length; i++) {
+                var cookie = jQuery.trim(cookies[i]);
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                  cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                  break;
+                }
+              }
+            }
+            return cookieValue;
+          }
+          function sameOrigin(url) {
+            // url could be relative or scheme relative or absolute
+            var host = document.location.host; // host + port
+            var protocol = document.location.protocol;
+            var sr_origin = '//' + host;
+            var origin = protocol + sr_origin;
+            // Allow absolute or scheme relative URLs to same origin
+            return (url == origin || url.slice(0, origin.length + 1) == origin + '/') ||
+              (url == sr_origin || url.slice(0, sr_origin.length + 1) == sr_origin + '/') ||
+              // or any other URL that isn't scheme relative or absolute i.e relative.
+              !(/^(\/\/|http:|https:).*/.test(url));
+          }
+          function safeMethod(method) {
+            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+          }
+          if (!safeMethod(settings.type) && sameOrigin(settings.url)) {
+            xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+          }
+        });
+        function post_json()
+        {
+            $.post("/project/new/",{"JSON1":JSONstep1,"JSON2":JSONstep2,"JSON3":JSONstep3});
+            window.location="http://www.baidu.com";
+        }
+    </script>
     <script type="text/javascript">
         $(function () {
 
-            // toggle form between inline and normal inputs
-            var $buttons = $(".toggle-inputs button");
-            var $form = $("form.new_user_form");
+            // add uniform plugin styles to html elements
+            $("input:checkbox, input:radio").uniform();
 
-            $buttons.click(function () {
-                var mode = $(this).data("input");
-                $buttons.removeClass("active");
-                $(this).addClass("active");
+            // select2 plugin for select elements
+            $(".select2").select2({
+                placeholder: "请选择..."
+            });
 
-                if (mode === "inline") {
-                    $form.addClass("inline-input");
-                } else {
-                    $form.removeClass("inline-input");
-                }
+            // wysihtml5 plugin on textarea
+            $(".wysihtml5").wysihtml5({
+                "font-styles": false
             });
         });
     </script>
+  <script src="{% static "js/fuelux.wizard.js"%}"></script>
+
+    <script type="text/javascript">
+        $(function () {
+            var $wizard = $('#fuelux-wizard'),
+                $btnPrev = $('.wizard-actions .btn-prev'),
+                $btnNext = $('.wizard-actions .btn-next'),
+                $btnFinish = $(".wizard-actions .btn-finish");
+
+            $wizard.wizard().on('finished', function(e) {
+                // wizard complete code
+            }).on("changed", function(e) {
+                var step = $wizard.wizard("selectedItem");
+                // reset states
+                $btnNext.removeAttr("disabled");
+                $btnPrev.removeAttr("disabled");
+                $btnNext.show();
+                $btnFinish.hide();
+
+                if (step.step === 1) {
+                    $btnPrev.attr("disabled", "disabled");
+
+                } else if (step.step === 4) {
+                    $btnNext.hide();
+                    $btnFinish.show();
+                }
+            });
+
+            $btnPrev.on('click', function() {
+                $wizard.wizard('previous');
+                var step = $wizard.wizard("selectedItem");
+                if(step.step == 2)
+                    JSONstep1 = {};
+                else if(step.step == 3)
+                    JSONstep2 = {};
+                else if(step.step == 4)
+                    JSONstep3 = "{";
+            });
+            $btnNext.on('click', function() {
+                var step = $wizard.wizard("selectedItem");
+                if(step.step == 1)
+                    step1();
+                else if(step.step == 2)
+                    step2();
+                else if(step.step == 3)
+                    step3();
+                $wizard.wizard('next');
+            });
+            $btnFinish.on('click',function(){
+                step4();
+                post_json();
+            });
+        });
+    </script>
+
+
 
 </body>
 </html>

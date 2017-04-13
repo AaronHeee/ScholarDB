@@ -19,5 +19,6 @@ from CreateQ import views as CreateQ_view
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^$',CreateQ_view.home,name = 'home'),
+    url(r'^new/',CreateQ_view.new_survey,name = 'home'),
+    url(r'^post/',CreateQ_view.post_survey,name = 'post')
 ]

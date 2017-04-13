@@ -1,8 +1,6 @@
 #encoding=utf-8
 import MySQLdb
-
-def connect_db():
-    return MySQLdb.connect("localhost","root","dbpjdbpj","ScholarDB",charset = 'utf8')
+from common_file import connect_db
 
 def register(UNAME,PWD,MAIL,AGE,GENDER,NATION,CITY,INST,TTYPE,USERTYPE,MONEY=0):
     AGE = int(AGE)
