@@ -15,12 +15,12 @@ def register(UNAME,PWD,MAIL,AGE,GENDER,NATION,CITY,INST,TTYPE,USERTYPE,MONEY=0):
 
     sql = 'SELECT MAX(UNO) FROM USERINFO'
     cursor.execute(sql)
-    try:
-        max_uno = cursor.fetchall()[0][0] #return ((1000L,),)
-    except:
-        max_uno = 1000
 
-    new_uno = max_uno + 1
+    max_uno = cursor.fetchall()[0][0] #return ((1000L,),)
+    try:
+        new_uno = max_uno + 1
+    except TypeError:
+        new_uno = 1000
     sql1 = "INSERT INTO USERINFO(UNO,UNAME,MAIL,AGE,USERTYPE,GENDER,NATION,CITY,MONEY,PWD)" \
           "VALUES(%d,'%s','%s',%d,'%s','%s','%s','%s',%d,'%s')" % (new_uno,UNAME,MAIL,AGE,USERTYPE,GENDER,NATION,CITY,0,PWD)
     if USERTYPE == 'Scholar':

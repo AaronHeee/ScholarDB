@@ -16,8 +16,8 @@ class SurveyDetail:
     def __init__(self):
         self.min_age = 0
         self.max_age = 200
-        self.gender_restrict = 'any'
-        self.survey_restrict = 'any'
+        self.gender_restrict = '无限制'
+        self.survey_restrict = '任何人'
         self.privacy = []
         self.payment = 0
         self.owner = ''
@@ -32,7 +32,7 @@ class SurveyDetail:
         self.gender_restrict = post['JSON2[gender-restrict]']
         self.survey_restrict = post['JSON2[survey-restrict]']
         self.privacy = post['JSON2[privacy]'][:-1].split(',')
-        self.payment = min(0,int(post['JSON2[payment]']))
+        self.payment = max(0,int(post['JSON2[payment]']))
         self.owner = owner
         self.opentime = time
 
@@ -100,6 +100,39 @@ def add_survey_to_db(title,detail,questions):
                 cursor.execute(sql)
     db.commit()
 
+def get_survey_to_db(title = None,subject = None,order = None):
+    db = connect_db()
+    cursor = db.cursor()
+    sql = "SELECT SNO,TITLE,MINAGE,MAXAGE,GENDER_RESTRICT,SURVEY_RESTRICT,OPENTIME,PAYMENT,DESCRIPTION FROM SURVEY "
+    condition = []
+    if title != None and title != '':
+        condition.append("TITLE LIKE '%"+title+"%'")
+    if subject != [None] and subject != [''] and subject != []:
+        for sub in subject:
+            if sub == '' or sub == ' ':
+                continue
+            condition.append("SNO IN (SELECT SNO FROM SURVEY_SUBJECT WHERE WHAT = '%s')" % sub)
+    if condition != None and condition != []:
+        sql += ' WHERE '
+        sql += ' AND '.join(condition)
+    if order == None:
+        order = 'SNO DESC'
+    sql+= ' ORDER BY %s' % (order)
+    cursor.execute(sql)
+    sql_res = cursor.fetchall()
 
+    res = []
+    for tup in sql_res:
+        dict = {"sno": tup[0], "title": tup[1], "min_age": tup[2], "max_age": tup[3], "gender_restrict": tup[4],
+                "survey_restrict": tup[5], "opentime": tup[6],"payment":tup[7],"description":tup[8]}
+        sql = "SELECT WHAT FROM SURVEY_SUBJECT WHERE SNO = %d" % tup[0]
+        cursor.execute(sql)
+        l = cursor.fetchall()
+        dict["subject1"] = l[0][0] if len(l) >= 1 else ""
+        dict["subject2"] = l[1][0] if len(l) >= 2 else ""
+        dict["subject3"] = l[2][0] if len(l) >= 3 else ""
+        res.append(dict)
+    db.close()
+    return res
 
 
