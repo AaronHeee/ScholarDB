@@ -1,5 +1,5 @@
 from django.shortcuts import render,HttpResponse
-from userctrl import register,login_mail,get_name
+from userctrl import register,login_mail,get_basic_info
 from django.http import HttpResponse
 # Create your views here.
 
@@ -36,18 +36,23 @@ def login(request):
         mail = request.POST['mail']
         pwd = request.POST['pwd']
         res,log = login_mail(mail,pwd)
+
         print mail,pwd
         if not res:
             return render(request,"good_login.html",{"errtext":log})
         else:
             if 'auto' in request.POST:
-                login_user = request.session["username"] = get_name(mail)
+                request.session["username"],request.session["uno"],request.session["usertype"] = get_basic_info(mail)
+                request.session["pwd"] = pwd
+                login_user = request.session.get("username","")
             return HttpResponse("Success" + login_user)
     return render(request,"good_login.html",{"username:":login_user})
 
 def logout(request):
     try:
         del request.session["username"]
+        del request.session["pwd"]
+        del request.session["uno"]
     except KeyError:
         pass
     return HttpResponse("logged out")

@@ -20,7 +20,7 @@
         <div class="ui-select">
             <select class="supplement-type">
                 <option value="text" selected=""/>文字补充
-                <option value="number"/>图像链接补充
+                <option value="img"/>图像链接补充
             </select>
         </div>
     </div>
@@ -50,7 +50,7 @@
         <div class="ui-select">
             <select class="supplement-type">
                 <option value="text" selected=""/>文字补充
-                <option value="number"/>图像链接补充
+                <option value="img"/>图像链接补充
             </select>
         </div>
     </div>
@@ -75,3 +75,63 @@
 <div class="panel-body qsc-choice-ele" id = "choice">
     <input type="text" class = "span12 input choice" placeholder = "选项" id = "qa-ele-det">
 </div>
+
+<table>
+    <tr id="list-item-survey">
+        <td>
+            <a class="name title">Title</a>
+            <span class="text">
+            </span>
+            <p class="help-block description"></p>
+            <p class="hidden qno" style = "display:none"></p>
+        </td>
+        <td class = "time">
+            2017-04-12 14:44:44
+        </td>
+        <td class = "payment">
+            $ 2
+        </td>
+        <td class="align-right restrict">
+
+        </td>
+    </tr>
+</table>
+
+<div id = "qa-ans" class = "panel panel-default qa-ans">
+    <div class="panel-heading">
+        <h3 class="panel-title" id = "panel-title">
+            问题
+        </h3>
+    </div>
+    <div class="panel-body">
+        <p id = "qa-ele-des" class = "qa-des" style="font-size: larger"></p>
+    </div>
+    <div class="panel-body">
+        <p id = "qa-ele-det" class = "qa-det" ></p>
+    </div>
+    <div class = panel-body>
+        <textarea class = "span12" placeholder = "答案" id = "qa-ans"></textarea>
+    </div>
+</div>
+
+<div id = "qsc-ans" class = "panel panel-default qsc-sg-ans">
+    <div class="panel-heading">
+        <h3 class="panel-title" id = "panel-title" >
+            问题
+        </h3>
+    </div>
+    <div class="panel-body" style="font-size: larger">
+        <p class = "qsc-des"></p>
+    </div>
+    <div class="panel-body">
+        <p class = "qsc-det"></p>
+    </div>
+
+    <div class = panel-body>
+        <div class="field-box">
+            <select class="span12" multiple="">
+            </select>
+        </div>
+    </div>
+</div>
+

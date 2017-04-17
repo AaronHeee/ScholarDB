@@ -79,6 +79,8 @@ create table SCHOLAR_OWN_SURVEY(
     FOREIGN KEY(SNO) REFERENCES SURVEY(SNO)
 );
 
+
+/*这里的question表示公共的数据集中的question,不再可以编辑*/
 create table QUESTION(
     QNO INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT,
     SNO INTEGER NOT NULL,
@@ -89,7 +91,7 @@ create table QUESTION(
     INPUTTYPE VARCHAR(45) NOT NULL,
     FOREIGN KEY(SNO) REFERENCES SURVEY(SNO)
 );
-
+/*chocie同理*/
 create table CHOICE(
     CNO INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT,
     PLACE INTEGER NOT NULL,
@@ -103,3 +105,5 @@ alter table SCHOLAR_OWN_SURVEY convert to character set utf8;
 alter table SURVEY convert to character set utf8;
 alter table SURVEY_SUBJECT convert to character set utf8;
 alter table PRIVACY convert to character set utf8;
+
+alter table QUESTION drop INPUTTYPE cascade
