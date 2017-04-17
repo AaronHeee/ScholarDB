@@ -45,14 +45,6 @@
     <div class="content">
 
         <!-- settings changer -->
-        <div class="skins-nav">
-            <a href="#" class="skin first_nav selected">
-                <span class="icon"></span><span class="text">Default</span>
-            </a>
-            <a href="#" class="skin second_nav" data-file="css/skins/dark.css">
-                <span class="icon"></span><span class="text">Dark skin</span>
-            </a>
-        </div>
         <div class="container-fluid">
             <div id="pad-wrapper" class="new-user">
                 <div class="row-fluid header">
@@ -352,10 +344,11 @@
         });
         function post_json()
         {
-            $.post("/project/new/",{"JSON1":JSONstep1,"JSON2":JSONstep2,"JSON3":JSONstep3});
+            $.post("/project/new_survey/",{"JSON1":JSONstep1,"JSON2":JSONstep2,"JSON3":JSONstep3});
             window.location="http://www.baidu.com";
         }
     </script>
+
     <script type="text/javascript">
         $(function () {
 
@@ -373,7 +366,8 @@
             });
         });
     </script>
-  <script src="{% static "js/fuelux.wizard.js"%}"></script>
+
+    <script src="{% static "js/fuelux.wizard.js"%}"></script>
 
     <script type="text/javascript">
         $(function () {
@@ -427,8 +421,6 @@
             });
         });
     </script>
-
-
 
 </body>
 </html>

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 {% load staticfiles %}
- <!-- sidebar -->
+ <!-- sidebar
     <div id="sidebar-nav">
         <ul id="dashboard-menu">
             <li class="active">
@@ -90,6 +90,61 @@
                     <li><a href="signup.html">Sign up</a></li>
                 </ul>
             </li>
+        </ul>
+    </div>
+    end sidebar -->
+
+
+  <!-- sidebar -->
+    <div id="sidebar-nav">
+        <ul id="dashboard-menu">
+            <li>
+                <a href="home.html">
+                    <i class="icon-home"></i>
+                    <span>Home</span>
+                </a>
+            </li>
+            <li>
+                <a class="dropdown-toggle" href="#">
+                    <i class="icon-edit"></i>
+                    <span>Create...</span>
+                    <i class="icon-chevron-down"></i>
+                </a>
+                <ul class="submenu">
+                    <li><a href="project/new_survey/">Survey</a></li>
+                    <li><a href="users/create/task">Data Task</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="management.html">
+                    <i class="icon-signal"></i>
+                    <span>Management</span>
+                </a>
+            </li>
+            <li>
+                <a href="gallery.html">
+                    <i class="icon-picture"></i>
+                    <span>Gallery</span>
+                </a>
+            </li>
+
+            <li>
+                <div class="pointer">
+                    <div class="arrow"></div>
+                    <div class="arrow_border"></div>
+                </div>
+                <a class="dropdown-toggle" href="#">
+                    <i class="icon-cog"></i>
+                    <span>My Info</span>
+                    <i class="icon-chevron-down"></i>
+                </a>
+                <ul class="submenu">
+                    <li><a href="personal-info.html">Personal Info</a></li>
+                    <li><a href="operating-info.html">Operating Info</a></li>
+                    <li><a href="social-info.html">Social Info</a></l>
+                </ul>
+            </li>
+
         </ul>
     </div>
     <!-- end sidebar -->

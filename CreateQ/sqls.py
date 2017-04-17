@@ -1,6 +1,9 @@
 #encoding=utf-8
 import MySQLdb
 import time
+
+#Created by auson
+
 from common_file import connect_db
 class SurveyTitle:
     def __init__(self):
@@ -99,7 +102,55 @@ def add_survey_to_db(title,detail,questions):
                 sql = "INSERT INTO CHOICE(CNO,PLACE,QNO,CONTENT) VALUES(NULL,%d,%d,'%s')" % (i,qno,choice)
                 cursor.execute(sql)
     db.commit()
+    db.close()
+
+
+#Create by aaron
+
+
+class TaskInfo:
+    def __init__(self):
+        self.title = ''
+        self.description = ''
+        self.deadline = ''
+        self.payment = ''
+        self.stage = ''
+        self.owner = ''
+        self.opentime = ''
+        self.rawdata = ''
+        self.example = ''
+    def parse(self,post,rawdata,example,owner,time):
+        self.title = post['title']
+        self.description = post['description']
+        self.deadline = post['deadline']
+        self.payment = post['payment']
+        self.rawdata = rawdata
+        self.example = example
+        self.owner = owner
+        self.opentime = time
 
 
 
+def add_task_to_db(task):
+    db = connect_db()
+    cursor = db.cursor()
 
+    sql = "INSERT INTO TASK(TITLE,DESCRIPTION,DEADLINE,PAYMENT,RAWDATA,EXAMPLE) VALUES\
+          ('%s','%s','%s','%s','%s','%s')" % \
+          (task.title,task.description,task.deadline,task.payment,task.rawdata,task.example)
+    cursor.execute(sql)
+    cursor.execute("SELECT MAX(TNO) FROM TASK")
+    tno = cursor.fetchone()[0]
+
+    print tno
+
+    cursor.execute("SELECT UNO FROM USERINFO WHERE UNAME = '%s'" % task.owner)
+    uno = cursor.fetchone()[0]
+
+    print uno
+
+    sql = "INSERT INTO SCHOLAR_OWN_TASK(UNO,TNO,ACCESS) VALUES(%d,%d,'owner')" % (uno,tno)
+    cursor.execute(sql)
+
+    db.commit()
+    db.close()

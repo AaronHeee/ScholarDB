@@ -1,0 +1,141 @@
+<!--fduhzy-->
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Detail Admin - Create Task</title>
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	{% load staticfiles %}
+    <!-- bootstrap -->
+    <link href="{% static "css/bootstrap/bootstrap.css" %}" rel="stylesheet" />
+    <link href="{% static "css/bootstrap/bootstrap-responsive.css" %}" rel="stylesheet" />
+    <link href="{% static "css/bootstrap/bootstrap-overrides.css"%}" type="text/css" rel="stylesheet" />
+
+    <!-- global styles -->
+    <link rel="stylesheet" type="text/css" href="{% static "css/layout.css" %}" />
+    <link rel="stylesheet" type="text/css" href="{% static "css/elements.css" %}" />
+    <link rel="stylesheet" type="text/css" href="{% static  "css/icons.css"%}" />
+
+    <!-- libraries -->
+    <link rel="stylesheet" type="text/css" href="{% static "css/lib/font-awesome.css"%}" />
+
+    <!-- this page specific styles -->
+    <link rel="stylesheet" href="{% static "css/compiled/signin.css" %}" type="text/css" media="screen" />
+
+
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /></head>
+
+<body>
+
+{% include "common_nav_bar.html" %}
+{% include "common_side_bar.html" %}
+
+    <div class="content">
+        <div class="content-fluid">
+            <div id="pad-wrapper">
+                <div class="row-fluid header" style="margin-left:20px;margin-bottom: 20px;">
+                        <h1 class="icon-check"> 标注任务</h1>
+                </div>
+                <div class="row-fluid form-wrapper">
+                    <div class="span9 with-sidebar">
+                        <div class="container">
+                                <div class="span11 field-box" style="margin-left: 30px; margin-bottom:30px" >
+                                    <label>任务名称:</label>
+                                    <input class="span9" type="text" id="taskname">
+                                </div>
+                                <div class="span11 field-box textarea" style="margin-left: 30px; margin-bottom:30px" >
+                                    <label>描述说明：</label>
+                                    <textarea class="span9" size="22" rows="5" placeholder=
+                                            " Field limited to 100 characters" id="description"></textarea>
+                                </div>
+                                <div class="span2" style="margin-left: 30px; margin-bottom:10px" >
+                                    <label>原始数据集：</label>
+                                    <input type="file" id="rawdata" name="rawdata">
+                                </div>
+                                <div class="span2" style="margin-left: 30px; margin-bottom:10px">
+                                    <label>标注样例：</label>
+                                    <input type="file" id="example" name="example">
+                                </div>
+                                <div class="span3" style="margin-left: 30px; margin-bottom:10px" >
+                                    <label>截止日期：</label>
+                                    <input type="date" name="deadline" value="2017-05-02" id="deadline">
+                                </div>
+                                <div class="span3 " style="margin-left: 30px; margin-bottom:10px" >
+                                    <label>报酬：</label>
+                                    <input class="span4" type="number" value="0" placeholder="0" id="payment">
+                                </div>
+                                <div class="container-fluid">
+                                    <div class="span9 pull-left">
+                                        <div class="span4 alert alert-danger" id = "errortext" style = "margin:20px;margin-left: 10px; border:5px; visibility: hidden"></div>
+                                        <div class="field-box actions pull-right" style="width:100px; height:100px; padding:20px; border:5px;">
+                                            <button type="submit" class="btn-large btn-flat primary" id="submit"  >发布！</button>
+                                        </div>
+                                    </div>
+                                </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+	<!-- scripts for this page -->
+    <script src="{% static "js/jquery-latest.js" %}"></script>
+    <script src="{% static "js/ajaxfileupload.js"%}"></script>
+    <script src="{% static "js/bootstrap.min.js"%}"></script>
+    <script src="{% static "js/theme.js"%}"></script>
+
+
+    <!-- call this page plugins -->
+
+    <script src = "{% static "js/survey_chart.js" %}"></script>
+    <script>
+        var JSONinfo;
+        function get_json()
+        {
+            JSONinfo = {
+                "title": document.getElementById("taskname").value,
+                "description": document.getElementById("description").value,
+                "deadline": document.getElementById("deadline").value,
+                "payment": document.getElementById("payment").value
+            };
+            return JSONinfo;
+        }
+        $(function () {
+            $("#submit").click(function () {
+                ajaxFileUpload_file();
+            })
+        })
+        function ajaxFileUpload_file() {
+            $.ajaxFileUpload(
+                {
+                    url: '/project/new_task/', //用于文件上传的服务器端请求地址
+                    secureuri: false, //是否需要安全协议，一般设置为false
+                    fileElementId: ['rawdata','example'], //文件上传域的ID
+                    dataType: 'JSON', //返回值类型 一般设置为json
+                    data: get_json(),
+                    success: function (data, status)  //服务器成功响应处理函数
+                    {
+                        $("#img1").attr("src", data.imgurl);
+                        if (typeof (data.error) != 'undefined') {
+                            if (data.error != '') {
+                                alert(data.error);
+                            } else {
+                                alert(data.msg);
+                            }
+                        }
+                    },
+                    error: function (data, status, e)//服务器响应失败处理函数
+                    {
+                        alert(e);
+                    }
+                }
+            )
+        }
+    </script>
+
+</body>
+</html>
