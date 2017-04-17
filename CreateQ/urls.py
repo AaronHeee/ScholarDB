@@ -21,5 +21,5 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^new/',CreateQ_view.new_survey,name = 'home'),
     url(r'^list/',CreateQ_view.list_survey,name = 'list'),
-    url(r'^list/json',CreateQ_view.list_survey_json,name = 'list_json')
+    url(r'^view/',CreateQ_view.view_questions,name = 'view')
 ]

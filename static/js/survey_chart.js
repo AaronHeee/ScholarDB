@@ -90,6 +90,7 @@ function add_list_item(json,parid){
     var parele = document.getElementById(parid);
     var ele = document.getElementById("list-item-survey").cloneNode(true);
     ele.getElementsByClassName("name title")[0].innerHTML = json.title;
+    ele.getElementsByClassName("name title")[0].href = "/project/view?sno=" + String(json.sno);
     ele.getElementsByClassName("time")[0].innerHTML = json.opentime;
     ele.getElementsByClassName("help-block description")[0].innerHTML = json.description;
     ele.getElementsByClassName("payment")[0].innerHTML = json.payment;
@@ -125,5 +126,59 @@ function add_label(par_ele,what,type){
 function clear_list_item(parid){
     var parele = document.getElementById(parid);
     parele.innerHTML = "";
+}
+
+function load_questions(json_all,qid,eleid) {
+    for(var i = 0;i<json_all.length;++i) {
+        if(json_all[i].type == "qa"){
+            load_qa(json_all[i],qid,eleid);
+        }
+        else if(json_all[i].type == "qsc"){
+            load_qsc(json_all[i],qid,eleid);
+        }
+        qid++;
+    }
+}
+
+function load_qa(json,qid,eleid){
+    var par = document.getElementById(eleid);
+    var ele = document.getElementById("qa-ans").cloneNode(true);
+    ele.id = qid;
+    ele.getElementsByClassName("qa-des")[0].innerHTML = json.title;
+    ele.getElementsByClassName("panel-title")[0].innerHTML += String(qid);
+    if(json.supplement_type == "img") {
+        var imgele = document.createElement("img");
+        imgele.src = json.supplement;
+        ele.getElementsByClassName("qa-det")[0].appendChild(imgele)
+    }
+    else{
+        ele.getElementsByClassName("qa-det")[0].innerHTML = json.supplement;
+    }
+    ele.getElementsByClassName("span12")[0].type = json.inputtype;
+    par.appendChild(ele);
+}
+
+function load_qsc(json,qid,eleid) {
+    var par = document.getElementById(eleid);
+    var ele = document.getElementById("qsc-ans").cloneNode(true);
+    ele.id = qid;
+    ele.getElementsByClassName("panel-title")[0].innerHTML += String(qid);
+    ele.getElementsByClassName("qsc-des")[0].innerHTML = json.title;
+    if(json.supplement_type == "img") {
+        var imgele = document.createElement("img");
+        imgele.src = json.supplement;
+        ele.getElementsByClassName("qsc-det")[0].appendChild(imgele)
+    }
+    else{
+        ele.getElementsByClassName("qsc-det")[0].innerHTML = json.supplement;
+    }
+    var choice_ele = ele.getElementsByClassName("span12")[0];
+    for(var i = 0;i<json.choice.length;++i){
+        var new_choice = document.createElement("option");
+        new_choice.value = json.choice[i];
+        new_choice.innerHTML = json.choice[i];
+        choice_ele.appendChild(new_choice);
+    }
+    par.appendChild(ele);
 }
 

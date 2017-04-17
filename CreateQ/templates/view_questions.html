@@ -56,14 +56,89 @@
         <div class="container-fluid">
             <div id="pad-wrapper" class="new-user">
                 <div class="row-fluid header">
-                    <h3>完成调研</h3>
+                    <h3>完成调研<small id = "sno-rec">#{{ sno }}</small></h3>
                 </div>
 
                 <div class="row-fluid form-wrapper">
-                    <!-- left column -->
+                    <!-- left column. -->
                     <div class="span12">
+                            <div id="fuelux-wizard" class="wizard row-fluid">
+                                <ul class="wizard-steps">
+                                    <li data-target="#step1" class="active">
+                                        <span class="step">1</span>
+                                        <span class="title">校验信息</span>
+                                    </li>
+                                    <li data-target="#step2">
+                                        <span class="step">2</span>
+                                        <span class="title">调研概况</span>
+                                    </li>
+                                    <li data-target="#step3">
+                                        <span class="step">3</span>
+                                        <span class="title">填写问题</span>
+                                    </li>
+                                    <li data-target="#step4">
+                                        <span class="step">4</span>
+                                        <span class="title">发布答案</span>
+                                    </li>
+                                </ul>
+                            </div>
 
-                    </div>
+                            <div class="step-content">
+                                <div class="step-pane active" id="step1">
+                                     <div class="row-fluid form-wrapper">
+                                         <div class="span10">
+                                             <h5 class="panel-heading">
+                                                第一步 校验信息
+                                                 <p class = "help-block">
+                                                    比对您的个人信息与调研要求
+                                                 </p>
+                                             </h5>
+                                             <div class = "alert alert-success" id = "check-legibility">
+                                                已通过校验
+                                             </div>
+                                             <div class = "alert alert hidden-tablet" id = "show-privacy">
+                                                 <strong>注意：调研者将有权限查看以下个人信息</strong>
+                                            </div>
+                                         </div>
+                                     </div>
+                                </div>
+                                <div class="step-pane" id="step2">
+                                    <div class="row-fluid form-wrapper">
+                                        <div class="span9">
+                                            <h5 class="panel-heading">
+                                                第二步 调研概况
+                                            </h5>
+                                            <div class="panel-body">
+                                                此处是调研标题
+                                            </div>
+                                            <div class="panel-body">
+                                                此处是调研说明
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="step-pane" id="step3">
+                                    <div class ="span9">
+                                        <form role="form" method="post" id = "qform">
+                                            {% csrf_token %}
+                                        </form>
+
+                                    </div>
+                                </div>
+                                <div class="step-pane" id="step4">
+                                    <div class ="span9">
+                                        <h5 class="panel-heading">
+                                            即将完成!
+                                        </h5>
+                                        <div class="panel-body">
+                                            <p class="help-block">是否为问卷设置金额奖励？</p>
+                                            <input type="number" class = "span10 inline-input" value = "0" id = "payment">
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
                 </div>
             </div>
         </div>
@@ -99,7 +174,15 @@
     <script src = "{% static "js/survey_chart.js" %}"></script>
 
     <script>
+        var qid = 1;
+        var sno = {{ sno }};
+        load();
 
+        function load(){
+            $.getJSON('{% url "view" %}',{'load':'true','sno':sno},function(res){
+                load_questions(res,qid,"qform");
+            });
+        }
         $(document).ajaxSend(function(event, xhr, settings) {
           function getCookie(name) {
             var cookieValue = null;
@@ -158,6 +241,45 @@
             });
         });
     </script>
+    <script src="{% static "js/fuelux.wizard.js"%}"></script>
 
+    <script type="text/javascript">
+        $(function () {
+            var $wizard = $('#fuelux-wizard'),
+                $btnPrev = $('.wizard-actions .btn-prev'),
+                $btnNext = $('.wizard-actions .btn-next'),
+                $btnFinish = $(".wizard-actions .btn-finish");
+
+            $wizard.wizard().on('finished', function(e) {
+                // wizard complete code
+            }).on("changed", function(e) {
+                var step = $wizard.wizard("selectedItem");
+                // reset states
+                $btnNext.removeAttr("disabled");
+                $btnPrev.removeAttr("disabled");
+                $btnNext.show();
+                $btnFinish.hide();
+
+                if (step.step === 1) {
+                    $btnPrev.attr("disabled", "disabled");
+
+                } else if (step.step === 4) {
+                    $btnNext.hide();
+                    $btnFinish.show();
+                }
+            });
+
+            $btnPrev.on('click', function() {
+                $wizard.wizard('previous');
+                var step = $wizard.wizard("selectedItem");
+            });
+            $btnNext.on('click', function() {
+                var step = $wizard.wizard("selectedItem");
+                $wizard.wizard('next');
+            });
+            $btnFinish.on('click',function(){
+            });
+        });
+    </script>
 </body>
 </html>
