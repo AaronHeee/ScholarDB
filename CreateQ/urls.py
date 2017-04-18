@@ -23,4 +23,6 @@ urlpatterns = [
     url(r'^post_survey/',CreateQ_view.post_survey,name = 'post_task'),
     url(r'^new_task/',CreateQ_view.new_task,name='task'),
     url(r'^post_task/',CreateQ_view.post_task,name='post_task'),
+    url(r'^view/',CreateQ_view.view_questions,name = 'view')
+    url(r'^list/',CreateQ_view.list_survey,name = 'list'),
 ]
