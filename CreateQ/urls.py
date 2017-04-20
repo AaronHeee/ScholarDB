@@ -19,10 +19,11 @@ from CreateQ import views as CreateQ_view
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^new_survey/',CreateQ_view.new_survey,name = 'home'),
-    url(r'^post_survey/',CreateQ_view.post_survey,name = 'post_task'),
-    url(r'^new_task/',CreateQ_view.new_task,name='task'),
+    url(r'^new_survey/',CreateQ_view.new_survey,name = 'new_survey'),
+    url(r'^post_survey/',CreateQ_view.post_survey,name = 'post_survey'),
+    url(r'^list_survey/', CreateQ_view.list_survey, name='list_survey'),
+    url(r'^new_task/',CreateQ_view.new_task,name='new_task'),
     url(r'^post_task/',CreateQ_view.post_task,name='post_task'),
-    url(r'^view/',CreateQ_view.view_questions,name = 'view')
-    url(r'^list/',CreateQ_view.list_survey,name = 'list'),
+    url(r'^list/', CreateQ_view.list, name='list'),
+    url(r'^view/',CreateQ_view.view_questions,name = 'view'),
 ]

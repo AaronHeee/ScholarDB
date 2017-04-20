@@ -101,6 +101,25 @@
                                      <li><a onclick="refresh_filter_subject('医学')">医学</a></li>
                                      <li><a onclick="subject='';clear_list_item('qpar');load()">重置</a></li>
                                  </ul>
+                                  <!--
+                                        <div class="panel-body">
+                                            <div class="field-box">
+                                                <label>学科标签</label>
+                                                <select style="width:300px" multiple="" id = "subject" class="select2">
+                                                    <option />
+                                                    <option value="数据科学" selected=""/>数据科学
+                                                    <option value="计算机视觉"/>计算机视觉
+                                                    <option value="自然语言处理" />自然语言处理
+                                                    <option value="社会学" />社会学
+                                                    <option value="经济管理" />经济管理
+                                                    <option value="心理学" />心理学
+                                                    <option value="自然科学" />自然科学
+                                                    <option value="医学" />医学
+                                                </select>
+                                            </div>
+                                            <p class="help-block">请至多选择3个</p>
+                                        </div>
+                                  -->
                               </li>
                             </ul>
                         </div>
@@ -161,7 +180,7 @@
         var subject = "";
         var title_str = "";
         function load(){
-            $.getJSON('{% url "list" %}',{'load':'true','order':order_str,'subject':subject,'title':title_str},function(res){
+            $.getJSON('{% url "list_survey" %}',{'load':'true','order':order_str,'subject':subject,'title':title_str},function(res){
                 var par =  document.getElementById("qpar");
                 for(var i = 0;i<res.length;++i){
                     add_list_item(res[i],"qpar");
@@ -175,7 +194,8 @@
             order_str = "{0} {1}".format(order,how);
             load();
         }
-        function refresh_filter_subject(subject_t){
+        function refresh_filter_subject(subject_t)
+        {
             clear_list_item("qpar");
             subject+= subject_t + " ";
             load();

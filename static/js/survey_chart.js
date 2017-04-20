@@ -86,11 +86,11 @@ function set_number_input(btn)
     var par = btn.parentNode.parentNode.parentNode;
     inputtype[par.id] = "number";
 }
-function add_list_item(json,parid){
+function add_list_survey_item(json,parid){
     var parele = document.getElementById(parid);
     var ele = document.getElementById("list-item-survey").cloneNode(true);
     ele.getElementsByClassName("name title")[0].innerHTML = json.title;
-    ele.getElementsByClassName("name title")[0].href = "/project/view?sno=" + String(json.sno);
+    ele.getElementsByClassName("name title")[0].href = "/project/view?sno=" + String(json.no);
     ele.getElementsByClassName("time")[0].innerHTML = json.opentime;
     ele.getElementsByClassName("help-block description")[0].innerHTML = json.description;
     ele.getElementsByClassName("payment")[0].innerHTML = json.payment;
@@ -119,9 +119,35 @@ function add_list_item(json,parid){
     }
     parele.appendChild(ele);
 }
+
+function add_list_task_item(json,parid){
+    var parele = document.getElementById(parid);
+    var ele = document.getElementById("list-item-survey").cloneNode(true);
+    ele.getElementsByClassName("name title")[0].innerHTML = json.title;
+    ele.getElementsByClassName("name title")[0].href = "/project/view?tno=" + String(json.no);
+    ele.getElementsByClassName("time")[0].innerHTML = json.opentime;
+    ele.getElementsByClassName("help-block description")[0].innerHTML = json.description;
+    ele.getElementsByClassName("payment")[0].innerHTML = json.payment;
+    var subject_par = ele.getElementsByClassName("text")[0];
+    if(json.datatype != ""){
+        add_label(subject_par,json.datatype,"info")
+    }
+    parele.appendChild(ele);
+
+}
+function add_list_item(json,parid){
+    if (json.type == "SURVEY") {
+        add_list_survey_item(json, parid);
+    }
+    else {
+        add_list_task_item(json, parid);
+    }
+}
+
 function add_label(par_ele,what,type){
     par_ele.innerHTML += "<label class = %label label-{0}%>".format(type)+what+"</label>  ";
 }
+
 
 function clear_list_item(parid){
     var parele = document.getElementById(parid);

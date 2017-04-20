@@ -2,30 +2,19 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="593228e0-b083-41bc-aaae-93912d4fa913" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/CreateQ/templates/create_task.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/CreateQ/templates/test.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/CreateQ/templates/test1.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/CreateQ/templates/test2.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/js/ajaxfileupload.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/js/jquery.form.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/ScholarDB.iml" afterPath="$PROJECT_DIR$/.idea/ScholarDB.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/CreateQ/templates/list.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/CreateQ/sqls.py" afterPath="$PROJECT_DIR$/CreateQ/sqls.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/CreateQ/templates/create_survey.html" afterPath="$PROJECT_DIR$/CreateQ/templates/create_survey.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/CreateQ/templates/form.html" afterPath="$PROJECT_DIR$/CreateQ/templates/form.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/CreateQ/templates/create_task.html" afterPath="$PROJECT_DIR$/CreateQ/templates/create_task.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/CreateQ/templates/list_survey.html" afterPath="$PROJECT_DIR$/CreateQ/templates/list_survey.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/CreateQ/urls.py" afterPath="$PROJECT_DIR$/CreateQ/urls.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/CreateQ/views.py" afterPath="$PROJECT_DIR$/CreateQ/views.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SQLscript" afterPath="$PROJECT_DIR$/SQLscript" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ScholarDB/settings.py" afterPath="$PROJECT_DIR$/ScholarDB/settings.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/User/templates/common_side_bar.html" afterPath="$PROJECT_DIR$/User/templates/common_side_bar.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/User/templates/good_login.html" afterPath="$PROJECT_DIR$/User/templates/good_login.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/User/templates/scholar_register_.html" afterPath="$PROJECT_DIR$/User/templates/scholar_register_.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/User/templates/volunteer_register_.html" afterPath="$PROJECT_DIR$/User/templates/volunteer_register_.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/User/urls.py" afterPath="$PROJECT_DIR$/User/urls.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/User/views.py" afterPath="$PROJECT_DIR$/User/views.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/common_file.py" afterPath="$PROJECT_DIR$/common_file.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/User/templates/common_nav_bar.html" afterPath="$PROJECT_DIR$/User/templates/common_nav_bar.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/css/bootstrap.css" afterPath="$PROJECT_DIR$/static/css/bootstrap.css" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/css/layout.css" afterPath="$PROJECT_DIR$/static/css/layout.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/js/form_validate.js" afterPath="$PROJECT_DIR$/static/js/form_validate.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/js/survey_chart.js" afterPath="$PROJECT_DIR$/static/js/survey_chart.js" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -36,7 +25,7 @@
   </component>
   <component name="CoverageDataManager">
     <SUITE FILE_PATH="coverage/ScholarDB$Test__ScholarDB.coverage" NAME="Test: ScholarDB Coverage Results" MODIFIED="1491656697305" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
-    <SUITE FILE_PATH="coverage/ScholarDB$manage.coverage" NAME="manage Coverage Results" MODIFIED="1492447458541" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/ScholarDB$manage.coverage" NAME="manage Coverage Results" MODIFIED="1492712689141" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
   <component name="DjangoConsoleOptions" custom-start-script="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)">
     <option name="myCustomStartScript" value="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)" />
@@ -47,40 +36,18 @@
       <file leaf-file-name="urls.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/CreateQ/urls.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="506">
-              <caret line="24" column="64" lean-forward="false" selection-start-line="24" selection-start-column="64" selection-end-line="24" selection-end-column="64" />
+            <state relative-caret-position="552">
+              <caret line="26" column="36" lean-forward="false" selection-start-line="26" selection-start-column="36" selection-end-line="26" selection-end-column="36" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="views.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/CreateQ/views.py">
+      <file leaf-file-name="SQLscript" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/SQLscript">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="244">
-              <caret line="55" column="22" lean-forward="true" selection-start-line="55" selection-start-column="22" selection-end-line="55" selection-end-column="22" />
-              <folding>
-                <element signature="e#16#51#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="base.py" pinned="false" current-in-tab="false">
-        <entry file="file://$USER_HOME$/.local/lib/python2.7/site-packages/django/core/handlers/base.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="188">
-              <caret line="186" column="0" lean-forward="false" selection-start-line="186" selection-start-column="0" selection-end-line="186" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="elements.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/CreateQ/templates/elements.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-883">
-              <caret line="14" column="10" lean-forward="true" selection-start-line="14" selection-start-column="10" selection-end-line="14" selection-end-column="10" />
+            <state relative-caret-position="3335">
+              <caret line="145" column="57" lean-forward="false" selection-start-line="145" selection-start-column="57" selection-end-line="145" selection-end-column="57" />
               <folding />
             </state>
           </provider>
@@ -89,8 +56,70 @@
       <file leaf-file-name="create_task.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/CreateQ/templates/create_task.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="279">
-              <caret line="110" column="10" lean-forward="true" selection-start-line="110" selection-start-column="10" selection-end-line="110" selection-end-column="10" />
+            <state relative-caret-position="-552">
+              <caret line="72" column="81" lean-forward="false" selection-start-line="72" selection-start-column="81" selection-end-line="72" selection-end-column="81" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="list_survey.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/CreateQ/templates/list_survey.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1785">
+              <caret line="188" column="9" lean-forward="true" selection-start-line="188" selection-start-column="9" selection-end-line="188" selection-end-column="9" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="survey_chart.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/static/js/survey_chart.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="552">
+              <caret line="141" column="10" lean-forward="true" selection-start-line="141" selection-start-column="10" selection-end-line="141" selection-end-column="10" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="list.html" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/CreateQ/templates/list.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="359">
+              <caret line="272" column="0" lean-forward="false" selection-start-line="272" selection-start-column="0" selection-end-line="272" selection-end-column="0" />
+              <folding>
+                <element signature="n#style#0;n#div#1;n#ul#0;n#div#0;n#div#2;n#div#0;n#div#0;n#div#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="common_nav_bar.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/User/templates/common_nav_bar.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="23">
+              <caret line="20" column="51" lean-forward="false" selection-start-line="20" selection-start-column="51" selection-end-line="20" selection-end-column="51" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="views.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/CreateQ/views.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="474">
+              <caret line="170" column="46" lean-forward="true" selection-start-line="170" selection-start-column="46" selection-end-line="170" selection-end-column="46" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="tests.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/CreateQ/tests.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -99,58 +128,83 @@
       <file leaf-file-name="sqls.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/CreateQ/sqls.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="350">
-              <caret line="135" column="24" lean-forward="true" selection-start-line="135" selection-start-column="24" selection-end-line="135" selection-end-column="24" />
+            <state relative-caret-position="181">
+              <caret line="545" column="90" lean-forward="false" selection-start-line="545" selection-start-column="90" selection-end-line="545" selection-end-column="90" />
               <folding>
-                <element signature="e#16#30#0" expanded="true" />
-                <marker date="1492447458493" expanded="true" signature="2299:2478" ph="INSERT INTO SURVEY... " />
-                <marker date="1492447458493" expanded="true" signature="2714:2741" ph="SELECT MAX(S... SURVEY" />
-                <marker date="1492447458493" expanded="true" signature="2799:2842" ph="SELECT UNO F... USERINFO" />
-                <marker date="1492447458493" expanded="true" signature="2906:2974" ph="INSERT INTO SCHOLAR_OWN_SURVEY... " />
-                <marker date="1492447458493" expanded="true" signature="3062:3114" ph="INSERT INTO SURVEY_SUBJECT... " />
-                <marker date="1492447458493" expanded="true" signature="3210:3256" ph="INSERT INTO PRIVACY... " />
-                <marker date="1492447458493" expanded="true" signature="3362:3499" ph="INSERT INTO QUESTION... " />
-                <marker date="1492447458493" expanded="true" signature="3747:3776" ph="SELECT MAX(Q... QUESTION" />
-                <marker date="1492447458493" expanded="true" signature="3900:3965" ph="INSERT INTO CHOICE... " />
-                <marker date="1492447458493" expanded="true" signature="4111:4293" ph="..." />
-                <marker date="1492447458493" expanded="true" signature="4767:4842" ph="INSERT INTO TASK... " />
-                <marker date="1492447458493" expanded="true" signature="4767:4843" ph="INSERT INTO TASK... " />
-                <marker date="1492447458493" expanded="true" signature="4767:4885" ph="INSERT INTO TASK... " />
-                <marker date="1492447458493" expanded="true" signature="5028:5049" ph="SELECT MAX(S... SURVEY" />
-                <marker date="1492447458493" expanded="true" signature="5028:5053" ph="SELECT MAX(T... TASK" />
-                <marker date="1492447458493" expanded="true" signature="5123:5166" ph="SELECT UNO F... USERINFO" />
-                <marker date="1492447458493" expanded="true" signature="5240:5306" ph="INSERT INTO SCHOLAR_OWN_SURVEY... " />
+                <marker date="1492712824188" expanded="true" signature="3015:3194" ph="INSERT INTO SURVEY... " />
+                <marker date="1492712824188" expanded="true" signature="3409:3436" ph="SELECT MAX(S... SURVEY" />
+                <marker date="1492712824188" expanded="true" signature="3494:3537" ph="SELECT UNO F... USERINFO" />
+                <marker date="1492712824188" expanded="true" signature="3601:3669" ph="INSERT INTO SCHOLAR_OWN_SURVEY... " />
+                <marker date="1492712824188" expanded="true" signature="3758:3810" ph="INSERT INTO SURVEY_SUBJECT... " />
+                <marker date="1492712824188" expanded="true" signature="3907:3953" ph="INSERT INTO PRIVACY... " />
+                <marker date="1492712824188" expanded="true" signature="4060:4183" ph="INSERT INTO QUESTION... " />
+                <marker date="1492712824188" expanded="true" signature="4436:4465" ph="SELECT MAX(Q... QUESTION" />
+                <marker date="1492712824188" expanded="true" signature="4590:4655" ph="INSERT INTO CHOICE... " />
+                <marker date="1492712824188" expanded="true" signature="4892:5071" ph="INSERT INTO SURVEY... " />
+                <marker date="1492712824188" expanded="true" signature="5286:5313" ph="SELECT MAX(S... SURVEY" />
+                <marker date="1492712824188" expanded="true" signature="5371:5414" ph="SELECT UNO F... USERINFO" />
+                <marker date="1492712824188" expanded="true" signature="5478:5546" ph="INSERT INTO SCHOLAR_OWN_SURVEY... " />
+                <marker date="1492712824188" expanded="true" signature="5635:5687" ph="INSERT INTO SURVEY_SUBJECT... " />
+                <marker date="1492712824188" expanded="true" signature="5784:5830" ph="INSERT INTO PRIVACY... " />
+                <marker date="1492712824188" expanded="true" signature="5937:6060" ph="INSERT INTO QUESTION... " />
+                <marker date="1492712824188" expanded="true" signature="6313:6342" ph="SELECT MAX(Q... QUESTION" />
+                <marker date="1492712824188" expanded="true" signature="6467:6532" ph="INSERT INTO CHOICE... " />
+                <marker date="1492712824188" expanded="true" signature="7331:7377" ph="alter table LIST... " />
+                <marker date="1492712824188" expanded="true" signature="7394:7497" ph="SELECT SNO,T... SURVEY" />
+                <marker date="1492712824188" expanded="true" signature="8130:8232" ph="INSERT INTO LIST... " />
+                <marker date="1492712824188" expanded="true" signature="8285:8303" ph="SELECT * FRO... LIST" />
+                <marker date="1492712824188" expanded="true" signature="8658:8702" ph="SELECT WHAT SURVEY_SUBJECT" />
+                <marker date="1492712824188" expanded="true" signature="9144:9221" ph="SELECT MINAG... SURVEY" />
+                <marker date="1492712824188" expanded="true" signature="9317:9370" ph="SELECT AGE,G... USERINFO" />
+                <marker date="1492712824188" expanded="true" signature="9897:9934" ph="SELECT WHAT PRIVACY" />
+                <marker date="1492712824188" expanded="true" signature="10159:10401" ph="SELECT TITLE... SURVEY" />
+                <marker date="1492712824188" expanded="true" signature="10648:10738" ph="SELECT QNO,T... QUESTION" />
+                <marker date="1492712824188" expanded="true" signature="10880:10936" ph="SELECT CONTE... CHOICE" />
+                <marker date="1492712824188" expanded="true" signature="11747:11815" ph="INSERT INTO TASK... " />
+                <marker date="1492712824188" expanded="true" signature="11747:11816" ph="INSERT INTO TASK... " />
+                <marker date="1492712824188" expanded="true" signature="11747:11853" ph="INSERT INTO TASK... " />
+                <marker date="1492712824188" expanded="true" signature="11985:12006" ph="SELECT MAX(S... SURVEY" />
+                <marker date="1492712824188" expanded="true" signature="11985:12010" ph="SELECT MAX(T... TASK" />
+                <marker date="1492712824188" expanded="true" signature="12078:12121" ph="SELECT UNO F... USERINFO" />
+                <marker date="1492712824188" expanded="true" signature="12193:12259" ph="INSERT INTO SCHOLAR_OWN_SURVEY... " />
+                <marker date="1492712824188" expanded="true" signature="12309:12392" ph="INSERT INTO FILE... " />
+                <marker date="1492712824188" expanded="true" signature="12469:12490" ph="SELECT MAX(T... T" />
+                <marker date="1492712824188" expanded="true" signature="12469:12494" ph="SELECT MAX(F... FILE" />
+                <marker date="1492712824188" expanded="true" signature="12553:12604" ph="INSERT INTO TASK_WITH_FILE... " />
+                <marker date="1492712824188" expanded="true" signature="12814:12871" ph="SELECT SNO,T... SURVEY" />
+                <marker date="1492712824188" expanded="true" signature="13478:13533" ph="SELECT TNO,T... TASK" />
+                <marker date="1492712824188" expanded="true" signature="13983:14059" ph="SELECT MINAG... SURVEY" />
+                <marker date="1492712824188" expanded="true" signature="14325:14369" ph="SELECT WHAT SURVEY_SUBJECT" />
+                <marker date="1492712824188" expanded="true" signature="14667:14752" ph="SELECT DATAT... TASK_WITH_FILE" />
+                <marker date="1492712824188" expanded="true" signature="15100:15197" ph="SELECT COUNT... tables" />
+                <marker date="1492712824188" expanded="true" signature="15100:15203" ph="SELECT COUNT... tables" />
+                <marker date="1492712824188" expanded="true" signature="15100:15318" ph="SELECT COUNT... tables" />
+                <marker date="1492712824188" expanded="true" signature="15290:15305" ph="DROP TABLE L... " />
+                <marker date="1492712824188" expanded="true" signature="15322:15667" ph="CREATE TABLE... LIST" />
+                <marker date="1492712824188" expanded="true" signature="15716:15762" ph="alter table LIST... " />
+                <marker date="1492712824188" expanded="true" signature="15838:15893" ph="INSERT INTO LIST... " />
+                <marker date="1492712824188" expanded="true" signature="15952:15981" ph="UPDATE LIST " />
+                <marker date="1492712824188" expanded="true" signature="16038:16093" ph="INSERT INTO LIST... " />
+                <marker date="1492712824188" expanded="true" signature="16151:16197" ph="UPDATE LIST " />
+                <marker date="1492712824188" expanded="true" signature="16212:16271" ph="SELECT TYPE,... " />
+                <marker date="1492712824188" expanded="true" signature="16212:16280" ph="SELECT TYPE,... " />
+                <marker date="1492712824188" expanded="true" signature="16212:16281" ph="SELECT TYPE,... " />
+                <marker date="1492712824188" expanded="true" signature="16560:16628" ph="SELECT TYPE,... " />
+                <marker date="1492712824188" expanded="true" signature="16560:16629" ph="SELECT TYPE,... " />
+                <marker date="1492712824188" expanded="true" signature="16885:16927" ph="DELETE FROM " />
+                <marker date="1492712824188" expanded="true" signature="16891:16897" ph="SELECT TYPE,... " />
+                <marker date="1492712824188" expanded="true" signature="17210:17279" ph="SELECT TYPE,... " />
+                <marker date="1492712824188" expanded="true" signature="17556:17594" ph="DELETE FROM " />
+                <marker date="1492712824188" expanded="true" signature="17556:17595" ph="DELETE FROM " />
+                <marker date="1492712824188" expanded="true" signature="17818:17887" ph="SELECT TYPE,... " />
+                <marker date="1492712824188" expanded="true" signature="18182:18218" ph="DELETE FROM " />
+                <marker date="1492712824188" expanded="true" signature="18259:18293" ph="DELETE FROM " />
+                <marker date="1492712824188" expanded="true" signature="18331:18400" ph="SELECT TYPE,... " />
+                <marker date="1492712824188" expanded="true" signature="18682:18760" ph="SELECT TYPE,... " />
+                <marker date="1492712824188" expanded="true" signature="18682:18778" ph="SELECT TYPE,... " />
+                <marker date="1492712824188" expanded="true" signature="18682:18779" ph="SELECT TYPE,... " />
+                <marker date="1492712824188" expanded="true" signature="18682:18873" ph="SELECT TYPE,... " />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="test1.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/CreateQ/templates/test1.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="322">
-              <caret line="14" column="7" lean-forward="false" selection-start-line="14" selection-start-column="7" selection-end-line="14" selection-end-column="7" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="test2.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/CreateQ/templates/test2.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="276">
-              <caret line="12" column="0" lean-forward="false" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ajaxfileupload.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/static/js/ajaxfileupload.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="386">
-              <caret line="45" column="9" lean-forward="true" selection-start-line="45" selection-start-column="9" selection-end-line="45" selection-end-column="9" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -168,36 +222,36 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>l</find>
-      <find>,</find>
-      <find>.</find>
-      <find>.hea</find>
-      <find>.header</find>
-      <find>os</find>
-      <find>jque</find>
-      <find>jquer</find>
-      <find>jquery.m</find>
-      <find>jquery.min</find>
-      <find>'django.middleware.csrf.CsrfViewMiddleware',</find>
-      <find>'django.middleware.csrf.CsrfViewMiddleware'</find>
-      <find>jj</find>
-      <find>je</find>
-      <find>j</find>
-      <find>jq</find>
-      <find>jqu</find>
-      <find>jquery</find>
-      <find>jquery.</find>
-      <find>jquery.f</find>
-      <find>jquery.fo</find>
-      <find>jquery.form/</find>
-      <find>jquery.form</find>
-      <find>jquery.form.</find>
-      <find>id</find>
-      <find>var oldElement = jQuery('#' + fileElementId);</find>
-      <find>var oldElement = jQuery('#' + fileElementId);</find>
-      <find>var oldElement = jQuery('#' + fileElementId);</find>
-      <find />
-      <find>file</find>
+      <find>get_surve</find>
+      <find>get_survey</find>
+      <find>get_survey_</find>
+      <find>get_survey_f</find>
+      <find>get_survey_fr</find>
+      <find>get_survey_from</find>
+      <find>get_survey_from_</find>
+      <find>get_survey_from_d</find>
+      <find>get_survey_from_db</find>
+      <find>list_sur</find>
+      <find>a</find>
+      <find>ad</find>
+      <find>add</find>
+      <find>add_</find>
+      <find>add_li</find>
+      <find>add_list</find>
+      <find>add_list_t</find>
+      <find>add_list_</find>
+      <find>qpar</find>
+      <find>table-w</find>
+      <find>format</find>
+      <find>font</find>
+      <find>SNO</find>
+      <find>print</find>
+      <find>subject</find>
+      <find>title</find>
+      <find>re</find>
+      <find>search</find>
+      <find>title_str</find>
+      <find>db</find>
     </findStrings>
     <dirStrings>
       <dir>$PROJECT_DIR$/ScholarDB</dir>
@@ -226,9 +280,7 @@
         <option value="$PROJECT_DIR$/User/templates/login_.html" />
         <option value="$PROJECT_DIR$/static/js/form_validate.js" />
         <option value="$PROJECT_DIR$/User/templates/common_side_bar.html" />
-        <option value="$PROJECT_DIR$/User/views.py" />
         <option value="$PROJECT_DIR$/User/urls.py" />
-        <option value="$PROJECT_DIR$/CreateQ/templates/create_survey.html" />
         <option value="$PROJECT_DIR$/static/css/layout.css" />
         <option value="$PROJECT_DIR$/static/js/jquery.form.min.js" />
         <option value="$PROJECT_DIR$/static/js/jquery.form.js" />
@@ -237,12 +289,20 @@
         <option value="$PROJECT_DIR$/CreateQ/templates/form.html" />
         <option value="$PROJECT_DIR$/CreateQ/templates/test.html" />
         <option value="$PROJECT_DIR$/CreateQ/templates/test2.html" />
-        <option value="$PROJECT_DIR$/CreateQ/urls.py" />
         <option value="$PROJECT_DIR$/static/js/ajaxfileupload.js" />
-        <option value="$PROJECT_DIR$/CreateQ/templates/create_task.html" />
+        <option value="$PROJECT_DIR$/User/views.py" />
+        <option value="$PROJECT_DIR$/CreateQ/templates/list_task.html" />
+        <option value="$PROJECT_DIR$/CreateQ/templates/create_survey.html" />
+        <option value="$PROJECT_DIR$/CreateQ/urls.py" />
+        <option value="$PROJECT_DIR$/static/css/bootstrap.css" />
+        <option value="$PROJECT_DIR$/User/templates/common_nav_bar.html" />
+        <option value="$PROJECT_DIR$/CreateQ/templates/list_survey.html" />
         <option value="$PROJECT_DIR$/SQLscript" />
+        <option value="$PROJECT_DIR$/static/js/survey_chart.js" />
+        <option value="$PROJECT_DIR$/CreateQ/templates/create_task.html" />
         <option value="$PROJECT_DIR$/CreateQ/views.py" />
         <option value="$PROJECT_DIR$/CreateQ/sqls.py" />
+        <option value="$PROJECT_DIR$/CreateQ/templates/list.html" />
       </list>
     </option>
   </component>
@@ -253,9 +313,10 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="y" value="-8" />
-    <option name="width" value="1920" />
-    <option name="height" value="1088" />
+    <option name="x" value="-1" />
+    <option name="y" value="-5" />
+    <option name="width" value="1922" />
+    <option name="height" value="1086" />
   </component>
   <component name="ProjectView">
     <navigator currentView="ProjectPane" proportions="" version="1">
@@ -272,6 +333,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -459,7 +521,6 @@
         </subPane>
       </pane>
       <pane id="Scratches" />
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -756,19 +817,18 @@
     </history-entry>
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="-8" width="1920" height="1088" extended-state="6" />
+    <frame x="-1" y="-5" width="1922" height="1086" extended-state="6" />
     <editor active="true" />
     <layout>
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32992464" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32929516" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.34361234" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.50550663" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.22335845" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32873562" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32929516" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.50550663" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39977974" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Data View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -777,8 +837,30 @@
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32819384" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
+    <layout-to-restore>
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32929516" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32929516" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.50550663" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32992464" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32819384" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39977974" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Data View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+    </layout-to-restore>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="processedProjectFiles" value="true" />
@@ -788,40 +870,11 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="1" />
+      <option name="time" value="4" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/CreateQ/templates/blank.html" />
-    <entry file="file://$PROJECT_DIR$/test.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/CreateQ/migrations/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/ScholarDB/wsgi.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/ScholarDB/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/manage.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="276">
@@ -893,13 +946,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/User/templates/common_nav_bar.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="253">
-          <caret line="11" column="91" lean-forward="false" selection-start-line="11" selection-start-column="91" selection-end-line="11" selection-end-column="91" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/User/templates/good_login.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="575">
@@ -922,13 +968,6 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/CreateQ/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/CreateQ/tests.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
@@ -970,36 +1009,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/User/urls.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="552">
-          <caret line="26" column="1" lean-forward="false" selection-start-line="26" selection-start-column="1" selection-end-line="26" selection-end-column="1" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/.local/lib/python2.7/site-packages/django/template/smartif.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="46">
-          <caret line="2" column="3" lean-forward="false" selection-start-line="2" selection-start-column="3" selection-end-line="2" selection-end-column="3" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/User/views.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1196">
-          <caret line="54" column="0" lean-forward="false" selection-start-line="54" selection-start-column="0" selection-end-line="54" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/CreateQ/templates/create_survey.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="190">
-          <caret line="180" column="44" lean-forward="false" selection-start-line="180" selection-start-column="44" selection-end-line="180" selection-end-column="60" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/static/css/layout.css">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="236">
@@ -1011,7 +1020,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1027,7 +1035,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="34523">
           <caret line="1501" column="14" lean-forward="false" selection-start-line="1501" selection-start-column="14" selection-end-line="1501" selection-end-column="14" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1035,7 +1042,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1104">
           <caret line="48" column="5" lean-forward="false" selection-start-line="48" selection-start-column="5" selection-end-line="48" selection-end-column="5" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1043,7 +1049,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="207">
           <caret line="9" column="21" lean-forward="false" selection-start-line="9" selection-start-column="21" selection-end-line="9" selection-end-column="21" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1051,7 +1056,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="368">
           <caret line="16" column="0" lean-forward="false" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1059,39 +1063,13 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="276">
           <caret line="12" column="0" lean-forward="false" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/CreateQ/urls.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="506">
-          <caret line="24" column="64" lean-forward="false" selection-start-line="24" selection-start-column="64" selection-end-line="24" selection-end-column="64" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/CreateQ/templates/elements.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-883">
-          <caret line="14" column="10" lean-forward="true" selection-start-line="14" selection-start-column="10" selection-end-line="14" selection-end-column="10" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/static/js/ajaxfileupload.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="386">
-          <caret line="45" column="9" lean-forward="true" selection-start-line="45" selection-start-column="9" selection-end-line="45" selection-end-column="9" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/CreateQ/templates/test1.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="322">
-          <caret line="14" column="7" lean-forward="false" selection-start-line="14" selection-start-column="7" selection-end-line="14" selection-end-column="7" />
-          <folding />
+          <caret line="45" column="9" lean-forward="false" selection-start-line="45" selection-start-column="9" selection-end-line="45" selection-end-column="9" />
         </state>
       </provider>
     </entry>
@@ -1099,59 +1077,221 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="188">
           <caret line="186" column="0" lean-forward="false" selection-start-line="186" selection-start-column="0" selection-end-line="186" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/User/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="507">
+          <caret line="26" column="1" lean-forward="false" selection-start-line="26" selection-start-column="1" selection-end-line="26" selection-end-column="1" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/CreateQ/templates/view_questions.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/CreateQ/templates/test1.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="322">
+          <caret line="14" column="7" lean-forward="false" selection-start-line="14" selection-start-column="7" selection-end-line="14" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/.local/lib/python2.7/site-packages/django/template/smartif.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2553">
+          <caret line="111" column="0" lean-forward="false" selection-start-line="111" selection-start-column="0" selection-end-line="111" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/User/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1104">
+          <caret line="50" column="20" lean-forward="false" selection-start-line="50" selection-start-column="20" selection-end-line="50" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/CreateQ/templates/elements.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="322">
+          <caret line="14" column="10" lean-forward="false" selection-start-line="14" selection-start-column="10" selection-end-line="14" selection-end-column="10" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/CreateQ/templates/create_survey.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2507">
+          <caret line="109" column="46" lean-forward="false" selection-start-line="93" selection-start-column="40" selection-end-line="109" selection-end-column="46" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/css/bootstrap.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="660">
+          <caret line="3467" column="13" lean-forward="false" selection-start-line="3467" selection-start-column="13" selection-end-line="3467" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/CreateQ/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="552">
+          <caret line="26" column="36" lean-forward="false" selection-start-line="26" selection-start-column="36" selection-end-line="26" selection-end-column="36" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/SQLscript">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="486">
-          <caret line="125" column="0" lean-forward="true" selection-start-line="125" selection-start-column="0" selection-end-line="125" selection-end-column="0" />
+        <state relative-caret-position="3335">
+          <caret line="145" column="57" lean-forward="false" selection-start-line="145" selection-start-column="57" selection-end-line="145" selection-end-column="57" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/js/survey_chart.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="552">
+          <caret line="141" column="10" lean-forward="true" selection-start-line="141" selection-start-column="10" selection-end-line="141" selection-end-column="10" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/User/templates/common_nav_bar.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="23">
+          <caret line="20" column="51" lean-forward="false" selection-start-line="20" selection-start-column="51" selection-end-line="20" selection-end-column="51" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/CreateQ/tests.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/CreateQ/templates/list_survey.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1785">
+          <caret line="188" column="9" lean-forward="true" selection-start-line="188" selection-start-column="9" selection-end-line="188" selection-end-column="9" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/CreateQ/templates/create_task.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="279">
-          <caret line="110" column="10" lean-forward="true" selection-start-line="110" selection-start-column="10" selection-end-line="110" selection-end-column="10" />
+        <state relative-caret-position="-552">
+          <caret line="72" column="81" lean-forward="false" selection-start-line="72" selection-start-column="81" selection-end-line="72" selection-end-column="81" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/CreateQ/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="474">
+          <caret line="170" column="46" lean-forward="true" selection-start-line="170" selection-start-column="46" selection-end-line="170" selection-end-column="46" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/CreateQ/sqls.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="350">
-          <caret line="135" column="24" lean-forward="true" selection-start-line="135" selection-start-column="24" selection-end-line="135" selection-end-column="24" />
+        <state relative-caret-position="181">
+          <caret line="545" column="90" lean-forward="false" selection-start-line="545" selection-start-column="90" selection-end-line="545" selection-end-column="90" />
           <folding>
-            <element signature="e#16#30#0" expanded="true" />
-            <marker date="1492447458493" expanded="true" signature="2299:2478" ph="INSERT INTO SURVEY... " />
-            <marker date="1492447458493" expanded="true" signature="2714:2741" ph="SELECT MAX(S... SURVEY" />
-            <marker date="1492447458493" expanded="true" signature="2799:2842" ph="SELECT UNO F... USERINFO" />
-            <marker date="1492447458493" expanded="true" signature="2906:2974" ph="INSERT INTO SCHOLAR_OWN_SURVEY... " />
-            <marker date="1492447458493" expanded="true" signature="3062:3114" ph="INSERT INTO SURVEY_SUBJECT... " />
-            <marker date="1492447458493" expanded="true" signature="3210:3256" ph="INSERT INTO PRIVACY... " />
-            <marker date="1492447458493" expanded="true" signature="3362:3499" ph="INSERT INTO QUESTION... " />
-            <marker date="1492447458493" expanded="true" signature="3747:3776" ph="SELECT MAX(Q... QUESTION" />
-            <marker date="1492447458493" expanded="true" signature="3900:3965" ph="INSERT INTO CHOICE... " />
-            <marker date="1492447458493" expanded="true" signature="4111:4293" ph="..." />
-            <marker date="1492447458493" expanded="true" signature="4767:4842" ph="INSERT INTO TASK... " />
-            <marker date="1492447458493" expanded="true" signature="4767:4843" ph="INSERT INTO TASK... " />
-            <marker date="1492447458493" expanded="true" signature="4767:4885" ph="INSERT INTO TASK... " />
-            <marker date="1492447458493" expanded="true" signature="5028:5049" ph="SELECT MAX(S... SURVEY" />
-            <marker date="1492447458493" expanded="true" signature="5028:5053" ph="SELECT MAX(T... TASK" />
-            <marker date="1492447458493" expanded="true" signature="5123:5166" ph="SELECT UNO F... USERINFO" />
-            <marker date="1492447458493" expanded="true" signature="5240:5306" ph="INSERT INTO SCHOLAR_OWN_SURVEY... " />
+            <marker date="1492712824188" expanded="true" signature="3015:3194" ph="INSERT INTO SURVEY... " />
+            <marker date="1492712824188" expanded="true" signature="3409:3436" ph="SELECT MAX(S... SURVEY" />
+            <marker date="1492712824188" expanded="true" signature="3494:3537" ph="SELECT UNO F... USERINFO" />
+            <marker date="1492712824188" expanded="true" signature="3601:3669" ph="INSERT INTO SCHOLAR_OWN_SURVEY... " />
+            <marker date="1492712824188" expanded="true" signature="3758:3810" ph="INSERT INTO SURVEY_SUBJECT... " />
+            <marker date="1492712824188" expanded="true" signature="3907:3953" ph="INSERT INTO PRIVACY... " />
+            <marker date="1492712824188" expanded="true" signature="4060:4183" ph="INSERT INTO QUESTION... " />
+            <marker date="1492712824188" expanded="true" signature="4436:4465" ph="SELECT MAX(Q... QUESTION" />
+            <marker date="1492712824188" expanded="true" signature="4590:4655" ph="INSERT INTO CHOICE... " />
+            <marker date="1492712824188" expanded="true" signature="4892:5071" ph="INSERT INTO SURVEY... " />
+            <marker date="1492712824188" expanded="true" signature="5286:5313" ph="SELECT MAX(S... SURVEY" />
+            <marker date="1492712824188" expanded="true" signature="5371:5414" ph="SELECT UNO F... USERINFO" />
+            <marker date="1492712824188" expanded="true" signature="5478:5546" ph="INSERT INTO SCHOLAR_OWN_SURVEY... " />
+            <marker date="1492712824188" expanded="true" signature="5635:5687" ph="INSERT INTO SURVEY_SUBJECT... " />
+            <marker date="1492712824188" expanded="true" signature="5784:5830" ph="INSERT INTO PRIVACY... " />
+            <marker date="1492712824188" expanded="true" signature="5937:6060" ph="INSERT INTO QUESTION... " />
+            <marker date="1492712824188" expanded="true" signature="6313:6342" ph="SELECT MAX(Q... QUESTION" />
+            <marker date="1492712824188" expanded="true" signature="6467:6532" ph="INSERT INTO CHOICE... " />
+            <marker date="1492712824188" expanded="true" signature="7331:7377" ph="alter table LIST... " />
+            <marker date="1492712824188" expanded="true" signature="7394:7497" ph="SELECT SNO,T... SURVEY" />
+            <marker date="1492712824188" expanded="true" signature="8130:8232" ph="INSERT INTO LIST... " />
+            <marker date="1492712824188" expanded="true" signature="8285:8303" ph="SELECT * FRO... LIST" />
+            <marker date="1492712824188" expanded="true" signature="8658:8702" ph="SELECT WHAT SURVEY_SUBJECT" />
+            <marker date="1492712824188" expanded="true" signature="9144:9221" ph="SELECT MINAG... SURVEY" />
+            <marker date="1492712824188" expanded="true" signature="9317:9370" ph="SELECT AGE,G... USERINFO" />
+            <marker date="1492712824188" expanded="true" signature="9897:9934" ph="SELECT WHAT PRIVACY" />
+            <marker date="1492712824188" expanded="true" signature="10159:10401" ph="SELECT TITLE... SURVEY" />
+            <marker date="1492712824188" expanded="true" signature="10648:10738" ph="SELECT QNO,T... QUESTION" />
+            <marker date="1492712824188" expanded="true" signature="10880:10936" ph="SELECT CONTE... CHOICE" />
+            <marker date="1492712824188" expanded="true" signature="11747:11815" ph="INSERT INTO TASK... " />
+            <marker date="1492712824188" expanded="true" signature="11747:11816" ph="INSERT INTO TASK... " />
+            <marker date="1492712824188" expanded="true" signature="11747:11853" ph="INSERT INTO TASK... " />
+            <marker date="1492712824188" expanded="true" signature="11985:12006" ph="SELECT MAX(S... SURVEY" />
+            <marker date="1492712824188" expanded="true" signature="11985:12010" ph="SELECT MAX(T... TASK" />
+            <marker date="1492712824188" expanded="true" signature="12078:12121" ph="SELECT UNO F... USERINFO" />
+            <marker date="1492712824188" expanded="true" signature="12193:12259" ph="INSERT INTO SCHOLAR_OWN_SURVEY... " />
+            <marker date="1492712824188" expanded="true" signature="12309:12392" ph="INSERT INTO FILE... " />
+            <marker date="1492712824188" expanded="true" signature="12469:12490" ph="SELECT MAX(T... T" />
+            <marker date="1492712824188" expanded="true" signature="12469:12494" ph="SELECT MAX(F... FILE" />
+            <marker date="1492712824188" expanded="true" signature="12553:12604" ph="INSERT INTO TASK_WITH_FILE... " />
+            <marker date="1492712824188" expanded="true" signature="12814:12871" ph="SELECT SNO,T... SURVEY" />
+            <marker date="1492712824188" expanded="true" signature="13478:13533" ph="SELECT TNO,T... TASK" />
+            <marker date="1492712824188" expanded="true" signature="13983:14059" ph="SELECT MINAG... SURVEY" />
+            <marker date="1492712824188" expanded="true" signature="14325:14369" ph="SELECT WHAT SURVEY_SUBJECT" />
+            <marker date="1492712824188" expanded="true" signature="14667:14752" ph="SELECT DATAT... TASK_WITH_FILE" />
+            <marker date="1492712824188" expanded="true" signature="15100:15197" ph="SELECT COUNT... tables" />
+            <marker date="1492712824188" expanded="true" signature="15100:15203" ph="SELECT COUNT... tables" />
+            <marker date="1492712824188" expanded="true" signature="15100:15318" ph="SELECT COUNT... tables" />
+            <marker date="1492712824188" expanded="true" signature="15290:15305" ph="DROP TABLE L... " />
+            <marker date="1492712824188" expanded="true" signature="15322:15667" ph="CREATE TABLE... LIST" />
+            <marker date="1492712824188" expanded="true" signature="15716:15762" ph="alter table LIST... " />
+            <marker date="1492712824188" expanded="true" signature="15838:15893" ph="INSERT INTO LIST... " />
+            <marker date="1492712824188" expanded="true" signature="15952:15981" ph="UPDATE LIST " />
+            <marker date="1492712824188" expanded="true" signature="16038:16093" ph="INSERT INTO LIST... " />
+            <marker date="1492712824188" expanded="true" signature="16151:16197" ph="UPDATE LIST " />
+            <marker date="1492712824188" expanded="true" signature="16212:16271" ph="SELECT TYPE,... " />
+            <marker date="1492712824188" expanded="true" signature="16212:16280" ph="SELECT TYPE,... " />
+            <marker date="1492712824188" expanded="true" signature="16212:16281" ph="SELECT TYPE,... " />
+            <marker date="1492712824188" expanded="true" signature="16560:16628" ph="SELECT TYPE,... " />
+            <marker date="1492712824188" expanded="true" signature="16560:16629" ph="SELECT TYPE,... " />
+            <marker date="1492712824188" expanded="true" signature="16885:16927" ph="DELETE FROM " />
+            <marker date="1492712824188" expanded="true" signature="16891:16897" ph="SELECT TYPE,... " />
+            <marker date="1492712824188" expanded="true" signature="17210:17279" ph="SELECT TYPE,... " />
+            <marker date="1492712824188" expanded="true" signature="17556:17594" ph="DELETE FROM " />
+            <marker date="1492712824188" expanded="true" signature="17556:17595" ph="DELETE FROM " />
+            <marker date="1492712824188" expanded="true" signature="17818:17887" ph="SELECT TYPE,... " />
+            <marker date="1492712824188" expanded="true" signature="18182:18218" ph="DELETE FROM " />
+            <marker date="1492712824188" expanded="true" signature="18259:18293" ph="DELETE FROM " />
+            <marker date="1492712824188" expanded="true" signature="18331:18400" ph="SELECT TYPE,... " />
+            <marker date="1492712824188" expanded="true" signature="18682:18760" ph="SELECT TYPE,... " />
+            <marker date="1492712824188" expanded="true" signature="18682:18778" ph="SELECT TYPE,... " />
+            <marker date="1492712824188" expanded="true" signature="18682:18779" ph="SELECT TYPE,... " />
+            <marker date="1492712824188" expanded="true" signature="18682:18873" ph="SELECT TYPE,... " />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/CreateQ/views.py">
+    <entry file="file://$PROJECT_DIR$/CreateQ/templates/list.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="244">
-          <caret line="55" column="22" lean-forward="true" selection-start-line="55" selection-start-column="22" selection-end-line="55" selection-end-column="22" />
+        <state relative-caret-position="359">
+          <caret line="272" column="0" lean-forward="false" selection-start-line="272" selection-start-column="0" selection-end-line="272" selection-end-column="0" />
           <folding>
-            <element signature="e#16#51#0" expanded="true" />
+            <element signature="n#style#0;n#div#1;n#ul#0;n#div#0;n#div#2;n#div#0;n#div#0;n#div#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
           </folding>
         </state>
       </provider>
