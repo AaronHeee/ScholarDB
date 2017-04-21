@@ -152,7 +152,7 @@
                                                         <select id="gender-restrict">
                                                             <option selected="" value="无限制">无限制</option>
                                                             <option value="仅男性">男</option>
-                                                            <option value="仅女性"></option>女
+                                                            <option value="仅女性">女</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -246,17 +246,7 @@
         var qid = 1;
         var JSONstep1,JSONstep2;
         var JSONstep3 = "{";
-        function get_mult_choice(id)
-        {
-            var str = "";
-            var o = document.getElementById(id);
-            for(i=0;i<o.length;i++){
-                if(o.options[i].selected){
-                    str+=o.options[i].value+",";
-                }
-            }
-            return str;
-        }
+
         function step1()
         {
             JSONstep1 ={

@@ -37,6 +37,29 @@ var inputtype = new Array(100);
 for(i = 0;i<100;++i)
     inputtype[i]="text";
 
+function get_mult_choice(id)
+{
+    var str = "";
+    var o = document.getElementById(id);
+    for(i=0;i<o.length;i++){
+        if(o.options[i].selected){
+            str+=o.options[i].value+",";
+        }
+    }
+    return str;
+}
+
+function get_mult_choice_list(o)
+{
+    var l = [];
+    for(var i = 0;i<o.childNodes.length;++i){
+        if(o.childNodes[i].selected == true){
+            l.push(o.childNodes[i].value);
+        }
+    }
+    return l;
+}
+
 function add_qa(parent,qid){
     var qaele = document.getElementById("qa-ele");
     var ele = qaele.cloneNode(true);
@@ -129,6 +152,7 @@ function clear_list_item(parid){
 }
 
 function load_questions(json_all,qid,eleid) {
+    var l = [];
     for(var i = 0;i<json_all.length;++i) {
         if(json_all[i].type == "qa"){
             load_qa(json_all[i],qid,eleid);
@@ -137,7 +161,9 @@ function load_questions(json_all,qid,eleid) {
             load_qsc(json_all[i],qid,eleid);
         }
         qid++;
+        l.push(json_all[i].qno);
     }
+    return l;
 }
 
 function load_qa(json,qid,eleid){
@@ -178,6 +204,13 @@ function load_qsc(json,qid,eleid) {
         new_choice.value = json.choice[i];
         new_choice.innerHTML = json.choice[i];
         choice_ele.appendChild(new_choice);
+    }
+    if(json.input_type == "single"){
+        ele.getElementsByClassName("help-block")[0].innerHTML = "这是单选题"
+    }
+    else if(json.input_type == "multiple") {
+        ele.getElementsByClassName("help-block")[0].innerHTML = "这是多选题";
+        ele.getElementsByClassName("span12 select")[0].multiple = "multiple";
     }
     par.appendChild(ele);
 }
