@@ -218,6 +218,8 @@ def load_questions(sno):
     sq = SurveyQuestions()
     cursor.execute("SELECT QNO,TITLE,SUPPLEMENT,SUPPLEMENT_TYPE,TYPE FROM QUESTION WHERE SNO = %d ORDER BY SNO" % sno)
     tups = cursor.fetchall()
+    if not tups:
+        return None
     for tup in tups:
         tup2 = []
         if tup[4].startswith("qsc"):

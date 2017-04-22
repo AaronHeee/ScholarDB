@@ -11,7 +11,7 @@ def scale_db_username(uno, usertype):
 
 def get_basic_from_session(request):
     login_user = request.session.get("username", "")
-    uno = request.session.get("uno", 0)
+    uno = int(request.session.get("uno", 0))
     pwd = request.session.get("pwd", "")
     usertype = request.session.get("usertype", "")
     return login_user,uno,pwd,usertype
@@ -61,6 +61,8 @@ def view_questions(request):
             return HttpResponse("Survey error")
         if "load" in request.GET.keys() and request.GET["load"] == 'true':
             sq = load_questions(sno)
+            if sq == None:
+                return HttpResponse("Survey not exists")
             return JsonResponse(sq.question_list,safe =False)
         if "check" in request.GET.keys() and request.GET["check"] == 'true':
             json ={}
@@ -77,7 +79,31 @@ def view_questions(request):
         sa.add_to_db()
         return HttpResponse("Success")
 
-def complete_survey(request):
-    login_user = request.session.get("username", "")
-    if login_user == '':
-        return HttpResponseRedirect("/users/login/")
+def manage_survey(request):
+    login_user, uno, pwd, usertype = get_basic_from_session(request)
+    if request.method == 'GET':
+        sno = request.GET.get("sno",-1)
+        sno = int(sno)
+        if sno == -1:
+            return HttpResponse("Survey error")
+        #check authorization
+        if not check_authorization(uno,sno,['OWNER']):
+            return HttpResponse("You have no access for view pending answers in this survey")
+        if "load_contributor" in request.GET.keys():
+            json = load_contributor(sno)
+            print json
+            return JsonResponse(json,safe = False)
+        if "load_by_user" in request.GET.keys():
+            sa = SurveyAnswer()
+            json = sa.to_json_list_by_user(sno)
+            print json
+            return JsonResponse(json,safe=False)
+        if "load_summary" in request.GET.keys():
+            json = load_summary_management(sno)
+            print json
+            return JsonResponse(json,safe=False)
+        if "delete_id" in request.GET.keys():
+            tuno =  int(request.GET['delete_id'][1:])
+            delete_answer(tuno,sno)
+            return HttpResponse("Success")
+        return render(request,'manage_survey.html',{'username':login_user,'sno':sno})

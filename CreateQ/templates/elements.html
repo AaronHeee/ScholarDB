@@ -136,5 +136,30 @@
             </select>
         </div>
     </div>
+</div>
 
+<div class = "accordion">
+<div id="accordion" class="accordion-group">
+    <div class="accordion-heading">
+      <a class="accordion-toggle" data-toggle="collapse" name="" onclick="var dest = this.name;$('#'+dest).collapse('toggle')" >
+        用户
+      </a>
+    </div>
+    <div id="" class="accordion-body collapse in">
+      <div class="accordion-inner">
+            <ul class="list-group">
+
+            </ul>
+          <button class = "btn btn-danger" onclick="
+            var par = this.parentNode.parentNode;
+            var id = par.id;
+            $.get('{% url 'manage' %}',{'sno':sno,'delete_id':id},function(res){});
+            this.disabled = 'disabled';
+            this.innerHTML = '已删除';
+            ">
+            删除
+          </button>
+      </div>
+    </div>
+</div>
 </div>

@@ -215,3 +215,23 @@ function load_qsc(json,qid,eleid) {
     par.appendChild(ele);
 }
 
+function answer_group_by_user(parid,sno,json_list) {
+    var par = document.getElementById(parid);
+    for(var i =0;i<json_list.length;++i) {
+        var uno = json_list[i].uno;
+        var ele = document.getElementById("accordion").cloneNode(true);
+        ele.getElementsByClassName("accordion-body collapse in");
+        ele.getElementsByClassName("accordion-body collapse in")[0].id = 'u'+ uno;
+        ele.getElementsByClassName("accordion-toggle")[0].name =  ele.getElementsByClassName("accordion-body collapse in")[0].id = 'u'+ uno;
+        ele.getElementsByClassName("accordion-toggle")[0].innerHTML = "用户#"+String(uno) + "于" + String(json_list[i].submit_time);
+        var list_ele = ele.getElementsByClassName("list-group")[0];
+        for(var q in json_list[i].qa){
+            list_ele.innerHTML += "<li>{0}:{1}</li>".format(q,json_list[i].qa[q]);
+        }
+        list_ele.innerHTML += "<li>回答耗时：" + json_list[i].time_consumed + "</li>";
+        var inner_ele = ele.getElementsByClassName("accordion-inner")[0];
+
+        par.appendChild(ele);
+    }
+}
+

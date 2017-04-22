@@ -1,11 +1,19 @@
+# encoding=utf-8
 from sqls import SurveyQuestions
 from common_file import *
 import time
 import copy
 
+def tup_to_dict(key_list,res_tup):
+    xref = {}
+    for i,key in enumerate(key_list):
+        xref[key] = res_tup[i]
+    return xref
+
 class SurveyAnswer:
     def __init__(self):
         self.answer_list = []
+        self.qa_dict= {}
         self.consumed_time = 0
         self.status = ""
         self.submit_time = -1
@@ -38,16 +46,104 @@ class SurveyAnswer:
                     self.answer_list.append(copy.deepcopy(t))
             print self.answer_list
             i += 1
+
     def add_to_db(self):
         db = connect_db()
         cursor = db.cursor()
+        uno_hist = []
         for ans in self.answer_list:
             sql = "INSERT INTO ANSWER(UNO,QNO,VALUE) VALUES (%d,%d,'%s')" % \
                   (ans.uno,ans.qno,ans.value)
             cursor.execute(sql)
-            sql = "INSERT INTO PARTICIPATION(UNO,SNO,SUBMIT_TIME,TIME_CONSUMED) VALUES(%d,%d,'%s',%d)" % \
-                  (ans.uno,self.sno,self.submit_time,self.consumed_time)
-            cursor.execute(sql)
+            if ans.uno not in uno_hist:
+                sql = "INSERT INTO PARTICIPATION(UNO,SNO,SUBMIT_TIME,TIME_CONSUMED) VALUES(%d,%d,'%s',%d)" % \
+                      (ans.uno, self.sno, self.submit_time, self.consumed_time)
+                cursor.execute(sql)
+                uno_hist.append(ans.uno)
         db.commit()
 
+    def to_json_list_by_user(self,sno):
+        json_list = []
+        db = connect_db()
+        cursor = db.cursor()
+        #参与调研的人
+        #需要的隐私到时候给予显示
+        sql = "SELECT DISTINCT USERINFO.UNO,UNAME,GENDER,AGE,NATION,CITY FROM USERINFO,PARTICIPATION WHERE SNO = %d AND USERINFO.UNO = PARTICIPATION.UNO" % sno
+        cursor.execute(sql)
+        users = cursor.fetchall()
+        cursor.execute("SELECT WHAT FROM PRIVACY WHERE SNO = %d" % sno)
+        privacy = cursor.fetchall()
+        #Q.A. --> JSON
+        for tup in users:
+            json = {}
+            json['qa'] = {}
+            uno = tup[0]
+            sql = "SELECT TITLE,VALUE FROM QUESTION,ANSWER WHERE QUESTION.QNO = ANSWER.QNO AND UNO = %d AND SNO = %d" % (uno,sno)
+            cursor.execute(sql)
+            qas = cursor.fetchall()
+            sql = "SELECT SNO,SUBMIT_TIME,TIME_CONSUMED,STATUS FROM PARTICIPATION WHERE PARTICIPATION.UNO = %d AND SNO = %d" %(uno,sno)
+            cursor.execute(sql)
+            info = cursor.fetchall()
+            if info[3] == 'DELETED':
+                continue
+            for qa in qas:
+                if qa[0] in json['qa'].keys():
+                    json['qa'][qa[0]] += ';'+qa[1]
+                else:
+                    json['qa'][qa[0]] = qa[1]
+            json['submit_time'] = info[0][1]
+            json['time_consumed'] = info[0][2]
+            user_info_dict = tup_to_dict(['UNO', 'UNAME', 'GENDER', 'AGE', 'NATION', 'CITY'], tup)
+            #mask privacies
+            translation_dict = {"真实姓名":"UNAME","性别":"GENDER","年龄":"AGE","国家":"NATION","城市":"CITY"}
+            available_privacy = [translation_dict[i[0]] for i in privacy if i in translation_dict.keys()]
+            for key in user_info_dict.keys():
+                if key not in available_privacy:
+                    user_info_dict.pop(key)
+            json['privacy'] = user_info_dict
+            json['uno'] = uno
+            json_list.append(json)
+
+
+        return json_list
+
+def check_authorization(uno,sno,access_list):
+    db = connect_db()
+    cursor = db.cursor()
+    for access in access_list:
+        cursor.execute("SELECT * FROM SCHOLAR_OWN_SURVEY WHERE ACCESS = '%s' AND UNO = %d AND SNO = %d" % (access,uno,sno))
+        if cursor.fetchone:
+            return True
+    return False
+
+def load_contributor(sno):
+    json = {'contributor':[],'contributor_cnt':0}
+    db = connect_db()
+    cursor = db.cursor()
+    cursor.execute(
+        "SELECT USERINFO.UNO,UNAME,INST FROM USERINFO,SCHOLAR,SCHOLAR_OWN_SURVEY WHERE USERINFO.UNO = SCHOLAR.UNO AND USERINFO.UNO = SCHOLAR_OWN_SURVEY.UNO AND SNO = %d" % sno)
+    # Cooperator --> JSON
+    tups = cursor.fetchall()
+    for tup in tups:
+        tjson = {'uno':tup[0],'uname':tup[1],'inst':tup[2]}
+        json['contributor'].append(tjson)
+        json['contributor_cnt'] += 1
+    return json
+
+def load_summary_management(sno):
+    json = {'answer_cnt':0,'stage':''}
+    db = connect_db()
+    cursor = db.cursor()
+    cursor.execute("SELECT COUNT(DISTINCT UNO) FROM PARTICIPATION WHERE SNO = %d" % sno)
+    json['answer_cnt'] = cursor.fetchone()[0]
+    cursor.execute("SELECT STAGE FROM SURVEY WHERE SNO = %d" % sno)
+    json['stage'] = cursor.fetchone()[0]
+    return json
+
+def delete_answer(uno,sno):
+    db = connect_db()
+    cursor = db.cursor()
+    cursor.execute("DELETE FROM ANSWER WHERE UNO = %d AND QNO IN (SELECT QNO FROM QUESTION WHERE SNO = %d)" % (uno,sno))
+    cursor.execute("UPDATE PARTICIPATION SET STATUS = 'DELETED' WHERE UNO = %d AND SNO = %d" % (uno,sno))
+    db.commit()
 
