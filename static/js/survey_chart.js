@@ -37,6 +37,29 @@ var inputtype = new Array(100);
 for(i = 0;i<100;++i)
     inputtype[i]="text";
 
+function get_mult_choice(id)
+{
+    var str = "";
+    var o = document.getElementById(id);
+    for(i=0;i<o.length;i++){
+        if(o.options[i].selected){
+            str+=o.options[i].value+",";
+        }
+    }
+    return str;
+}
+
+function get_mult_choice_list(o)
+{
+    var l = [];
+    for(var i = 0;i<o.childNodes.length;++i){
+        if(o.childNodes[i].selected == true){
+            l.push(o.childNodes[i].value);
+        }
+    }
+    return l;
+}
+
 function add_qa(parent,qid){
     var qaele = document.getElementById("qa-ele");
     var ele = qaele.cloneNode(true);
@@ -222,6 +245,7 @@ function clear_list_item(parid){
 }
 
 function load_questions(json_all,qid,eleid) {
+    var l = [];
     for(var i = 0;i<json_all.length;++i) {
         if(json_all[i].type == "qa"){
             load_qa(json_all[i],qid,eleid);
@@ -230,7 +254,9 @@ function load_questions(json_all,qid,eleid) {
             load_qsc(json_all[i],qid,eleid);
         }
         qid++;
+        l.push(json_all[i].qno);
     }
+    return l;
 }
 
 function load_qa(json,qid,eleid){
@@ -272,6 +298,33 @@ function load_qsc(json,qid,eleid) {
         new_choice.innerHTML = json.choice[i];
         choice_ele.appendChild(new_choice);
     }
+    if(json.input_type == "single"){
+        ele.getElementsByClassName("help-block")[0].innerHTML = "这是单选题"
+    }
+    else if(json.input_type == "multiple") {
+        ele.getElementsByClassName("help-block")[0].innerHTML = "这是多选题";
+        ele.getElementsByClassName("span12 select")[0].multiple = "multiple";
+    }
     par.appendChild(ele);
+}
+
+function answer_group_by_user(parid,sno,json_list) {
+    var par = document.getElementById(parid);
+    for(var i =0;i<json_list.length;++i) {
+        var uno = json_list[i].uno;
+        var ele = document.getElementById("accordion").cloneNode(true);
+        ele.getElementsByClassName("accordion-body collapse in");
+        ele.getElementsByClassName("accordion-body collapse in")[0].id = 'u'+ uno;
+        ele.getElementsByClassName("accordion-toggle")[0].name =  ele.getElementsByClassName("accordion-body collapse in")[0].id = 'u'+ uno;
+        ele.getElementsByClassName("accordion-toggle")[0].innerHTML = "用户#"+String(uno) + "于" + String(json_list[i].submit_time);
+        var list_ele = ele.getElementsByClassName("list-group")[0];
+        for(var q in json_list[i].qa){
+            list_ele.innerHTML += "<li>{0}:{1}</li>".format(q,json_list[i].qa[q]);
+        }
+        list_ele.innerHTML += "<li>回答耗时：" + json_list[i].time_consumed + "</li>";
+        var inner_ele = ele.getElementsByClassName("accordion-inner")[0];
+
+        par.appendChild(ele);
+    }
 }
 

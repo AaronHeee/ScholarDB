@@ -124,8 +124,10 @@
                                                         <option />
                                                         <option value="真实姓名"/>真实姓名
                                                         <option value="年龄"/>年龄
-                                                        <option value="性别" selected=""/>性别
-                                                        <option value="工作" selected=""/>工作
+                                                        <option value="性别" selected=""/>
+                                                        <option value="工作" selected=""/>
+                                                        <option value="国家" selected=""/>国家
+                                                        <option value="城市" selected=""/>城市
                                                     </select>
                                                     <p class="help-block">志愿者填写问卷说明同意共享这些个人信息，学者可以直接读取</p>
                                                 </div>
@@ -228,8 +230,6 @@
     <script src="{% static "js/bootstrap-wysihtml5-0.0.2.js"%}"></script>
     <script src="{% static "js/jquery.uniform.min.js"%}"></script>
     <script src="{% static "js/select2.min.js"%}"></script>
-    <script src="{% static "js/theme.js"%}"></script>
-
         <!-- call this page plugins -->
 
     <script src = "{% static "js/survey_chart.js" %}"></script>
@@ -238,17 +238,7 @@
         var qid = 1;
         var JSONstep1,JSONstep2;
         var JSONstep3 = "{";
-        function get_mult_choice(id)
-        {
-            var str = "";
-            var o = document.getElementById(id);
-            for(i=0;i<o.length;i++){
-                if(o.options[i].selected){
-                    str+=o.options[i].value+",";
-                }
-            }
-            return str;
-        }
+
         function step1()
         {
             JSONstep1 ={
