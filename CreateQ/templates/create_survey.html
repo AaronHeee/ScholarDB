@@ -47,8 +47,8 @@
         <!-- settings changer -->
         <div class="container-fluid">
             <div id="pad-wrapper" class="new-user">
-                <div class="row-fluid header">
-                    <h3>创建调研</h3>
+                 <div class="row-fluid header" style="margin-left:20px;margin-bottom: 20px;">
+                        <h1 class="icon-check"> 创建调研</h1>
                 </div>
 
                 <div class="row-fluid form-wrapper">
@@ -345,7 +345,7 @@
         function post_json()
         {
             $.post("/project/new_survey/",{"JSON1":JSONstep1,"JSON2":JSONstep2,"JSON3":JSONstep3});
-            window.location="/project/list_survey/";
+            window.location="/project/scholar_list/";
         }
     </script>
 

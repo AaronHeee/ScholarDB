@@ -30,6 +30,12 @@ alter table SCHOLAR convert to character set utf8;
 insert into SCHOLAR(UNO,TYPE,INST,RATE)
 VALUES (1000,'Student','复旦大学',1);
 
+insert into USERINFO(UNO,UNAME,MAIL,AGE,USERTYPE,GENDER,NATION,CITY,MONEY,PWD)
+values (1001,'何占魁','15307130175@fudan.edu.cn',19,'Scholar','Male','中国','上海',500,'123456');
+alter table SCHOLAR convert to character set utf8;
+insert into SCHOLAR(UNO,TYPE,INST,RATE)
+VALUES (1001,'Student','复旦大学',1);
+
 create table VOLUNTEER(
     UNO INTEGER PRIMARY KEY,
     CRED SMALLINT,

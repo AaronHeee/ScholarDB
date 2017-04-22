@@ -4,6 +4,9 @@ from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 # Create your views here.
 import os
 from sqls import *
+from sqls_list import *
+from sqls_scholar_list import *
+from files import *
 
 
 def scale_db_username(uno, usertype):
@@ -11,7 +14,6 @@ def scale_db_username(uno, usertype):
 
 def get_basic_from_session(request):
     login_user = request.session.get("username", "")
-    login_user = "金熙森"
     uno = request.session.get("uno", 0)
     pwd = request.session.get("pwd", "")
     usertype = request.session.get("usertype", "")
@@ -34,7 +36,7 @@ def new_survey(request):
         survey_questions = SurveyQuestions()
         survey_questions.parse(request.POST)
         add_survey_to_db(survey_title, survey_detail, survey_questions, user='scholar_%d' % uno, pwd=pwd)
-        return render(request, 'create_survey.html', {"username": login_user})
+        return render(request, 'scholar_list.html', {"username": login_user})
     else:
         return render(request, 'create_survey.html', {"username": login_user})
 
@@ -60,64 +62,40 @@ def view_questions(request):
             return JsonResponse(json,safe = False)
         return render(request,'view_questions.html',{'username':login_user,'sno':sno})
 
+def view_files(request):
+    return render(request,'view_files.html')
+
 def complete_survey(request):
     login_user = request.session.get("username", "")
     if login_user == '':
         return HttpResponseRedirect("/users/login/")
-
-def list_survey(request):
-    login_user, uno, pwd, usertype = get_basic_from_session(request)
-    if "load" in request.GET.keys() and request.GET["load"] == 'true':
-        title = request.GET.get("title", None)
-        subject = request.GET.get("subject", None).split(' ')
-        order = request.GET.get("order", None)
-        res = get_survey_from_db(title=title, subject=subject, order=order, user=scale_db_username(uno, usertype),
-                                     pwd=pwd)
-        print res
-        return JsonResponse(res, safe=False)
-
-    return render(request, 'list_survey.html', {"username": login_user})
 
 # for new_task
 def upload_data(request,name):
     myFile = request.FILES.get(name, None)  # 获取上传的文件，如果没有文件，则默认为None
     if not myFile:
         print "No file upload!"
-    destination = open(os.path.join("/home/aaron/Desktop/receiver",name+"/"+myFile.name), 'wb+')  # 打开特定的文件进行二进制的写操作
+    destination = open(os.path.join("/home/aaron/Desktop/receiver",name,myFile.name), 'wb+')  # 打开特定的文件进行二进制的写操作
     for chunk in myFile.chunks():  # 分块写入文件
         destination.write(chunk)
     destination.close()
     print "upload over!"
-    return os.path.join("/home/aaron/Desktop/receiver",name+"/"+myFile.name)
-
-def upload_file(request):
-    if request.method == "POST":  # 请求方法为POST时，进行处理
-        print request.FILES
-        myFile =request.FILES.get("rawdata", None)    # 获取上传的文件，如果没有文件，则默认为None
-        if not myFile:
-            return render(request, 'test.html')
-        destination = open(os.path.join("/home/aaron/Desktop",myFile.name),'wb+')    # 打开特定的文件进行二进制的写操作
-        for chunk in myFile.chunks():      # 分块写入文件
-            destination.write(chunk)
-        destination.close()
-        return render(request, 'test.html')
-    else:
-        return render(request, 'test.html')
+    return [os.path.join("/home/aaron/Desktop/receiver",name),myFile.name]
 
 def new_task(request):
     login_user = request.session.get("username", "")
-    login_user = "金熙森"
     if login_user == '':
         return HttpResponse("Forbidden")
     if request.method == "POST":
-        print request.FILES
-        rawdata = upload_data(request,"rawdata")
-        example = upload_data(request,"example")
+        rawdata_path = upload_data(request,"rawdata")
+        name = rawdata_path[1]
+        num,datatype_suffix = divide_file(rawdata_path)
+        example_path = upload_data(request,"example")
+        datatype = get_datatype(datatype_suffix)
         # 解析
         taskinfo = TaskInfo()
-        print request.POST
-        taskinfo.parse(request.POST, rawdata, example, login_user, time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()))
-        add_task_to_db(taskinfo)
+        taskinfo.parse(request.POST, os.path.join(rawdata_path[0],rawdata_path[1]), os.path.join(example_path[0],example_path[1]), login_user, time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()))
+        add_task_to_db(taskinfo,name,num,datatype)
         return render(request, 'create_task.html', {"username": login_user})
     else:
         print request.method
@@ -130,57 +108,50 @@ def list(request):
     login_user, uno, pwd, usertype = get_basic_from_session(request)
 
     if "load" in request.GET.keys() and request.GET["load"] == 'true':
-        title = request.GET.get("title", None)
         subject = request.GET.get("subject", None).split(' ')
-        order = request.GET.get("order",None)
-
-        print order
-
-        res = get_list_from_db(title=title, subject=subject, order=order, user=scale_db_username(uno, usertype),
-                                 pwd=pwd)
-
-        return JsonResponse(res, safe=False)
-
-    if "reorder" in request.GET.keys() and request.GET["reorder"] == 'true':
-        order = request.GET.get("order",None)
-        res = order_list(order=order, user=scale_db_username(uno, usertype),pwd=pwd)
-        print res
-        return JsonResponse(res, safe=False)
-
-    if "resubject" in request.GET.keys() and request.GET["resubject"] == 'true':
-        order = request.GET.get("order", None)
-        subject = request.GET.get("subject", None).split(' ')
-        res = subject_list(subject=subject,order=order,user=scale_db_username(uno, usertype), pwd=pwd)
-        return JsonResponse(res, safe=False)
-
-    if "redatatype" in request.GET.keys() and request.GET["redatatype"] == 'true':
-        order = request.GET.get("order", None)
         datatype = request.GET.get("datatype", None)
-        res = datatype_list(datatype=datatype, order=order,user=scale_db_username(uno, usertype), pwd=pwd)
-        print res
-        return JsonResponse(res, safe=False)
-
-    if "retype" in request.GET.keys() and request.GET["retype"] == 'true':
-        order = request.GET.get("order", None)
-        type = request.GET.get("type", None)
-        res = type_list(type=type, order=order, user=scale_db_username(uno, usertype), pwd=pwd)
-        print res
+        print "datatype:",datatype
+        order = request.GET.get("order",None)
+        type = request.GET.get("type",None)
+        print order
+        res = get_list_from_db(subject=subject,datatype=datatype,type=type, order=order, user=scale_db_username(uno, usertype),pwd=pwd)
         return JsonResponse(res, safe=False)
 
     if "search" in request.GET.keys() and request.GET["search"] == 'true':
+        subject = request.GET.get("subject", None).split(' ')
+        datatype = request.GET.get("datatype", None)
+        type = request.GET.get("type",None)
         order = request.GET.get("order", None)
         pattern = request.GET.get("pattern",None)
         isDesc = request.GET.get("isDesc",None)
-        res = search(pattern=pattern, order=order, isDesc=isDesc, user=scale_db_username(uno, usertype), pwd=pwd)
+        res = search(subject=subject, datatype=datatype, type=type, pattern=pattern, order=order, isDesc=isDesc, user=scale_db_username(uno, usertype), pwd=pwd)
         print res
         return JsonResponse(res, safe=False)
 
     return render(request, 'list.html', {"username": login_user})
 
+def scholar_list(request):
+    login_user, uno, pwd, usertype = get_basic_from_session(request)
 
+    if "load" in request.GET.keys() and request.GET["load"] == 'true':
+        subject = request.GET.get("subject", None).split(' ')
+        datatype = request.GET.get("datatype", None)
+        print "datatype:",datatype
+        order = request.GET.get("order",None)
+        type = request.GET.get("type",None)
+        print order
+        res = get_scholar_list_from_db(uno=uno, subject=subject,datatype=datatype,type=type, order=order, user=scale_db_username(uno, usertype),pwd=pwd)
+        return JsonResponse(res, safe=False)
 
+    if "search" in request.GET.keys() and request.GET["search"] == 'true':
+        subject = request.GET.get("subject", None).split(' ')
+        datatype = request.GET.get("datatype", None)
+        type = request.GET.get("type",None)
+        order = request.GET.get("order", None)
+        pattern = request.GET.get("pattern",None)
+        isDesc = request.GET.get("isDesc",None)
+        res = search(uno=uno, subject=subject, datatype=datatype, type=type, pattern=pattern, order=order, isDesc=isDesc, user=scale_db_username(uno, usertype), pwd=pwd)
+        print res
+        return JsonResponse(res, safe=False)
 
-
-
-
-
+    return render(request, 'scholar_list.html', {"username": login_user})

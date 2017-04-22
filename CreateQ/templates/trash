@@ -1,0 +1,139 @@
+
+    # if "reorder" in request.GET.keys() and request.GET["reorder"] == 'true':
+    #     order = request.GET.get("order",None)
+    #     res = order_list(order=order, user=scale_db_username(uno, usertype),pwd=pwd)
+    #     print res
+    #     return JsonResponse(res, safe=False)
+    #
+    # if "resubject" in request.GET.keys() and request.GET["resubject"] == 'true':
+    #     order = request.GET.get("order", None)
+    #     subject = request.GET.get("subject", None).split(' ')
+    #     res = subject_list(subject=subject,order=order,user=scale_db_username(uno, usertype), pwd=pwd)
+    #     return JsonResponse(res, safe=False)
+    #
+    # if "redatatype" in request.GET.keys() and request.GET["redatatype"] == 'true':
+    #     order = request.GET.get("order", None)
+    #     datatype = request.GET.get("datatype", None)
+    #     res = datatype_list(datatype=datatype, order=order,user=scale_db_username(uno, usertype), pwd=pwd)
+    #     print res
+    #     return JsonResponse(res, safe=False)
+    #
+
+
+
+
+    # def order_list(order=None, user='root',pwd=123456):
+#     db = connect_db()
+#     cursor = db.cursor()
+#
+#     sql = "SELECT TYPE,NO,TITLE,DESCRIPTION,PAYMENT,OPENTIME FROM LIST ORDER BY " + order
+#     cursor.execute(sql)
+#
+#     list_res = cursor.fetchall()
+#     res = load_json(list_res)
+#
+#     db.close()
+#
+#     return res
+#
+# def subject_list(subject=None,order=None,user='root',pwd=123456):
+#     db = connect_db()
+#     cursor = db.cursor()
+#
+#     sql = "DELETE FROM LIST WHERE TYPE='SURVEY' AND ( "
+#     condition = []
+#     for sub in subject:
+#         if sub == '' or sub == ' ':
+#             continue
+#         condition.append("NO NOT IN (SELECT SNO FROM SURVEY_SUBJECT WHERE WHAT = '%s')" % sub)
+#     sql += ' OR '.join(condition)
+#     sql += ")"
+#
+#     cursor.execute(sql)
+#     sql = "SELECT TYPE,NO,TITLE,DESCRIPTION,PAYMENT,OPENTIME FROM LIST ORDER BY " + order
+#     cursor.execute(sql)
+#
+#     list_res = cursor.fetchall()
+#     res = load_json(list_res)
+#
+#     db.commit()
+#     db.close()
+#
+#     return res
+#
+#
+# def datatype_list(datatype=None, order=None,user='root', pwd=123456):
+#     db = connect_db()
+#     cursor = db.cursor()
+#
+#     sql = "DELETE FROM LIST WHERE TYPE='TASK' AND "
+#     sql += "NO NOT IN (SELECT TNO FROM TASK_WITH_FILE,FILE WHERE FILE.FNO = TASK_WITH_FILE.FNO AND DATATYPE = '%s')" % datatype
+#
+#     cursor.execute(sql)
+#     sql = "SELECT TYPE,NO,TITLE,DESCRIPTION,PAYMENT,OPENTIME FROM LIST ORDER BY " + order
+#     cursor.execute(sql)
+#
+#     list_res = cursor.fetchall()
+#     res = load_json(list_res)
+#
+#     db.commit()
+#     db.close()
+#
+#     return res
+
+
+# def get_scholar_list_from_db(uno=None, subject=None, datatype=None, type=None,order=None, user='root', pwd='123456'):
+#     db = connect_db()
+#     cursor = db.cursor()
+#
+#     print "!!!!!!!!!!"
+#
+#     cursor.execute("SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = 'ScholarDB' AND table_name = 'LIST' ")
+#     l = cursor.fetchall();
+#     print l
+#     if(l[0][0]==1):
+#         cursor.execute("DROP TABLE LIST")
+#
+#     sql = """CREATE TABLE LIST (
+#                 LNO INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT,
+#                 NO INTEGER,
+#                 TYPE VARCHAR(20),
+#                 TITLE VARCHAR(200) NOT NULL,
+#                 DESCRIPTION VARCHAR(200) NOT NULL,
+#                 PAYMENT INTEGER NOT NULL,
+#                 OPENTIME DATETIME NOT NULL
+#                 )"""
+#
+#     cursor.execute(sql)
+#     cursor.execute("alter table LIST convert to character set utf8;")
+#
+#     print "!!!!!!!!!!!"
+#     print uno
+#
+#     if type == 'SURVEY' or type == 'BOTH':
+#         sql_survey = add_survey_to_list(subject,user,pwd)
+#         sql = "INSERT INTO LIST(NO,TITLE,OPENTIME,PAYMENT,DESCRIPTION)" + sql_survey + "WHERE SNO IN (SELECT SNO FROM SCHOLAR_OWN_SURVEY WHERE UNO = %d)" % uno
+#         cursor.execute(sql)
+#         cursor.execute("UPDATE LIST SET TYPE='SURVEY'")
+#
+#     if type == 'TASK' or type == 'BOTH':
+#         sql_task = add_task_to_list(datatype,user,pwd)
+#         sql = "INSERT INTO LIST(NO,TITLE,OPENTIME,PAYMENT,DESCRIPTION)" + sql_task
+#         sql += "AND WHERE TASK.TNO IN (SELECT TNO FROM SCHOLAR_OWN_TASK WHERE UNO=%d)" % uno
+#         cursor.execute(sql)
+#
+#     cursor.execute("UPDATE LIST SET TYPE='TASK' WHERE TYPE IS NULL")
+#
+#     sql = "SELECT TYPE,NO,TITLE,DESCRIPTION,PAYMENT,OPENTIME FROM LIST ORDER BY " + order
+#     cursor.execute(sql)
+#
+#     list_res = cursor.fetchall()
+#
+#     print list_res
+#
+#     res = load_json(list_res)
+#
+#     db.commit()
+#     db.close()
+#
+#     return res

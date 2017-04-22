@@ -18,7 +18,6 @@ class SurveyTitle:
         self.description = post['JSON1[description]']
         self.subject = post['JSON1[subject]'][:-1].split(',')
 
-
 class SurveyDetail:
     def __init__(self):
         self.min_age = 0
@@ -131,8 +130,8 @@ def add_survey_to_db(title, detail, questions, user='root', pwd='dbpjdbpj'):
     cursor = db.cursor()
     # title
 
-    sql = "INSERT INTO SURVEY(SNO,TITLE,DESCRIPTION,MINAGE,MAXAGE,GENDER_RESTRICT,SURVEY_RESTRICT,PAYMENT,STAGE,OPENTIME) VALUES" \
-          "(NULL,'%s','%s',%d,%d,'%s','%s',%d,'OPEN','%s')" % (
+    sql = "INSERT INTO SURVEY(SNO,TITLE,DESCRIPTION,MINAGE,MAXAGE,GENDER_RESTRICT,SURVEY_RESTRICT,PAYMENT,STAGE,OPENTIME,TYPE) VALUES" \
+          "(NULL,'%s','%s',%d,%d,'%s','%s',%d,'OPEN','%s','SURVEY')" % (
           title.title, title.description, detail.min_age, detail.max_age,
           detail.gender_restrict, detail.survey_restrict, detail.payment, detail.opentime)
     cursor.execute(sql)
@@ -165,68 +164,6 @@ def add_survey_to_db(title, detail, questions, user='root', pwd='dbpjdbpj'):
     db.commit()
     db.close()
 
-
-def get_survey_from_db(title=None, subject=None, order=None, user='root', pwd='dbpjdbpj'):
-    db = connect_db()
-    cursor = db.cursor()
-
-
-    sql = """CREATE TEMPORARY TABLE LIST (
-                LNO INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT,
-                SNO INTEGER,
-                TNO INTEGER,
-                TITLE VARCHAR(200) NOT NULL,
-                DESCRIPTION VARCHAR(200) NOT NULL,
-                PAYMENT INTEGER NOT NULL,
-                OPENTIME DATETIME NOT NULL,
-                MINAGE SMALLINT,
-                MAXAGE SMALLINT,
-                GENDER_RESTRICT VARCHAR(45),
-                SURVEY_RESTRICT VARCHAR(45) 
-                )"""
-    cursor.execute(sql)
-    cursor.execute("alter table LIST convert to character set utf8;")
-
-
-    sql = "SELECT SNO,TITLE,MINAGE,MAXAGE,GENDER_RESTRICT,SURVEY_RESTRICT,OPENTIME,PAYMENT,DESCRIPTION FROM SURVEY "
-    condition = []
-    if title != None and title != '':
-        condition.append("TITLE LIKE '%" + title + "%'")
-    if subject != [None] and subject != [''] and subject != []:
-        for sub in subject:
-            if sub == '' or sub == ' ':
-                continue
-            condition.append("SNO IN (SELECT SNO FROM SURVEY_SUBJECT WHERE WHAT = '%s')" % sub)
-    if condition != None and condition != []:
-        sql += ' WHERE '
-        sql += ' AND '.join(condition)
-    if order == None:
-        order = 'SNO DESC'
-    sql += ' ORDER BY %s' % (order)
-    cursor.execute(sql)
-    sql_res = cursor.fetchall()
-
-    sql = "INSERT INTO LIST(SNO,TITLE,MINAGE,MAXAGE,GENDER_RESTRICT,SURVEY_RESTRICT,OPENTIME,PAYMENT,DESCRIPTION)" + sql
-    cursor.execute(sql)
-
-    cursor.execute("SELECT * FROM LIST")
-    sql_list = cursor.fetchall()
-    print "==============\n"
-    print sql_list
-
-    res = []
-    for tup in sql_res:
-        dict = {"sno": tup[0], "title": tup[1], "min_age": tup[2], "max_age": tup[3], "gender_restrict": tup[4],
-                "survey_restrict": tup[5], "opentime": tup[6], "payment": tup[7], "description": tup[8]}
-        sql = "SELECT WHAT FROM SURVEY_SUBJECT WHERE SNO = %d" % tup[0]
-        cursor.execute(sql)
-        l = cursor.fetchall()
-        dict["subject1"] = l[0][0] if len(l) >= 1 else ""
-        dict["subject2"] = l[1][0] if len(l) >= 2 else ""
-        dict["subject3"] = l[2][0] if len(l) >= 3 else ""
-        res.append(dict)
-    db.close()
-    return res
 
 def check_legibility(sno,uno):
     # whether volunteer meets requirements
@@ -308,15 +245,16 @@ class TaskInfo:
         self.opentime = time
 
 
-def add_task_to_db(task):
+def add_task_to_db(task=None,name=None,num=None,datatype=None):
     db = connect_db()
     cursor = db.cursor()
 
     print task.payment
 
-    sql = "INSERT INTO TASK(TITLE,DESCRIPTION,OPENTIME,DEADLINE,PAYMENT) VALUES\
-          ('%s','%s','%s','%s','%s')" % \
+    sql = "INSERT INTO TASK(TITLE,DESCRIPTION,OPENTIME,DEADLINE,PAYMENT,TYPE) VALUES\
+          ('%s','%s','%s','%s','%s','TASK')" % \
           (task.title,task.description,task.opentime,task.deadline,task.payment)
+    print "sql:",sql
     cursor.execute(sql)
 
     cursor.execute("SELECT MAX(TNO) FROM TASK")
@@ -328,8 +266,8 @@ def add_task_to_db(task):
     sql = "INSERT INTO SCHOLAR_OWN_TASK(UNO,TNO,ACCESS) VALUES(%d,%d,'owner')" % (uno,tno)
     cursor.execute(sql)
 
-    sql = "INSERT INTO FILE(RAWDATA,EXAMPLE,NUM,NOW) VALUES " \
-          "('%s','%s', 100, 0)" % (task.rawdata, task.example)
+    sql = "INSERT INTO FILE(FNAME,RAWDATA,EXAMPLE,DATATYPE,NUM,NOW) VALUES " \
+          "('%s', '%s','%s','%s', %d, 0)" % (name,task.rawdata, task.example,datatype,num)
     cursor.execute(sql)
     cursor.execute("SELECT MAX(FNO) FROM FILE")
     fno = cursor.fetchone()[0]
@@ -339,224 +277,4 @@ def add_task_to_db(task):
 
     db.commit()
     db.close()
-
-
-def add_survey_to_list(title=None, subject=None, user='root', pwd='dbpjdbpj'):
-    db = connect_db()
-    cursor = db.cursor()
-
-    sql = "SELECT SNO,TITLE,OPENTIME,PAYMENT,DESCRIPTION FROM SURVEY "
-    condition = []
-    if title != None and title != '':
-        condition.append("TITLE LIKE '%" + title + "%'")
-    if subject != [None] and subject != [''] and subject != []:
-        for sub in subject:
-            if sub == '' or sub == ' ':
-                continue
-            condition.append("SNO IN (SELECT SNO FROM SURVEY_SUBJECT WHERE WHAT = '%s')" % sub)
-    if condition != None and condition != []:
-        sql += ' WHERE '
-        sql += ' AND '.join(condition)
-
-    return sql
-
-def add_task_to_list(user='root', pwd='dbpjdbpj'):
-    db = connect_db()
-    cursor = db.cursor()
-
-    sql = "SELECT TNO,TITLE,OPENTIME,PAYMENT,DESCRIPTION FROM TASK "
-    condition = []
-    if condition != None and condition != []:
-        sql += ' WHERE '
-        sql += ' AND '.join(condition)
-
-    return sql
-
-def load_json(list_res):
-    db = connect_db()
-    cursor = db.cursor()
-    res = []
-    for tup in list_res:
-        dict = {"type": tup[0], "no": tup[1], "title": tup[2], "description": tup[3], "payment": tup[4],
-                "opentime": tup[5]}
-        if tup[0] == 'SURVEY':
-            sql = "SELECT MINAGE,MAXAGE,GENDER_RESTRICT,SURVEY_RESTRICT FROM SURVEY WHERE SNO= %d" % tup[1]
-            cursor.execute(sql)
-            l = cursor.fetchall()
-            dict["min_age"] = l[0][0]
-            dict["max_age"] = l[0][1]
-            dict["gender_restrict"] = l[0][2]
-            dict["survey_restrict"] = l[0][3]
-            sql = "SELECT WHAT FROM SURVEY_SUBJECT WHERE SNO = %d" % tup[1]
-            cursor.execute(sql)
-            l = cursor.fetchall()
-            dict["subject1"] = l[0][0] if len(l) >= 1 else ""
-            dict["subject2"] = l[1][0] if len(l) >= 2 else ""
-            dict["subject3"] = l[2][0] if len(l) >= 3 else ""
-        else:
-            sql = "SELECT DATATYPE FROM TASK_WITH_FILE, FILE WHERE TASK_WITH_FILE.FNO=FILE.FNO AND TNO =%d" % tup[1]
-            cursor.execute(sql)
-            l = cursor.fetchall()
-            dict["datatype"] = l[0][0]
-        res.append(dict)
-
-    db.commit()
-    db.close()
-
-    return res
-
-
-def get_list_from_db(title=None, subject=None, order=None, user='root', pwd='123456'):
-    db = connect_db()
-    cursor = db.cursor()
-
-    cursor.execute("SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = 'ScholarDB' AND table_name = 'LIST' ")
-    l = cursor.fetchall();
-    print l
-    if(l[0][0]==1):
-        cursor.execute("DROP TABLE LIST")
-
-    sql = """CREATE TABLE LIST (
-                LNO INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT,
-                NO INTEGER,
-                TYPE VARCHAR(20),
-                TITLE VARCHAR(200) NOT NULL,
-                DESCRIPTION VARCHAR(200) NOT NULL,
-                PAYMENT INTEGER NOT NULL,
-                OPENTIME DATETIME NOT NULL
-                )"""
-
-    cursor.execute(sql)
-    cursor.execute("alter table LIST convert to character set utf8;")
-
-    sql_survey = add_survey_to_list(title,subject,user,pwd)
-    sql = "INSERT INTO LIST(NO,TITLE,OPENTIME,PAYMENT,DESCRIPTION)" + sql_survey
-    cursor.execute(sql)
-    cursor.execute("UPDATE LIST SET TYPE='SURVEY'")
-
-    sql_task = add_task_to_list(user,pwd)
-    sql = "INSERT INTO LIST(NO,TITLE,OPENTIME,PAYMENT,DESCRIPTION)" + sql_task
-    cursor.execute(sql)
-
-    cursor.execute("UPDATE LIST SET TYPE='TASK' WHERE TYPE IS NULL")
-
-    sql = "SELECT TYPE,NO,TITLE,DESCRIPTION,PAYMENT,OPENTIME FROM LIST ORDER BY " + order
-    cursor.execute(sql)
-
-    list_res = cursor.fetchall()
-
-    print list_res
-
-    res = load_json(list_res)
-
-    db.commit()
-    db.close()
-
-    return res
-
-def order_list(order=None, user='root',pwd=123456):
-    db = connect_db()
-    cursor = db.cursor()
-
-    sql = "SELECT TYPE,NO,TITLE,DESCRIPTION,PAYMENT,OPENTIME FROM LIST ORDER BY " + order
-    cursor.execute(sql)
-
-    list_res = cursor.fetchall()
-    res = load_json(list_res)
-
-    db.close()
-
-    return res
-
-def subject_list(subject=None,order=None,user='root',pwd=123456):
-    db = connect_db()
-    cursor = db.cursor()
-
-    sql = "DELETE FROM LIST WHERE TYPE='SURVEY' AND ( "
-    condition = []
-    for sub in subject:
-        if sub == '' or sub == ' ':
-            continue
-        condition.append("NO NOT IN (SELECT SNO FROM SURVEY_SUBJECT WHERE WHAT = '%s')" % sub)
-    sql += ' OR '.join(condition)
-    sql += ")"
-
-    cursor.execute(sql)
-    sql = "SELECT TYPE,NO,TITLE,DESCRIPTION,PAYMENT,OPENTIME FROM LIST ORDER BY " + order
-    cursor.execute(sql)
-
-    list_res = cursor.fetchall()
-    res = load_json(list_res)
-
-    db.commit()
-    db.close()
-
-    return res
-
-
-def datatype_list(datatype=None, order=None,user='root', pwd=123456):
-    db = connect_db()
-    cursor = db.cursor()
-
-    sql = "DELETE FROM LIST WHERE TYPE='TASK' AND "
-    sql += "NO NOT IN (SELECT TNO FROM TASK_WITH_FILE,FILE WHERE FILE.FNO = TASK_WITH_FILE.FNO AND DATATYPE = '%s')" % datatype
-
-    print "-------------================"
-    print sql
-
-    cursor.execute(sql)
-    sql = "SELECT TYPE,NO,TITLE,DESCRIPTION,PAYMENT,OPENTIME FROM LIST ORDER BY " + order
-    cursor.execute(sql)
-
-    list_res = cursor.fetchall()
-    res = load_json(list_res)
-
-    db.commit()
-    db.close()
-
-    return res
-
-
-def type_list(type=None, order=None, user='root', pwd=123456):
-    db = connect_db()
-    cursor = db.cursor()
-
-    if type=='TASK':
-        sql = "DELETE FROM LIST WHERE TYPE='SURVEY'"
-
-    if type=='SURVEY':
-        sql = "DELETE FROM LIST WHERE TYPE='TASK'"
-
-    cursor.execute(sql)
-    sql = "SELECT TYPE,NO,TITLE,DESCRIPTION,PAYMENT,OPENTIME FROM LIST ORDER BY " + order
-    cursor.execute(sql)
-
-    list_res = cursor.fetchall()
-    res = load_json(list_res)
-
-    db.commit()
-    db.close()
-
-    return res
-
-def search(pattern=None, order=None, isDesc=None, user='root', pwd=123456):
-    db = connect_db()
-    cursor = db.cursor()
-
-    sql = "SELECT TYPE,NO,TITLE,DESCRIPTION,PAYMENT,OPENTIME FROM LIST WHERE TITLE LIKE '%" + pattern + "%'"
-    if isDesc:
-        sql += "OR DESCRIPTION LIKE '%" + pattern + "%'"
-    sql += "ORDER BY " + order
-
-    print sql
-
-    cursor.execute(sql)
-
-    list_res = cursor.fetchall()
-    res = load_json(list_res)
-
-    db.commit()
-    db.close()
-
-    return res
 
