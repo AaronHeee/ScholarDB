@@ -2,17 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="593228e0-b083-41bc-aaae-93912d4fa913" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/CreateQ/sqls_ans.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/CreateQ/templates/manage_survey.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/db.sqlite3" afterPath="$PROJECT_DIR$/db.sqlite3" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/CreateQ/sqls.py" afterPath="$PROJECT_DIR$/CreateQ/sqls.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/CreateQ/templates/create_survey.html" afterPath="$PROJECT_DIR$/CreateQ/templates/create_survey.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/CreateQ/templates/elements.html" afterPath="$PROJECT_DIR$/CreateQ/templates/elements.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/CreateQ/templates/view_questions.html" afterPath="$PROJECT_DIR$/CreateQ/templates/view_questions.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/CreateQ/templates/view_files.html" afterPath="$PROJECT_DIR$/CreateQ/templates/view_files.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/CreateQ/urls.py" afterPath="$PROJECT_DIR$/CreateQ/urls.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/CreateQ/views.py" afterPath="$PROJECT_DIR$/CreateQ/views.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SQLscript" afterPath="$PROJECT_DIR$/SQLscript" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/js/survey_chart.js" afterPath="$PROJECT_DIR$/static/js/survey_chart.js" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -23,7 +16,7 @@
   </component>
   <component name="CoverageDataManager">
     <SUITE FILE_PATH="coverage/ScholarDB$Test__ScholarDB.coverage" NAME="Test: ScholarDB Coverage Results" MODIFIED="1491656697305" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
-    <SUITE FILE_PATH="coverage/ScholarDB$manage.coverage" NAME="manage Coverage Results" MODIFIED="1492870774086" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/ScholarDB$manage.coverage" NAME="manage Coverage Results" MODIFIED="1492880360450" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
   <component name="DjangoConsoleOptions" custom-start-script="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)">
     <option name="myCustomStartScript" value="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)" />
@@ -34,33 +27,49 @@
       <file leaf-file-name="urls.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/CreateQ/urls.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="414">
-              <caret line="20" column="37" lean-forward="true" selection-start-line="20" selection-start-column="37" selection-end-line="20" selection-end-column="37" />
-              <folding>
-                <marker date="1492879029159" expanded="true" signature="775:1661" ph="..." />
-              </folding>
+            <state relative-caret-position="391">
+              <caret line="28" column="51" lean-forward="true" selection-start-line="28" selection-start-column="51" selection-end-line="28" selection-end-column="51" />
+              <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="sqls_list.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/CreateQ/sqls_list.py">
+      <file leaf-file-name="SQLscript" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/SQLscript">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="529">
-              <caret line="92" column="23" lean-forward="true" selection-start-line="92" selection-start-column="23" selection-end-line="92" selection-end-column="23" />
-              <folding>
-                <element signature="e#17#31#0" expanded="true" />
-                <marker date="1492847824583" expanded="true" signature="160:224" ph="SELECT SNO, SURVEY" />
-                <marker date="1492847824583" expanded="true" signature="704:769" ph="SELECT TASK.... TASK" />
-                <marker date="1492847824583" expanded="true" signature="1284:1360" ph="SELECT MINAG... SURVEY" />
-                <marker date="1492847824583" expanded="true" signature="1626:1670" ph="SELECT WHAT SURVEY_SUBJECT" />
-                <marker date="1492847824583" expanded="true" signature="1968:2053" ph="SELECT DATAT... TASK_WITH_FILE" />
-                <marker date="1492847824583" expanded="true" signature="2414:2516" ph="SELECT COUNT... views" />
-                <marker date="1492847824583" expanded="true" signature="2603:2617" ph="DROP VIEW LI... " />
-                <marker date="1492847824583" expanded="true" signature="2634:2715" ph="CREATE VIEW LIST... " />
-                <marker date="1492847824583" expanded="true" signature="3063:3132" ph="SELECT TYPE,... " />
-                <marker date="1492847824583" expanded="true" signature="3541:3637" ph="SELECT TYPE,... " />
-              </folding>
+            <state relative-caret-position="471">
+              <caret line="180" column="0" lean-forward="true" selection-start-line="180" selection-start-column="0" selection-end-line="180" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="create_task.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/CreateQ/templates/create_task.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="368">
+              <caret line="40" column="22" lean-forward="true" selection-start-line="40" selection-start-column="22" selection-end-line="40" selection-end-column="22" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="trash" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/CreateQ/templates/trash">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="490">
+              <caret line="138" column="16" lean-forward="true" selection-start-line="138" selection-start-column="16" selection-end-line="138" selection-end-column="16" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="manage_survey.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/CreateQ/templates/manage_survey.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -70,16 +79,6 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="695">
               <caret line="115" column="79" lean-forward="false" selection-start-line="115" selection-start-column="79" selection-end-line="115" selection-end-column="79" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="elements.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/CreateQ/templates/elements.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="451">
-              <caret line="116" column="43" lean-forward="true" selection-start-line="116" selection-start-column="43" selection-end-line="116" selection-end-column="43" />
               <folding />
             </state>
           </provider>
@@ -100,8 +99,8 @@
       <file leaf-file-name="views.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/CreateQ/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="660">
-              <caret line="68" column="20" lean-forward="true" selection-start-line="68" selection-start-column="20" selection-end-line="68" selection-end-column="20" />
+            <state relative-caret-position="3887">
+              <caret line="169" column="0" lean-forward="false" selection-start-line="169" selection-start-column="0" selection-end-line="169" selection-end-column="0" />
               <folding>
                 <element signature="e#17#52#0" expanded="true" />
               </folding>
@@ -122,44 +121,13 @@
       <file leaf-file-name="view_files.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/CreateQ/templates/view_files.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="69">
-              <caret line="3" column="25" lean-forward="false" selection-start-line="3" selection-start-column="25" selection-end-line="3" selection-end-column="25" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="sqls_scholar_list.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/CreateQ/sqls_scholar_list.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-906">
-              <caret line="43" column="105" lean-forward="false" selection-start-line="43" selection-start-column="105" selection-end-line="43" selection-end-column="105" />
+            <state relative-caret-position="131">
+              <caret line="102" column="63" lean-forward="false" selection-start-line="102" selection-start-column="63" selection-end-line="102" selection-end-column="63" />
               <folding>
-                <element signature="e#17#31#0" expanded="true" />
-                <marker date="1492867200029" expanded="true" signature="177:241" ph="SELECT SNO, SURVEY" />
-                <marker date="1492867200029" expanded="true" signature="177:247" ph="SELECT SNO, SURVEY" />
-                <marker date="1492867200029" expanded="true" signature="837:902" ph="SELECT TASK.... TASK" />
-                <marker date="1492867200029" expanded="true" signature="1509:1585" ph="SELECT MINAG... SURVEY" />
-                <marker date="1492867200029" expanded="true" signature="1851:1895" ph="SELECT WHAT SURVEY_SUBJECT" />
-                <marker date="1492867200029" expanded="true" signature="2193:2286" ph="SELECT DATAT... TASK_WITH_FILE" />
-                <marker date="1492867200029" expanded="true" signature="2733:2835" ph="SELECT COUNT... views" />
-                <marker date="1492867200029" expanded="true" signature="2922:2936" ph="DROP VIEW LI... " />
-                <marker date="1492867200029" expanded="true" signature="2953:3034" ph="CREATE VIEW LIST... " />
-                <marker date="1492867200029" expanded="true" signature="3430:3499" ph="SELECT TYPE,... " />
-                <marker date="1492867200029" expanded="true" signature="3931:4027" ph="SELECT TYPE,... " />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="sqls.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/CreateQ/sqls.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3059">
-              <caret line="220" column="18" lean-forward="true" selection-start-line="220" selection-start-column="18" selection-end-line="220" selection-end-column="18" />
-              <folding>
-                <element signature="e#16#30#0" expanded="true" />
-                <marker date="1492879193844" expanded="true" signature="429:732" ph="..." />
+                <element signature="n#style#0;n#span#1;n#li#0;n#ul#0;n#div#0;n#div#0;n#div#1;n#div#0;n#div#1;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#span#1;n#li#1;n#ul#0;n#div#0;n#div#0;n#div#1;n#div#0;n#div#1;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#span#1;n#li#2;n#ul#0;n#div#0;n#div#0;n#div#1;n#div#0;n#div#1;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#span#1;n#li#3;n#ul#0;n#div#0;n#div#0;n#div#1;n#div#0;n#div#1;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -178,7 +146,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>list-item-su</find>
       <find>list-item-sur</find>
       <find>list-item-surv</find>
       <find>list-item-survet</find>
@@ -208,6 +175,7 @@
       <find>window.</find>
       <find>window.l</find>
       <find>任务类型</find>
+      <find>PAR</find>
     </findStrings>
     <dirStrings>
       <dir>$PROJECT_DIR$/ScholarDB</dir>
@@ -251,7 +219,6 @@
         <option value="$PROJECT_DIR$/User/templates/common_nav_bar.html" />
         <option value="$PROJECT_DIR$/CreateQ/templates/list_survey.html" />
         <option value="$PROJECT_DIR$/CreateQ/templates/zipfile.py" />
-        <option value="$PROJECT_DIR$/SQLscript" />
         <option value="$PROJECT_DIR$/User/templates/common_side_bar.html" />
         <option value="$PROJECT_DIR$/CreateQ/templates/trash" />
         <option value="$PROJECT_DIR$/CreateQ/sqls_list.py" />
@@ -264,10 +231,11 @@
         <option value="$PROJECT_DIR$/CreateQ/templates/elements.html" />
         <option value="$PROJECT_DIR$/CreateQ/templates/scholar_list.html" />
         <option value="$PROJECT_DIR$/CreateQ/templates/view_task.html" />
-        <option value="$PROJECT_DIR$/CreateQ/templates/view_files.html" />
-        <option value="$PROJECT_DIR$/CreateQ/urls.py" />
-        <option value="$PROJECT_DIR$/CreateQ/views.py" />
         <option value="$PROJECT_DIR$/static/js/survey_chart.js" />
+        <option value="$PROJECT_DIR$/CreateQ/views.py" />
+        <option value="$PROJECT_DIR$/CreateQ/urls.py" />
+        <option value="$PROJECT_DIR$/SQLscript" />
+        <option value="$PROJECT_DIR$/CreateQ/templates/view_files.html" />
       </list>
     </option>
   </component>
@@ -784,13 +752,14 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-1" y="-5" width="1922" height="1086" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32929516" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25110132" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.50440526" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25110132" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.50440526" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25188375" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32819384" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -840,13 +809,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file:///usr/local/lib/python2.7/dist-packages/MySQLdb/cursors.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="192">
-          <caret line="204" column="0" lean-forward="false" selection-start-line="204" selection-start-column="0" selection-end-line="204" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/.local/lib/python2.7/site-packages/django/core/handlers/exception.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-1012">
@@ -1033,14 +995,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/SQLscript">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="486">
-          <caret line="38" column="23" lean-forward="true" selection-start-line="38" selection-start-column="23" selection-end-line="38" selection-end-column="23" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/User/urls.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="552">
@@ -1073,14 +1027,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/CreateQ/templates/trash">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3174">
-          <caret line="138" column="16" lean-forward="false" selection-start-line="138" selection-start-column="16" selection-end-line="138" selection-end-column="16" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/CreateQ/files.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="256">
@@ -1101,14 +1047,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="273">
           <caret line="50" column="7" lean-forward="false" selection-start-line="53" selection-start-column="38" selection-end-line="53" selection-end-column="50" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/CreateQ/templates/create_task.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="391">
-          <caret line="59" column="50" lean-forward="false" selection-start-line="59" selection-start-column="50" selection-end-line="59" selection-end-column="50" />
           <folding />
         </state>
       </provider>
@@ -1199,26 +1137,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/CreateQ/urls.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="414">
-          <caret line="20" column="37" lean-forward="true" selection-start-line="20" selection-start-column="37" selection-end-line="20" selection-end-column="37" />
-          <folding>
-            <marker date="1492879029159" expanded="true" signature="775:1661" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/CreateQ/views.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="660">
-          <caret line="68" column="20" lean-forward="true" selection-start-line="68" selection-start-column="20" selection-end-line="68" selection-end-column="20" />
-          <folding>
-            <element signature="e#17#52#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/static/js/survey_chart.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="695">
@@ -1227,11 +1145,66 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/CreateQ/templates/manage_survey.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/CreateQ/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3887">
+          <caret line="169" column="0" lean-forward="false" selection-start-line="169" selection-start-column="0" selection-end-line="169" selection-end-column="0" />
+          <folding>
+            <element signature="e#17#52#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/CreateQ/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="391">
+          <caret line="28" column="51" lean-forward="true" selection-start-line="28" selection-start-column="51" selection-end-line="28" selection-end-column="51" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SQLscript">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="471">
+          <caret line="180" column="0" lean-forward="true" selection-start-line="180" selection-start-column="0" selection-end-line="180" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/CreateQ/templates/trash">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="490">
+          <caret line="138" column="16" lean-forward="true" selection-start-line="138" selection-start-column="16" selection-end-line="138" selection-end-column="16" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/CreateQ/templates/create_task.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="368">
+          <caret line="40" column="22" lean-forward="true" selection-start-line="40" selection-start-column="22" selection-end-line="40" selection-end-column="22" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/CreateQ/templates/view_files.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="69">
-          <caret line="3" column="25" lean-forward="false" selection-start-line="3" selection-start-column="25" selection-end-line="3" selection-end-column="25" />
-          <folding />
+        <state relative-caret-position="131">
+          <caret line="102" column="63" lean-forward="false" selection-start-line="102" selection-start-column="63" selection-end-line="102" selection-end-column="63" />
+          <folding>
+            <element signature="n#style#0;n#span#1;n#li#0;n#ul#0;n#div#0;n#div#0;n#div#1;n#div#0;n#div#1;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#span#1;n#li#1;n#ul#0;n#div#0;n#div#0;n#div#1;n#div#0;n#div#1;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#span#1;n#li#2;n#ul#0;n#div#0;n#div#0;n#div#1;n#div#0;n#div#1;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#span#1;n#li#3;n#ul#0;n#div#0;n#div#0;n#div#1;n#div#0;n#div#1;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

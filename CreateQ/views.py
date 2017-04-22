@@ -4,13 +4,10 @@ from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 # Create your views here.
 import os
 from sqls import *
-<<<<<<< HEAD
 from sqls_list import *
 from sqls_scholar_list import *
 from files import *
-=======
 from sqls_ans import *
->>>>>>> 4e153743df771c328ee0a8de3fbcf0e7c6021c0b
 
 
 def scale_db_username(uno, usertype):
@@ -40,14 +37,11 @@ def new_survey(request):
         survey_questions = SurveyQuestions()
         survey_questions.parse(request.POST)
         add_survey_to_db(survey_title, survey_detail, survey_questions, user='scholar_%d' % uno, pwd=pwd)
-<<<<<<< HEAD
         return render(request, 'scholar_list.html', {"username": login_user})
     else:
         return render(request, 'create_survey.html', {"username": login_user})
-=======
 
     return render(request, 'create_survey.html', {"username": login_user})
->>>>>>> 4e153743df771c328ee0a8de3fbcf0e7c6021c0b
 
 def post_survey(request):
     return HttpResponse("fail")
@@ -80,7 +74,6 @@ def view_questions(request):
         sa.add_to_db()
         return HttpResponse("Success")
 
-<<<<<<< HEAD
 def view_files(request):
     return render(request,'view_files.html')
 
@@ -174,7 +167,7 @@ def scholar_list(request):
         return JsonResponse(res, safe=False)
 
     return render(request, 'scholar_list.html', {"username": login_user})
-=======
+
 def manage_survey(request):
     login_user, uno, pwd, usertype = get_basic_from_session(request)
     if request.method == 'GET':
@@ -203,4 +196,3 @@ def manage_survey(request):
             delete_answer(tuno,sno)
             return HttpResponse("Success")
         return render(request,'manage_survey.html',{'username':login_user,'sno':sno})
->>>>>>> 4e153743df771c328ee0a8de3fbcf0e7c6021c0b

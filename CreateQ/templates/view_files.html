@@ -55,8 +55,8 @@
         </div>
         <div class="container-fluid">
             <div id="pad-wrapper" class="new-user">
-                <div class="row-fluid header">
-                    <h3>完成调研<small id = "sno-rec">#{{ sno }}</small></h3>
+                <div class="row-fluid header" style="margin-left:20px;margin-bottom: 20px;">
+                        <h1 class="icon-check"> 完成标注</h1>
                 </div>
 
                 <div class="row-fluid form-wrapper">
@@ -66,19 +66,19 @@
                                 <ul class="wizard-steps">
                                     <li data-target="#step1" class="active">
                                         <span class="step">1</span>
-                                        <span class="title">校验信息</span>
+                                        <span class="title" style="font-size: 18px">浏览信息</span>
                                     </li>
                                     <li data-target="#step2">
                                         <span class="step">2</span>
-                                        <span class="title">调研概况</span>
+                                        <span class="title" style="font-size: 18px">领取数据</span>
                                     </li>
                                     <li data-target="#step3">
                                         <span class="step">3</span>
-                                        <span class="title">填写问题</span>
+                                        <span class="title" style="font-size: 18px">上传数据</span>
                                     </li>
                                     <li data-target="#step4">
                                         <span class="step">4</span>
-                                        <span class="title">发布答案</span>
+                                        <span class="title" style="font-size: 18px">完成任务</span>
                                     </li>
                                 </ul>
                             </div>
@@ -87,52 +87,63 @@
                                 <div class="step-pane active" id="step1">
                                      <div class="row-fluid form-wrapper">
                                          <div class="span10">
-                                             <h5 class="panel-heading">
-                                                第一步 校验信息
-                                                 <p class = "help-block">
-                                                    比对您的个人信息与调研要求
-                                                 </p>
-                                             </h5>
-                                             <div class = "alert alert-success" id = "check-legibility">
-                                                已通过校验
+
+                                             <table class="table table-bordered  table-hover">
+                                                 <tr>
+                                                     <th>标题</th>
+                                                     <th>酬劳</th>
+                                                     <th>样例</th>
+                                                 </tr>
+                                                 <tr>
+                                                     <td>这就是标题</td>
+                                                     <td>这就是酬劳</td>
+                                                     <td>这就是样例</td>
+                                                 </tr>
+                                             </table>
+                                             <table broder="5" class="table table-bordered table-hover">
+                                                 <tr>
+                                                     <th>描述</th>
+                                                 </tr>
+                                                 <tr>
+                                                     <td>这就是描述这就是描述这就是描述这就就是描述这就是描述这就就是描述这就是描述
+                                                         这就就是描述这就是描述这就就是描述这就是描述这就就是描述这就是描述这就就是
+                                                         描述这就是描述这就就是描述这就是描述这就就是描述这就是描述这就就是描述这就
+                                                         是描述这就就是描述这就是描述这就就是描述这就是描述这就就是描述这就是描述这
+                                                         就就是描述这就是描述这就就是描述这就是描述这就就是描述这就是描述这就就是描
+                                                         述这就是描述这就就是描述这就是描述这就就是描述这就是描述这就就是描述这就是
+                                             </table>
+                                              <div class = "alert alert-success" id = "check-legibility">
+                                                确认是否对该任务主题感兴趣，选择点击“下一步”或“返回”。
                                              </div>
-                                             <div class = "alert alert hidden-tablet" id = "show-privacy">
-                                                 <strong>注意：调研者将有权限查看以下个人信息</strong>
-                                            </div>
                                          </div>
                                      </div>
                                 </div>
                                 <div class="step-pane" id="step2">
                                     <div class="row-fluid form-wrapper">
-                                        <div class="span9">
-                                            <h5 class="panel-heading">
-                                                第二步 调研概况
-                                            </h5>
-                                            <div class="panel-body">
-                                                此处是调研标题
+                                        <div class="span10">
+                                            <div class = "alert alert-success" id = "check-legibility">
+                                                您已在“上一步”中体验了样例标注，请自行根据标注难度和自身的时间精力，领取合适的标注数据份额。
                                             </div>
-                                            <div class="panel-body">
-                                                此处是调研说明
-                                            </div>
+                                            <p>每份中有100组数据</p>
+                                            <p>共有 不知道插什么标签 组数据</p>
+                                            <p>您选择标注 X 组数据</p>
+                                            <p>可获得报酬 Y 元</p>
+
                                         </div>
                                     </div>
                                 </div>
                                 <div class="step-pane" id="step3">
-                                    <div class ="span9">
-                                        <form role="form" method="post" id = "qform">
-                                            {% csrf_token %}
-                                        </form>
+                                    <div class ="span10">
+                                        <div class = "alert alert-success" id = "check-legibility">
+                                            如果您已将数据标注完毕，可压缩为.zip文件上传，当学者确认你的成果后，您将获得相应的报酬。
+                                        </div>
 
                                     </div>
                                 </div>
                                 <div class="step-pane" id="step4">
-                                    <div class ="span9">
-                                        <h5 class="panel-heading">
-                                            即将完成!
-                                        </h5>
-                                        <div class="panel-body">
-                                            <p class="help-block">是否为问卷设置金额奖励？</p>
-                                            <input type="number" class = "span10 inline-input" value = "0" id = "payment">
+                                    <div class ="span10">
+                                        <div class = "alert alert-success" id = "check-legibility">
+                                            恭喜您顺利完成标注任务，请确认您的酬劳！
                                         </div>
                                     </div>
                                 </div>

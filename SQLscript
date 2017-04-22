@@ -151,11 +151,6 @@ alter table SCHOLAR_OWN_TASK convert to character set utf8;
 alter table FILE convert to character set utf8;
 alter table TASK_WITH_FILE convert to character set utf8;
 
-//file isn't included
-
-
-<<<<<<< HEAD
-=======
 alter table QUESTION drop INPUTTYPE cascade
 
 create table ANSWER(
@@ -183,4 +178,3 @@ WHERE QUESTION.QNO = ANSWER.QNO AND UNO = %d AND SNO = %d
 
 SELECT SNO,SUBMIT_TIME,TIME_CONSUMED,STATUS FROM PARTICIPATION
 WHERE PARTICIPATION.UNO = %d AND SNO = %d
->>>>>>> 4e153743df771c328ee0a8de3fbcf0e7c6021c0b
