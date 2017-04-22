@@ -28,7 +28,7 @@ class SurveyDetail:
         self.opentime = ''
         # 多值属性！
 
-    def parse(self, post, owner, time):
+    def parse(self, post, owner, submit_time):
         try:
             self.min_age = max(int(post['JSON2[min-age]']), 0)
             self.max_age = min(int(post['JSON2[max-age]']), 200)
@@ -39,7 +39,7 @@ class SurveyDetail:
         self.privacy = post['JSON2[privacy]'][:-1].split(',')
         self.payment = max(0, int(post['JSON2[payment]']))
         self.owner = owner
-        self.opentime = time
+        self.opentime = submit_time
 
 
 class SurveyQuestions:
@@ -48,6 +48,7 @@ class SurveyQuestions:
 
     class Question:
         def __init__(self):
+            self.qno = -1
             self.type = ""
             self.title = ""
             self.supplement = ""
@@ -56,7 +57,7 @@ class SurveyQuestions:
             self.input_type = ""
             self.choice = []
         def to_dict(self):
-            return {'type':self.type,'title':self.title,'supplement':self.supplement,'supplement_type':self.supplement_type,
+            return {'qno':self.qno,'type':self.type,'title':self.title,'supplement':self.supplement,'supplement_type':self.supplement_type,
                     'input_type':self.input_type,'choice':self.choice}
 
     def parse(self, post):
@@ -78,7 +79,7 @@ class SurveyQuestions:
         #cursor.execute("SELECT QNO,TITLE,SUPPLEMENT,SUPPLEMENT_TYPE,TYPE FROM QUESTION WHERE SNO = %d " % sno)
         q = SurveyQuestions.Question()
         q.type,q.input_type = tup[4].split(" ")
-        q.title,q.supplement,q.supplement_type = tup[1:4]
+        q.qno,q.title,q.supplement,q.supplement_type = tup[0:4]
         if choice:
             for item in choice:
                 q.choice.append(item[0])
@@ -93,6 +94,7 @@ def add_survey_to_db(title, detail, questions, user='root', pwd='dbpjdbpj'):
           "(NULL,'%s','%s',%d,%d,'%s','%s',%d,'OPEN','%s')" % (
           title.title, title.description, detail.min_age, detail.max_age,
           detail.gender_restrict, detail.survey_restrict, detail.payment, detail.opentime)
+    print sql
     cursor.execute(sql)
     cursor.execute("SELECT MAX(SNO) FROM SURVEY")
     sno = cursor.fetchall()[0][0]
@@ -110,7 +112,7 @@ def add_survey_to_db(title, detail, questions, user='root', pwd='dbpjdbpj'):
         sql = "INSERT INTO PRIVACY(SNO,WHAT) VALUES (%d,'%s')" % (sno, privacy)
         cursor.execute(sql)
     for question in questions.question_list:
-        sql = "INSERT INTO QUESTION(QNO,SNO,TITLE,SUPPLEMENT,SUPPLEMENT_TYPE,TYPE,INPUTTYPE) VALUES" \
+        sql = "INSERT INTO QUESTION(QNO,SNO,TITLE,SUPPLEMENT,SUPPLEMENT_TYPE,TYPE) VALUES" \
               "(NULL,%d,'%s','%s','%s','%s')" % (sno, question.title, question.supplement, question.supplement_type,
                                                  question.type + " " + question.input_type)
         cursor.execute(sql)
@@ -161,6 +163,7 @@ def get_survey_from_db(title=None, subject=None, order=None, user='root', pwd='d
 
 def check_legibility(sno,uno):
     # whether volunteer meets requirements
+    sno = int(sno)
     db = connect_db()
     cursor = db.cursor()
     cursor.execute("SELECT MINAGE,MAXAGE,SURVEY_RESTRICT,GENDER_RESTRICT FROM SURVEY WHERE SNO = %d" % sno)
@@ -168,12 +171,17 @@ def check_legibility(sno,uno):
     min_age,max_age,sr,gr = tup[0:5]
     cursor.execute("SELECT AGE,GENDER,USERTYPE FROM USERINFO WHERE UNO = %d" % uno)
     age,gender,usertype = cursor.fetchone()[0:4]
+    cursor.execute("SELECT SNO FROM PARTICIPATION WHERE UNO = %d AND SNO = %d" % (uno,sno))
+    has_dup = cursor.fetchone()
     errtext = ""
+    if has_dup:
+        errtext = "你已经参与过调研"
+        return False,errtext
     if age < min_age or age > max_age:
         errtext += "年龄不符合要求;"
-    if (gr == '仅女性' and gender == 'Male') or (gr == '仅男性' and gender == 'Female'):
+    if (gr == u'仅女性' and gender == u'Male') or (gr == u'仅男性' and gender == u'Female'):
         errtext += "性别不符合要求;"
-    if sr == '仅学者' and usertype != 'Scholar':
+    if sr == u'仅学者' and usertype != u'Scholar':
         errtext += "身份不符合要求;"
     db.close()
     if errtext != "":
@@ -182,17 +190,19 @@ def check_legibility(sno,uno):
         return True,""
 
 def inform_privacy(sno):
+    sno = int(sno)
     db = connect_db()
     cursor = db.cursor()
     cursor.execute("SELECT WHAT FROM PRIVACY WHERE SNO = %d" % sno)
     l = cursor.fetchall()
-    text = ""
+    ret = []
     for tup in l:
-        text+= tup[0] + ' '
+        ret.append(tup[0])
     db.close()
-    return text
+    return ret
 
 def load_brief_summary(sno):
+    sno = int(sno)
     db = connect_db()
     cursor = db.cursor()
     cursor.execute("SELECT TITLE,DESCRIPTION,PAYMENT,INST FROM SURVEY,SCHOLAR_OWN_SURVEY,SCHOLAR WHERE "
@@ -208,6 +218,8 @@ def load_questions(sno):
     sq = SurveyQuestions()
     cursor.execute("SELECT QNO,TITLE,SUPPLEMENT,SUPPLEMENT_TYPE,TYPE FROM QUESTION WHERE SNO = %d ORDER BY SNO" % sno)
     tups = cursor.fetchall()
+    if not tups:
+        return None
     for tup in tups:
         tup2 = []
         if tup[4].startswith("qsc"):
@@ -215,5 +227,3 @@ def load_questions(sno):
             tup2 = cursor.fetchall()
         sq.append(tup,tup2)
     return sq
-
-
