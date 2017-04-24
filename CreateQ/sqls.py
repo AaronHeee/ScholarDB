@@ -1,6 +1,9 @@
-# encoding=utf-8
+#encoding=utf-8
 import MySQLdb
 import time
+
+#Created by auson
+
 from common_file import connect_db
 
 
@@ -14,7 +17,6 @@ class SurveyTitle:
         self.title = post['JSON1[title]']
         self.description = post['JSON1[description]']
         self.subject = post['JSON1[subject]'][:-1].split(',')
-
 
 class SurveyDetail:
     def __init__(self):
@@ -123,42 +125,46 @@ def add_survey_to_db(title, detail, questions, user='root', pwd='dbpjdbpj'):
                 sql = "INSERT INTO CHOICE(CNO,PLACE,QNO,CONTENT) VALUES(NULL,%d,%d,'%s')" % (i, qno, choice)
                 cursor.execute(sql)
     db.commit()
+    db.close()
 
-
-def get_survey_from_db(title=None, subject=None, order=None, user='root', pwd='dbpjdbpj'):
+def add_survey_to_db(title, detail, questions, user='root', pwd='dbpjdbpj'):
     db = connect_db()
     cursor = db.cursor()
-    sql = "SELECT SNO,TITLE,MINAGE,MAXAGE,GENDER_RESTRICT,SURVEY_RESTRICT,OPENTIME,PAYMENT,DESCRIPTION FROM SURVEY "
-    condition = []
-    if title != None and title != '':
-        condition.append("TITLE LIKE '%" + title + "%'")
-    if subject != [None] and subject != [''] and subject != []:
-        for sub in subject:
-            if sub == '' or sub == ' ':
-                continue
-            condition.append("SNO IN (SELECT SNO FROM SURVEY_SUBJECT WHERE WHAT = '%s')" % sub)
-    if condition != None and condition != []:
-        sql += ' WHERE '
-        sql += ' AND '.join(condition)
-    if order == None:
-        order = 'SNO DESC'
-    sql += ' ORDER BY %s' % (order)
-    cursor.execute(sql)
-    sql_res = cursor.fetchall()
+    # title
 
-    res = []
-    for tup in sql_res:
-        dict = {"sno": tup[0], "title": tup[1], "min_age": tup[2], "max_age": tup[3], "gender_restrict": tup[4],
-                "survey_restrict": tup[5], "opentime": tup[6], "payment": tup[7], "description": tup[8]}
-        sql = "SELECT WHAT FROM SURVEY_SUBJECT WHERE SNO = %d" % tup[0]
+    sql = "INSERT INTO SURVEY(SNO,TITLE,DESCRIPTION,MINAGE,MAXAGE,GENDER_RESTRICT,SURVEY_RESTRICT,PAYMENT,STAGE,OPENTIME,TYPE) VALUES" \
+          "(NULL,'%s','%s',%d,%d,'%s','%s',%d,'OPEN','%s','SURVEY')" % (
+          title.title, title.description, detail.min_age, detail.max_age,
+          detail.gender_restrict, detail.survey_restrict, detail.payment, detail.opentime)
+    cursor.execute(sql)
+    cursor.execute("SELECT MAX(SNO) FROM SURVEY")
+    sno = cursor.fetchall()[0][0]
+
+    cursor.execute("SELECT UNO FROM USERINFO WHERE UNAME = '%s'" % detail.owner)
+    uno = cursor.fetchall()[0][0]
+
+    sql = "INSERT INTO SCHOLAR_OWN_SURVEY(UNO,SNO,ACCESS) VALUES(%d,%d,'owner')" % (uno, sno)
+    cursor.execute(sql)
+
+    for subject in title.subject:
+        sql = "INSERT INTO SURVEY_SUBJECT(SNO,WHAT) VALUES(%d,'%s')" % (sno, subject)
         cursor.execute(sql)
-        l = cursor.fetchall()
-        dict["subject1"] = l[0][0] if len(l) >= 1 else ""
-        dict["subject2"] = l[1][0] if len(l) >= 2 else ""
-        dict["subject3"] = l[2][0] if len(l) >= 3 else ""
-        res.append(dict)
+    for privacy in detail.privacy:
+        sql = "INSERT INTO PRIVACY(SNO,WHAT) VALUES (%d,'%s')" % (sno, privacy)
+        cursor.execute(sql)
+    for question in questions.question_list:
+        sql = "INSERT INTO QUESTION(QNO,SNO,TITLE,SUPPLEMENT,SUPPLEMENT_TYPE,TYPE) VALUES" \
+              "(NULL,%d,'%s','%s','%s', '%s')" % (sno, question.title, question.supplement, question.supplement_type,
+                                                 question.type+" "+ question.input_type)
+        cursor.execute(sql)
+        if question.type == 'qsc':
+            cursor.execute("SELECT MAX(QNO) FROM QUESTION")
+            qno = cursor.fetchall()[0][0]
+            for i, choice in enumerate(question.choice):
+                sql = "INSERT INTO CHOICE(CNO,PLACE,QNO,CONTENT) VALUES(NULL,%d,%d,'%s')" % (i, qno, choice)
+                cursor.execute(sql)
+    db.commit()
     db.close()
-    return res
 
 
 def check_legibility(sno,uno):
@@ -226,4 +232,62 @@ def load_questions(sno):
             cursor.execute("SELECT CONTENT FROM CHOICE WHERE QNO = %d ORDER BY PLACE" % tup[0])
             tup2 = cursor.fetchall()
         sq.append(tup,tup2)
+    return sq
+
+
+class TaskInfo:
+    def __init__(self):
+        self.title = ''
+        self.description = ''
+        self.deadline = ''
+        self.payment = ''
+        self.stage = ''
+        self.owner = ''
+        self.opentime = ''
+        self.rawdata = ''
+        self.example = ''
+    def parse(self,post,rawdata,example,owner,time):
+        self.title = post['title']
+        self.description = post['description']
+        self.deadline = post['deadline']
+        self.payment = post['payment']
+        self.rawdata = rawdata
+        self.example = example
+        self.owner = owner
+        self.opentime = time
+
+
+def add_task_to_db(task=None,name=None,num=None,datatype=None):
+    db = connect_db()
+    cursor = db.cursor()
+
+    print task.payment
+
+    sql = "INSERT INTO TASK(TITLE,DESCRIPTION,OPENTIME,DEADLINE,PAYMENT,TYPE) VALUES\
+          ('%s','%s','%s','%s','%s','TASK')" % \
+          (task.title,task.description,task.opentime,task.deadline,task.payment)
+    print "sql:",sql
+    cursor.execute(sql)
+
+    cursor.execute("SELECT MAX(TNO) FROM TASK")
+    tno = cursor.fetchone()[0]
+    print tno
+    cursor.execute("SELECT UNO FROM USERINFO WHERE UNAME = '%s'" % task.owner)
+    uno = cursor.fetchone()[0]
+    print uno
+    sql = "INSERT INTO SCHOLAR_OWN_TASK(UNO,TNO,ACCESS) VALUES(%d,%d,'owner')" % (uno,tno)
+    cursor.execute(sql)
+
+    sql = "INSERT INTO FILE(FNAME,RAWDATA,EXAMPLE,DATATYPE,NUM,NOW) VALUES " \
+          "('%s', '%s','%s','%s', %d, 0)" % (name,task.rawdata, task.example,datatype,num)
+    cursor.execute(sql)
+    cursor.execute("SELECT MAX(FNO) FROM FILE")
+    fno = cursor.fetchone()[0]
+    print fno
+    sql = "INSERT INTO TASK_WITH_FILE(TNO,FNO) VALUES (%d, %d)" % (tno,fno)
+    cursor.execute(sql)
+
+    db.commit()
+    db.close()
+
     return sq

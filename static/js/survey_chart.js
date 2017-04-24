@@ -109,11 +109,11 @@ function set_number_input(btn)
     var par = btn.parentNode.parentNode.parentNode;
     inputtype[par.id] = "number";
 }
-function add_list_item(json,parid){
+function add_list_survey_item(json,parid){
     var parele = document.getElementById(parid);
-    var ele = document.getElementById("list-item-survey").cloneNode(true);
+    var ele = document.getElementById("list-item").cloneNode(true);
     ele.getElementsByClassName("name title")[0].innerHTML = json.title;
-    ele.getElementsByClassName("name title")[0].href = "/project/view?sno=" + String(json.sno);
+    ele.getElementsByClassName("name title")[0].href = "/project/view_questions?sno=" + String(json.no);
     ele.getElementsByClassName("time")[0].innerHTML = json.opentime;
     ele.getElementsByClassName("help-block description")[0].innerHTML = json.description;
     ele.getElementsByClassName("payment")[0].innerHTML = json.payment;
@@ -142,9 +142,102 @@ function add_list_item(json,parid){
     }
     parele.appendChild(ele);
 }
+
+function add_list_task_item(json,parid){
+    var parele = document.getElementById(parid);
+    var ele = document.getElementById("list-item").cloneNode(true);
+    ele.getElementsByClassName("name title")[0].innerHTML = json.title;
+    ele.getElementsByClassName("name title")[0].href = "/project/view_files?tno=" + String(json.no);
+    ele.getElementsByClassName("time")[0].innerHTML = json.opentime;
+    ele.getElementsByClassName("help-block description")[0].innerHTML = json.description;
+    ele.getElementsByClassName("payment")[0].innerHTML = json.payment;
+    var subject_par = ele.getElementsByClassName("text")[0];
+    if(json.datatype != ""){
+        add_label(subject_par,json.datatype,"info")
+    }
+    parele.appendChild(ele);
+}
+
+function add_scholar_list_task_item(json,parid){
+    var num = json.num,now = json.now;
+    var parele = document.getElementById(parid);
+    var ele = document.getElementById("scholar-list-item").cloneNode(true);
+    ele.getElementsByClassName("icon-eye-close")[0].className = "icon-eye-open";
+    ele.getElementsByClassName("name title")[0].innerHTML = json.title;
+    ele.getElementsByClassName("name title")[0].href = "/project/view_files?tno=" + String(json.no);
+    ele.getElementsByClassName("time")[0].innerHTML = json.opentime;
+    ele.getElementsByClassName("help-block description")[0].innerHTML = json.description;
+    ele.getElementsByClassName("payment")[0].innerHTML = json.payment;
+    var subject_par = ele.getElementsByClassName("text")[0];
+    if(json.datatype != ""){
+        add_label(subject_par,json.datatype,"info")
+    }
+    if(num>now) ele.getElementsByClassName("processing")[0].innerHTML =     now+"/"+num+"份";
+    else if(now%num==0) ele.getElementsByClassName("processing")[0].innerHTML = (now/num)+"份";
+    else ele.getElementsByClassName("processing")[0].innerHTML = (Math.floor(now/num))+"又"+(now%num)+"/"+num+"份";
+
+    parele.appendChild(ele);
+}
+
+function add_scholar_list_survey_item(json,parid){
+    var parele = document.getElementById(parid);
+    var ele = document.getElementById("scholar-list-item").cloneNode(true);
+    if(json.survey_restrict == "任何人") ele.getElementsByClassName("icon-eye-close")[0].className = "icon-eye-open";
+    ele.getElementsByClassName("name title")[0].innerHTML = json.title;
+    ele.getElementsByClassName("name title")[0].href = "/project/view_questions?sno=" + String(json.no);
+    ele.getElementsByClassName("name title")[0].class = "icon-eye-open";
+    ele.getElementsByClassName("time")[0].innerHTML = json.opentime;
+    ele.getElementsByClassName("help-block description")[0].innerHTML = json.description;
+    ele.getElementsByClassName("payment")[0].innerHTML = json.payment;
+    var restrict_par = ele.getElementsByClassName("align-right restrict")[0];
+    if(json.gender_restrict!="无限制"){
+        add_label(restrict_par,json.gender_restrict,"warning");
+    }
+    if(json.survey_restrict!="任何人"){
+        add_label(restrict_par,json.survey_restrict,"warning");
+    }
+    if(json.min_age != 0){
+        add_label(restrict_par,"至少"+String(json.min_age)+"岁","warning");
+    }
+    if(json.max_age!=200){
+        add_label(restrict_par,"至多"+String(json.max_age)+"岁","warning");
+    }
+    var subject_par = ele.getElementsByClassName("text")[0];
+    if(json.subject1 != ""){
+        add_label(subject_par,json.subject1,"success")
+    }
+    if(json.subject2 != ""){
+        add_label(subject_par,json.subject2,"success")
+    }
+    if(json.subject3 != ""){
+        add_label(subject_par,json.subject3,"success")
+    }
+    parele.appendChild(ele);
+}
+
+function add_list_item(json,parid){
+    if (json.type == "SURVEY") {
+        add_list_survey_item(json, parid);
+    }
+    else {
+        add_list_task_item(json, parid);
+    }
+}
+
+function add_scholar_list_item(json,parid){
+    if (json.type == "SURVEY") {
+        add_scholar_list_survey_item(json, parid);
+    }
+    else {
+        add_scholar_list_task_item(json, parid);
+    }
+}
+
+
 function add_label(par_ele,what,type){
     par_ele.innerHTML += "<label class = %label label-{0}%>".format(type)+what+"</label>  ";
 }
+
 
 function clear_list_item(parid){
     var parele = document.getElementById(parid);

@@ -21,14 +21,20 @@ create table SCHOLAR(
     FOREIGN KEY(UNO) REFERENCES USERINFO(UNO)
 );
 
-alter table USERINFO ADD PWD VARCHAR(45)
+alter table USERINFO ADD PWD VARCHAR(45);
 alter table USERINFO convert to character set utf8;
 
 insert into USERINFO(UNO,UNAME,MAIL,AGE,USERTYPE,GENDER,NATION,CITY,MONEY,PWD)
 values (1000,'金熙森','2474010692@qq.com',19,'Scholar','Male','中国','上海',500,'abcdef');
 alter table SCHOLAR convert to character set utf8;
 insert into SCHOLAR(UNO,TYPE,INST,RATE)
-VALUES (1000,'Student','复旦大学',1)
+VALUES (1000,'Student','复旦大学',1);
+
+insert into USERINFO(UNO,UNAME,MAIL,AGE,USERTYPE,GENDER,NATION,CITY,MONEY,PWD)
+values (1001,'何占魁','15307130175@fudan.edu.cn',19,'Scholar','Male','中国','上海',500,'123456');
+alter table SCHOLAR convert to character set utf8;
+insert into SCHOLAR(UNO,TYPE,INST,RATE)
+VALUES (1001,'Student','复旦大学',1);
 
 create table VOLUNTEER(
     UNO INTEGER PRIMARY KEY,
@@ -47,13 +53,11 @@ create table SURVEY(
     MINAGE SMALLINT NOT NULL,
     MAXAGE SMALLINT NOT NULL,
     GENDER_RESTRICT VARCHAR(45) NOT NULL,
+    SURVEY_RESTRICT VARCHAR(45) NOT NULL,
     PAYMENT INTEGER NOT NULL,
     STAGE VARCHAR(45) NOT NULL,
+    OPENTIME DATETIME NOT NULL
 );
-
-alter table SURVEY add OPENTIME DATETIME NOT NULL;
-alter table SURVEY add SURVEY_RESTRICT VARCHAR(45) NOT NULL;
-alter table SURVEY drop PRIVACY cascade;
 
 
 create table PRIVACY(
@@ -97,7 +101,43 @@ create table CHOICE(
     PLACE INTEGER NOT NULL,
     QNO INTEGER NOT NULL,
     CONTENT VARCHAR(200)
-)
+);
+
+create table TASK(
+    TNO INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    TITLE VARCHAR(200) NOT NULL,
+    DESCRIPTION VARCHAR(1000) NOT NULL,
+    PAYMENT INTEGER NOT NULL,
+    OPENTIME DATETIME NOT NULL,
+    DEADLINE DATE NOT NULL
+);
+
+create table SCHOLAR_OWN_TASK(
+    UNO INTEGER NOT NULL,
+    TNO INTEGER NOT NULL,
+    ACCESS VARCHAR(45),
+    PRIMARY KEY(TNO),
+    FOREIGN KEY(UNO) REFERENCES USERINFO(UNO),
+    FOREIGN KEY(TNO) REFERENCES TASK(TNO)
+);
+
+create table FILE(
+    FNO INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    FNAME VARCHAR(100),
+    RAWDATA VARCHAR(100) NOT NULL,
+    EXAMPLE VARCHAR(100),
+    TYPE VARCHAR(20),
+    NUM INTEGER NOT NULL,
+    NOW INTEGER NOT NULL
+);
+
+create table TASK_WITH_FILE(
+    TNO INTEGER NOT NULL,
+    FNO INTEGER NOT NULL,
+    PRIMARY KEY(TNO),
+    FOREIGN KEY(TNO) REFERENCES TASK(TNO),
+    FOREIGN KEY(FNO) REFERENCES FILE(FNO)
+);
 
 alter table QUESTION convert to character set utf8;
 alter table CHOICE convert to character set utf8;
@@ -105,6 +145,11 @@ alter table SCHOLAR_OWN_SURVEY convert to character set utf8;
 alter table SURVEY convert to character set utf8;
 alter table SURVEY_SUBJECT convert to character set utf8;
 alter table PRIVACY convert to character set utf8;
+alter table TASK convert to character set utf8;
+alter table QUESTION drop INPUTTYPE cascade;
+alter table SCHOLAR_OWN_TASK convert to character set utf8;
+alter table FILE convert to character set utf8;
+alter table TASK_WITH_FILE convert to character set utf8;
 
 alter table QUESTION drop INPUTTYPE cascade
 

@@ -30,7 +30,7 @@ input.search{
 }
 
 .header{
-	margin-bottom: 60px;
+	margin-bottom: 20px;
 }
 .header h1,
 .header h2,
@@ -400,6 +400,7 @@ input.search{
 
 #pad-wrapper {
 	padding: 0px 25px;
+	margin-top: 55px;
 	margin-top: 55px;
 }
 #pad-wrapper h4 {
