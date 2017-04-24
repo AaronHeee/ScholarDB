@@ -3,6 +3,7 @@ from sqls import SurveyQuestions
 from common_file import *
 import time
 import copy
+from collections import OrderedDict
 
 def tup_to_dict(key_list,res_tup):
     xref = {}
@@ -56,8 +57,8 @@ class SurveyAnswer:
                   (ans.uno,ans.qno,ans.value)
             cursor.execute(sql)
             if ans.uno not in uno_hist:
-                sql = "INSERT INTO PARTICIPATION(UNO,SNO,SUBMIT_TIME,TIME_CONSUMED) VALUES(%d,%d,'%s',%d)" % \
-                      (ans.uno, self.sno, self.submit_time, self.consumed_time)
+                sql = "INSERT INTO PARTICIPATION(UNO,SNO,SUBMIT_TIME,TIME_CONSUMED,STATUS) VALUES(%d,%d,'%s',%d,'%s')" % \
+                      (ans.uno, self.sno, self.submit_time, self.consumed_time,self.status)
                 cursor.execute(sql)
                 uno_hist.append(ans.uno)
         db.commit()
@@ -76,7 +77,7 @@ class SurveyAnswer:
         #Q.A. --> JSON
         for tup in users:
             json = {}
-            json['qa'] = {}
+            json['qa'] = OrderedDict()
             uno = tup[0]
             sql = "SELECT TITLE,VALUE FROM QUESTION,ANSWER WHERE QUESTION.QNO = ANSWER.QNO AND UNO = %d AND SNO = %d" % (uno,sno)
             cursor.execute(sql)
@@ -84,7 +85,7 @@ class SurveyAnswer:
             sql = "SELECT SNO,SUBMIT_TIME,TIME_CONSUMED,STATUS FROM PARTICIPATION WHERE PARTICIPATION.UNO = %d AND SNO = %d" %(uno,sno)
             cursor.execute(sql)
             info = cursor.fetchall()
-            if info[3] == 'DELETED':
+            if info[0][3] == 'DELETED':
                 continue
             for qa in qas:
                 if qa[0] in json['qa'].keys():
@@ -95,12 +96,11 @@ class SurveyAnswer:
             json['time_consumed'] = info[0][2]
             user_info_dict = tup_to_dict(['UNO', 'UNAME', 'GENDER', 'AGE', 'NATION', 'CITY'], tup)
             #mask privacies
-            translation_dict = {"真实姓名":"UNAME","性别":"GENDER","年龄":"AGE","国家":"NATION","城市":"CITY"}
-            available_privacy = [translation_dict[i[0]] for i in privacy if i in translation_dict.keys()]
+            available_privacy = [translation_dict[i[0]] for i in privacy if i[0] in translation_dict.keys()]
             for key in user_info_dict.keys():
                 if key not in available_privacy:
                     user_info_dict.pop(key)
-            json['privacy'] = user_info_dict
+            json['privacy'] = dict(zip([translation_dict_r[i] for i in user_info_dict.keys()],[translation_dict_r[i] for i in user_info_dict.values()]))
             json['uno'] = uno
             json_list.append(json)
 
@@ -128,6 +128,7 @@ def load_contributor(sno):
         tjson = {'uno':tup[0],'uname':tup[1],'inst':tup[2]}
         json['contributor'].append(tjson)
         json['contributor_cnt'] += 1
+    db.close()
     return json
 
 def load_summary_management(sno):
@@ -138,6 +139,7 @@ def load_summary_management(sno):
     json['answer_cnt'] = cursor.fetchone()[0]
     cursor.execute("SELECT STAGE FROM SURVEY WHERE SNO = %d" % sno)
     json['stage'] = cursor.fetchone()[0]
+    db.close()
     return json
 
 def delete_answer(uno,sno):
@@ -146,4 +148,16 @@ def delete_answer(uno,sno):
     cursor.execute("DELETE FROM ANSWER WHERE UNO = %d AND QNO IN (SELECT QNO FROM QUESTION WHERE SNO = %d)" % (uno,sno))
     cursor.execute("UPDATE PARTICIPATION SET STATUS = 'DELETED' WHERE UNO = %d AND SNO = %d" % (uno,sno))
     db.commit()
+    db.close()
 
+def search_scholar_by_name(name):
+    db = connect_db()
+    user_list = []
+    cursor = db.cursor()
+    cursor.execute("SELECT SCHOLAR.UNO,INST FROM SCHOLAR,USERINFO WHERE UNAME = '%s'" % name)
+    users = cursor.fetchall()
+    for tup in users:
+        tdict = {'uno':tup[0],'inst':tup[1]}
+        user_list.append(tdict)
+    db.close()
+    return user_list

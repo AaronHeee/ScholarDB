@@ -145,12 +145,12 @@
         用户
       </a>
     </div>
-    <div id="" class="accordion-body collapse in">
+    <div id="" class="accordion-body collapse">
       <div class="accordion-inner">
             <ul class="list-group">
 
             </ul>
-          <button class = "btn btn-danger" onclick="
+          <a onclick="
             var par = this.parentNode.parentNode;
             var id = par.id;
             $.get('{% url 'manage' %}',{'sno':sno,'delete_id':id},function(res){});
@@ -158,7 +158,7 @@
             this.innerHTML = '已删除';
             ">
             删除
-          </button>
+          </a>
       </div>
     </div>
 </div>

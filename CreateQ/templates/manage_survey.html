@@ -4,7 +4,7 @@
 	<title>调研回收</title>
     {% load staticfiles %}
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="https://apps.bdimg.com/libs/bootstrap/3.2.0/css/bootstrap.min.css">
+
     <link href="{% static "css/bootstrap/bootstrap.css" %}" rel="stylesheet" />
     <link href="{% static "css/bootstrap/bootstrap-responsive.css" %}" rel="stylesheet" />
     <link href="{% static "css/bootstrap/bootstrap-overrides.css"%}" type="text/css" rel="stylesheet" />
@@ -36,12 +36,28 @@
 <body>
 {% include "common_nav_bar.html" %}
 {% include "common_side_bar.html" %}
+
 <div style = "display: none">
     {% include "elements.html" %}
 </div>
+    <div id="myModal" class="modal hide" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+          <h5 id="myModalLabel">编辑调研合作者<small>#{{ sno }}</small></h5>
+      </div>
+      <div class="modal-body align-center">
+            <input type="text" class="input-medium search-query center">
+            <button class="btn">添加</button>
+            <ul id="scholar-search-result">
+            </ul>
+      </div>
+      <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">关闭</button>
+        <button class="btn btn-primary">保存</button>
+      </div>
+    </div>
 	<!-- main container -->
     <div class="content">
-
         <div class="container-fluid">
             <div id="pad-wrapper">
                 <!-- users table -->
@@ -65,6 +81,7 @@
                                         <i class="icon-group icon-2x">&nbsp;&nbsp;</i>
                                         <span class="number" id="contributor-cnt"></span>
                                         合作学者
+                                        <a href="#myModal" data-toggle="modal">编辑</a>
                                     </div>
                                 </div>
                                 <div class="span4 stat">
@@ -72,6 +89,7 @@
                                         <i class="icon-tag icon-2x">&nbsp;&nbsp;</i>
                                         <span class="number" id="stage"></span>
                                         项目状态
+                                        <a href="#myModal" data-toggle="modal">编辑</a>
                                     </div>
 
                                 </div>
@@ -139,6 +157,40 @@
               document.getElementById("stage").innerHTML = res.stage;
             })
         }
+        function search_user(name){
+            $.getJSON("{% url "manage" %}",{"search_user":"true","sno":sno,"name":name},function(res){
+              var ul = document.getElementById("scholar-search-result");
+              ul.innerHTML = "";
+              for(var item in res) {
+                  var ele = document.createElement('a');
+                  ele.innerHTML = name+" "+res.inst;
+                  ul.onclick = add_contributor(name);
+                  ul.appendChild(ele);
+              }
+            })
+        }
+        function add_contributor(name){
+            $.getJSON("{% url "manage" %}",{"add_contributor":"true","sno":sno,"name":name});
+            alert("添加成功");
+        }
+
+    </script>
+    <script type="text/javascript">
+        $(function () {
+
+            // add uniform plugin styles to html elements
+            $("input:checkbox, input:radio").uniform();
+
+            // select2 plugin for select elements
+            $(".select2").select2({
+                placeholder: "请选择..."
+            });
+
+            // wysihtml5 plugin on textarea
+            $(".wysihtml5").wysihtml5({
+                "font-styles": false
+            });
+        });
     </script>
 </body>
 </html>

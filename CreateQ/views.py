@@ -106,4 +106,9 @@ def manage_survey(request):
             tuno =  int(request.GET['delete_id'][1:])
             delete_answer(tuno,sno)
             return HttpResponse("Success")
+        if "search_user" in request.GET.keys():
+            name = request.GET['name']
+            json = search_scholar_by_name(name)
+            print json
+            return JsonResponse(json,safe = False)
         return render(request,'manage_survey.html',{'username':login_user,'sno':sno})
