@@ -179,7 +179,7 @@ alter table SURVEY add TYPE VARCHAR(20);
 alter table TASK add TYPE VARCHAR(20);
 /*0427*/
 
-drop table PARTICIPATION /*不知道怎么删外键……各种报错*/
+drop table PARTICIPATION; /*不知道怎么删外键……各种报错*/
 create table PARTICIPATION(
     SNO INTEGER NOT NULL,
     UNO INTEGER NOT NULL,
@@ -201,7 +201,9 @@ create table PARTICIPATION_TASK(
     SUBMIT_TIME DATETIME,
     STATUS VARCHAR(45),
     FOREIGN KEY(UNO) REFERENCES USERINFO(UNO)
-)
+
+);
+
 
 create table PUBLICITY_TASK(
     TNO INTEGER NOT NULL PRIMARY KEY,
@@ -211,3 +213,4 @@ create table PUBLICITY_TASK(
 
 alter table FILE add DATATYPE VARCHAR(45);
 alter table TASK add STAGE VARCHAR(45)
+

@@ -114,7 +114,6 @@ class SurveyAnswer:
             json['uno'] = uno
             json_list.append(json)
 
-
         return json_list
 
 def check_authorization(uno,sno,access_list):
@@ -214,3 +213,54 @@ def delete_survey(sno):
     cursor.execute("DELETE FROM SURVEY WHERE SNO = %d" % sno)
     db.commit()
     db.close()
+
+def load_date_number(sno):
+    db = connect_db()
+    cursor = db.cursor()
+    sql = "SELECT DATE_FORMAT(SUBMIT_TIME,'%%Y-%%m-%%d'),COUNT(SNO) FROM PARTICIPATION WHERE SNO=%d GROUP BY DATE_FORMAT(SUBMIT_TIME,'%%Y-%%m-%%d')"% sno
+    cursor.execute(sql)
+    res = cursor.fetchall()
+    date = []
+    number = []
+    json = {}
+    for i in res:
+        date.append(i[0])
+        number.append(i[1])
+    json["date"] = date
+    json["number"] = number
+    print json
+    db.close()
+    return json
+
+def load_gender(sno):
+    db = connect_db()
+    cursor = db.cursor()
+    json = {}
+    sql = "SELECT COUNT(*) FROM PARTICIPATION P,USERINFO U WHERE SNO=%d AND P.UNO=U.UNO AND GENDER='Female'" % sno
+    cursor.execute(sql)
+    json['Female']=cursor.fetchall()[0][0]
+    sql = "SELECT COUNT(*) FROM PARTICIPATION P,USERINFO U WHERE SNO=%d AND P.UNO=U.UNO AND GENDER='Male'" % sno
+    cursor.execute(sql)
+    json['Male'] = cursor.fetchall()[0][0]
+    db.close()
+    return  json
+
+def load_location(sno):
+    db = connect_db()
+    cursor = db.cursor()
+    json = []
+
+    sql = "SELECT CITY, COUNT(*) FROM PARTICIPATION P,USERINFO U WHERE SNO=%d AND P.UNO=U.UNO GROUP BY CITY" % sno
+    cursor.execute(sql)
+    res = cursor.fetchall()
+    for i in res:
+        city = {}
+        city['name'] = i[0]
+        city['value'] = i[1]
+        json.append(city)
+    print "location:",json
+    db.close()
+    return json
+
+
+

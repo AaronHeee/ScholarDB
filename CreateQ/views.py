@@ -179,7 +179,7 @@ def manage_survey(request):
             sa = SurveyAnswer()
             json = sa.to_json_list_by_user(sno)
             print json
-            return JsonResponse(json,safe=False)
+            return  JsonResponse(json,safe=False)
         if "load_summary" in request.GET.keys():
             json = load_summary_management(sno)
             print json
@@ -207,4 +207,17 @@ def manage_survey(request):
             if check_authorization(uno, sno, ['OWNER']):
                 delete_survey(sno)
                 return HttpResponse("修改成功")
+        if "load_date_number" in request.GET.keys():
+            json = load_date_number(sno)
+            print json
+            return JsonResponse(json, safe=False)
+        if "load_gender" in request.GET.keys():
+            json = load_gender(sno)
+            print "gender:",json
+            return JsonResponse(json, safe=False)
+        if "load_location" in request.GET.keys():
+            json = load_location(sno)
+            print "location:",json
+            return JsonResponse(json, safe=False)
+
         return render(request,'manage_survey.html',{'username':login_user,'sno':sno,'access':access})

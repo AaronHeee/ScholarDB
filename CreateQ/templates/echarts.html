@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>ECharts</title>
+</head>
+
+<div id="echarts_date_number">
+    <div id="main" style="width: 600px;height:400px;"> </div>
+</div>
+
+{% load staticfiles %}
+<script src = "{% static "js/china.js" %}"></script>
+<script src="https://cdn.bootcss.com/echarts/3.5.3/echarts.common.js"></script>
+
+<script>
+var chart = echarts.init(document.getElementById('main'));
+chart.setOption({
+    series: [{
+        type: 'map',
+        map: 'china'
+    }]
+});
+myChart.setOption(option);
+</script>
+
+</body>
+
+
+</html>
