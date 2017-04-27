@@ -78,9 +78,33 @@
                                         <!-- row -->
                                     </tbody>
                                 </table>
+                        </div>
+                        <div class="profile-box">
+                            <h5><b>参与课题</b></h5>
+                            <br />
 
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th class="span5">
+                                                任务名
+                                            </th>
+                                            <th class="span4">
+                                                <span class="line"></span>参与日期
+                                            </th>
+                                            <th class="span2">
+                                                <span class="line"></span>酬劳
+                                            </th>
+                                            <th class="span4 align-right">
+                                                <span class="line"></span>当前状态
+                                            </th>
+                                        </tr>
+                                    </thead>
 
-
+                                    <tbody id = "qpar">
+                                        <!-- row -->
+                                    </tbody>
+                                </table>
                         </div>
                     </div>
 
@@ -132,6 +156,14 @@
                     add_list_item_wrapper(res[i],"qpar")
                 }
             });
+        }
+        function load_participation_info(){
+            $.getJSON('{% url "scholar_info" %}',{'load_participation_info':'true','tuno':tuno},function(res){
+                for(var i =0;i<res.length;++i)
+                {
+
+                }
+            }
         }
         function  add_list_item_wrapper(item,parid) {
             var ele = add_list_item(item,parid);

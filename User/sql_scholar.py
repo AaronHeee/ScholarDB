@@ -28,6 +28,22 @@ def project_list_of_scholar(uno):
     print json
     return json
 
+def participation_list(uno):
+    db = connect_db()
+    cursor = db.cursor()
+    json = []
+    cursor.execute("SELECT SNO,TITLE,SUBMIT_TIME FROM PARTICIPATION WHERE UNO = %d" % uno)
+    tups = cursor.fetchall()
+    cursor.execute("SELECT TNO,TITLE,SUBMIT_TIME FROM PARTICIPATION WHERE UNO = %d" % uno)
+    tups2 = cursor.fetchall()
+    for tup in tups:
+        tjson = {'NO':tup[0],'TITLE':tup[1],'SUBMIT_TIME':tup[2],'TYPE':'SURVEY'}
+        json.append(tjson)
+    for tup in tups2:
+        tjson = {'NO':tup[0],'TITLE':tup[1],'SUBMIT_TIME':tup[2],'TYPE':'TASK'}
+        json.append(tjson)
+    return json #list
+
 
 
 

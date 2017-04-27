@@ -62,6 +62,8 @@ def scholar_info(request):
             return JsonResponse(s.to_json())
         if 'load_project_info' in request.GET.keys():
             return JsonResponse(project_list_of_scholar(target_uno),safe=False)
+        if 'load_participation_info' in request.GET.keys():
+            return JsonResponse(participation_list(target_uno),safe=False)
 
         return render(request,"scholar_detail.html",{'username':login_user,'uno':uno,'tuno':target_uno})
 
