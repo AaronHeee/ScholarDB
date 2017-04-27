@@ -24,8 +24,8 @@ def add_task_to_list(datatype=None, user='root', pwd='dbpjdbpj'):
 
     sql = "SELECT TASK.TNO,TYPE,TITLE,DESCRIPTION,PAYMENT,OPENTIME FROM TASK"
     if datatype != '' and datatype != None:
-        sql += ",FILE,TASK_WITH_FILE WHERE TASK.TNO=TASK_WITH_FILE.TNO AND FILE.FNO=TASK_WITH_FILE.FNO AND FILE.DATATYPE='%s'" % datatype
-    sql += 'AND STAGE ="OPEN"'
+        sql += ",FILE,TASK_WITH_FILE WHERE TASK.TNO=TASK_WITH_FILE.TNO AND FILE.FNO=TASK_WITH_FILE.FNO AND FILE.DATATYPE='%s' AND" % datatype
+    sql += ' STAGE ="OPEN"'
     print sql
     return sql
 

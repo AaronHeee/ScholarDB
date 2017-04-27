@@ -2,27 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="53876506-6a3c-42d4-8363-9079b27b97ed" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/User/sql_index.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/User/templates/index.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/CreateQ/sqls.py" afterPath="$PROJECT_DIR$/CreateQ/sqls.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/CreateQ/sqls_ans.py" afterPath="$PROJECT_DIR$/CreateQ/sqls_ans.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/CreateQ/sqls_list.py" afterPath="$PROJECT_DIR$/CreateQ/sqls_list.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/CreateQ/sqls_scholar_list.py" afterPath="$PROJECT_DIR$/CreateQ/sqls_scholar_list.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/CreateQ/templates/elements.html" afterPath="$PROJECT_DIR$/CreateQ/templates/elements.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/CreateQ/templates/list.html" afterPath="$PROJECT_DIR$/CreateQ/templates/list.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/CreateQ/templates/manage_survey.html" afterPath="$PROJECT_DIR$/CreateQ/templates/manage_survey.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/CreateQ/templates/scholar_list.html" afterPath="$PROJECT_DIR$/CreateQ/templates/scholar_list.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/CreateQ/views.py" afterPath="$PROJECT_DIR$/CreateQ/views.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SQLscript" afterPath="$PROJECT_DIR$/SQLscript" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ScholarDB/urls.py" afterPath="$PROJECT_DIR$/ScholarDB/urls.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/User/sql_scholar.py" afterPath="$PROJECT_DIR$/User/sql_scholar.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/User/templates/common_side_bar.html" afterPath="$PROJECT_DIR$/User/templates/common_side_bar.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/User/templates/scholar_detail.html" afterPath="$PROJECT_DIR$/User/templates/scholar_detail.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/User/urls.py" afterPath="$PROJECT_DIR$/User/urls.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/User/views.py" afterPath="$PROJECT_DIR$/User/views.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/common_file.py" afterPath="$PROJECT_DIR$/common_file.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/js/survey_chart.js" afterPath="$PROJECT_DIR$/static/js/survey_chart.js" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -40,32 +21,33 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="survey_chart.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/static/js/survey_chart.js">
+      <file leaf-file-name="settings.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/ScholarDB/settings.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-2391">
-              <caret line="168" column="72" lean-forward="false" selection-start-line="168" selection-start-column="72" selection-end-line="168" selection-end-column="72" />
+            <state relative-caret-position="151">
+              <caret line="27" column="66" lean-forward="false" selection-start-line="27" selection-start-column="66" selection-end-line="27" selection-end-column="66" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="list.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/CreateQ/templates/list.html">
+      <file leaf-file-name="sqls_list.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/CreateQ/sqls_list.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="120">
-              <caret line="200" column="59" lean-forward="false" selection-start-line="200" selection-start-column="59" selection-end-line="200" selection-end-column="59" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="manage_survey.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/CreateQ/templates/manage_survey.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="495">
-              <caret line="81" column="30" lean-forward="true" selection-start-line="54" selection-start-column="24" selection-end-line="81" selection-end-column="30" />
-              <folding />
+            <state relative-caret-position="216">
+              <caret line="26" column="111" lean-forward="false" selection-start-line="26" selection-start-column="111" selection-end-line="26" selection-end-column="111" />
+              <folding>
+                <marker date="1493327810699" expanded="true" signature="160:224" ph="SELECT SNO, SURVEY" />
+                <marker date="1493327810699" expanded="true" signature="734:799" ph="SELECT TASK.... TASK" />
+                <marker date="1493327810699" expanded="true" signature="1346:1422" ph="SELECT MINAG... SURVEY" />
+                <marker date="1493327810699" expanded="true" signature="1688:1732" ph="SELECT WHAT SURVEY_SUBJECT" />
+                <marker date="1493327810699" expanded="true" signature="2030:2115" ph="SELECT DATAT... TASK_WITH_FILE" />
+                <marker date="1493327810699" expanded="true" signature="2476:2578" ph="SELECT COUNT... views" />
+                <marker date="1493327810699" expanded="true" signature="2665:2679" ph="DROP VIEW LI... " />
+                <marker date="1493327810699" expanded="true" signature="2696:2777" ph="CREATE VIEW LIST... " />
+                <marker date="1493327810699" expanded="true" signature="3125:3194" ph="SELECT TYPE,... " />
+                <marker date="1493327810699" expanded="true" signature="3603:3699" ph="SELECT TYPE,... " />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -104,7 +86,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="scholar_detail.html" pinned="false" current-in-tab="true">
+      <file leaf-file-name="scholar_detail.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/User/templates/scholar_detail.html">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="255">
@@ -173,10 +155,8 @@
         <option value="$PROJECT_DIR$/CreateQ/urls.py" />
         <option value="$PROJECT_DIR$/CreateQ/templates/view_questions.html" />
         <option value="$PROJECT_DIR$/User/templates/user_detail.html" />
-        <option value="$PROJECT_DIR$/ScholarDB/settings.py" />
         <option value="$PROJECT_DIR$/User/sql_scholar.py" />
         <option value="$PROJECT_DIR$/common_file.py" />
-        <option value="$PROJECT_DIR$/CreateQ/sqls_list.py" />
         <option value="$PROJECT_DIR$/User/urls.py" />
         <option value="$PROJECT_DIR$/User/templates/sql_index.py" />
         <option value="$PROJECT_DIR$/CreateQ/sqls_scholar_list.py" />
@@ -196,6 +176,8 @@
         <option value="$PROJECT_DIR$/SQLscript" />
         <option value="$PROJECT_DIR$/User/templates/index.html" />
         <option value="$PROJECT_DIR$/User/templates/scholar_detail.html" />
+        <option value="$PROJECT_DIR$/ScholarDB/settings.py" />
+        <option value="$PROJECT_DIR$/CreateQ/sqls_list.py" />
       </list>
     </option>
   </component>
@@ -637,7 +619,8 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="ScholarDB" />
       <option name="launchJavascriptDebuger" value="false" />
-      <option name="host" value="" />
+      <option name="port" value="8000" />
+      <option name="host" value="10.222.122.75" />
       <option name="additionalOptions" value="" />
       <option name="browserUrl" value="http://127.0.0.1:8000/" />
       <option name="runTestServer" value="false" />
@@ -682,7 +665,14 @@
       <option name="project" value="LOCAL" />
       <updated>1493300680843</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="index page, user profile page completed">
+      <created>1493326697935</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1493326697936</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -695,11 +685,11 @@
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32986626" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32986626" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.4769688" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4769688" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -718,7 +708,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="user homepage being built" />
-    <option name="LAST_COMMIT_MESSAGE" value="user homepage being built" />
+    <MESSAGE value="index page, user profile page completed" />
+    <option name="LAST_COMMIT_MESSAGE" value="index page, user profile page completed" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -946,14 +937,6 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/User/templates/user_detail.html" />
-    <entry file="file://$PROJECT_DIR$/ScholarDB/settings.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="16">
-          <caret line="27" column="65" lean-forward="false" selection-start-line="27" selection-start-column="65" selection-end-line="27" selection-end-column="65" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/anaconda2/lib/python2.7/site-packages/django/middleware/clickjacking.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="125">
@@ -1194,25 +1177,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/CreateQ/sqls_list.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1371">
-          <caret line="27" column="30" lean-forward="true" selection-start-line="27" selection-start-column="30" selection-end-line="27" selection-end-column="30" />
-          <folding>
-            <marker date="1493306878977" expanded="true" signature="160:224" ph="SELECT SNO, SURVEY" />
-            <marker date="1493306878977" expanded="true" signature="734:799" ph="SELECT TASK.... TASK" />
-            <marker date="1493306878977" expanded="true" signature="1345:1421" ph="SELECT MINAG... SURVEY" />
-            <marker date="1493306878977" expanded="true" signature="1687:1731" ph="SELECT WHAT SURVEY_SUBJECT" />
-            <marker date="1493306878977" expanded="true" signature="2029:2114" ph="SELECT DATAT... TASK_WITH_FILE" />
-            <marker date="1493306878977" expanded="true" signature="2475:2577" ph="SELECT COUNT... views" />
-            <marker date="1493306878977" expanded="true" signature="2664:2678" ph="DROP VIEW LI... " />
-            <marker date="1493306878977" expanded="true" signature="2695:2776" ph="CREATE VIEW LIST... " />
-            <marker date="1493306878977" expanded="true" signature="3124:3193" ph="SELECT TYPE,... " />
-            <marker date="1493306878977" expanded="true" signature="3602:3698" ph="SELECT TYPE,... " />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/CreateQ/templates/scholar_list.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="195">
@@ -1308,6 +1272,33 @@
         <state relative-caret-position="255">
           <caret line="142" column="54" lean-forward="false" selection-start-line="142" selection-start-column="54" selection-end-line="142" selection-end-column="107" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ScholarDB/settings.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="151">
+          <caret line="27" column="66" lean-forward="false" selection-start-line="27" selection-start-column="66" selection-end-line="27" selection-end-column="66" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/CreateQ/sqls_list.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="216">
+          <caret line="26" column="111" lean-forward="false" selection-start-line="26" selection-start-column="111" selection-end-line="26" selection-end-column="111" />
+          <folding>
+            <marker date="1493327810699" expanded="true" signature="160:224" ph="SELECT SNO, SURVEY" />
+            <marker date="1493327810699" expanded="true" signature="734:799" ph="SELECT TASK.... TASK" />
+            <marker date="1493327810699" expanded="true" signature="1346:1422" ph="SELECT MINAG... SURVEY" />
+            <marker date="1493327810699" expanded="true" signature="1688:1732" ph="SELECT WHAT SURVEY_SUBJECT" />
+            <marker date="1493327810699" expanded="true" signature="2030:2115" ph="SELECT DATAT... TASK_WITH_FILE" />
+            <marker date="1493327810699" expanded="true" signature="2476:2578" ph="SELECT COUNT... views" />
+            <marker date="1493327810699" expanded="true" signature="2665:2679" ph="DROP VIEW LI... " />
+            <marker date="1493327810699" expanded="true" signature="2696:2777" ph="CREATE VIEW LIST... " />
+            <marker date="1493327810699" expanded="true" signature="3125:3194" ph="SELECT TYPE,... " />
+            <marker date="1493327810699" expanded="true" signature="3603:3699" ph="SELECT TYPE,... " />
+          </folding>
         </state>
       </provider>
     </entry>
