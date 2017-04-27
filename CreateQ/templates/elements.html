@@ -173,12 +173,12 @@
         用户
       </a>
     </div>
-    <div id="" class="accordion-body collapse in">
+    <div id="" class="accordion-body collapse">
       <div class="accordion-inner">
             <ul class="list-group">
 
             </ul>
-          <button class = "btn btn-danger" onclick="
+          <a onclick="
             var par = this.parentNode.parentNode;
             var id = par.id;
             $.get('{% url 'manage' %}',{'sno':sno,'delete_id':id},function(res){});
@@ -186,8 +186,48 @@
             this.innerHTML = '已删除';
             ">
             删除
-          </button>
+          </a>
       </div>
     </div>
 </div>
+</div>
+
+<div id = 'search-user-tiny'>
+    <div>
+        {% if access == 'OWNER' %}
+        <input class = 'search' type='text' placeholder='搜索用户' onchange="search_scholar(this.value)">
+        <ul id = "scholar-search-result" style="font-size: x-small">
+            <br/>
+        </ul>
+        <hr/>
+        {% endif %}
+        <p class="help-block" style="font-size: x-small"><i class = "icon-info-sign">当前项目合作者：</i></p>
+        <ul id = 'current-contributor' style="font-size: x-small">
+
+        </ul>
+    </div>
+</div>
+
+<div id = 'project-detail'>
+    <p id="status2" style="font-size: x-small">当前调研状态:<p id="publicity"></p></p>
+    <hr>
+    {% if access == 'OWNER' %}
+    <p style="font-size: x-small">修改调研：</p>
+    <p>&nbsp;</p>
+    <div class="field-box">
+        <div class="ui-select" >
+             <select id = "set-public">
+                <option value="PUBLIC">开源</option>
+                <option value="PRIVATE">私有</option>
+            </select>
+        </div>
+    </div>
+    <p>&nbsp;</p>
+    <div class="alert" style="font-size: x-small">注意：调研关闭的操作不可逆，但是公开性可以随时设置</div>
+    <span>
+        <button class="btn btn-success" onclick = "close_survey()">发布</button>
+        <button class="btn btn-danger" onclick="delete_survey()">删除</button>
+    </span>
+
+    {% endif %}
 </div>
