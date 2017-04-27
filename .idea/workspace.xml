@@ -2,28 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="53876506-6a3c-42d4-8363-9079b27b97ed" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/User/sql_scholar.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/User/templates/scholar_detail.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/db.sqlite3" afterPath="$PROJECT_DIR$/db.sqlite3" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/ScholarDB.iml" afterPath="$PROJECT_DIR$/.idea/ScholarDB.iml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/CreateQ/sqls.py" afterPath="$PROJECT_DIR$/CreateQ/sqls.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/CreateQ/sqls_ans.py" afterPath="$PROJECT_DIR$/CreateQ/sqls_ans.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/CreateQ/templates/create_survey.html" afterPath="$PROJECT_DIR$/CreateQ/templates/create_survey.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/CreateQ/templates/elements.html" afterPath="$PROJECT_DIR$/CreateQ/templates/elements.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/CreateQ/templates/manage_survey.html" afterPath="$PROJECT_DIR$/CreateQ/templates/manage_survey.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/CreateQ/templates/view_questions.html" afterPath="$PROJECT_DIR$/CreateQ/templates/view_questions.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/CreateQ/urls.py" afterPath="$PROJECT_DIR$/CreateQ/urls.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/CreateQ/views.py" afterPath="$PROJECT_DIR$/CreateQ/views.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SQLscript" afterPath="$PROJECT_DIR$/SQLscript" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ScholarDB/settings.py" afterPath="$PROJECT_DIR$/ScholarDB/settings.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/User/templates/common_side_bar.html" afterPath="$PROJECT_DIR$/User/templates/common_side_bar.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/User/urls.py" afterPath="$PROJECT_DIR$/User/urls.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/User/views.py" afterPath="$PROJECT_DIR$/User/views.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/common_file.py" afterPath="$PROJECT_DIR$/common_file.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/js/survey_chart.js" afterPath="$PROJECT_DIR$/static/js/survey_chart.js" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -683,13 +663,21 @@
       <option name="presentableId" value="Default" />
       <updated>1493047578521</updated>
     </task>
+    <task id="LOCAL-00001" summary="user homepage being built">
+      <created>1493299225574</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1493299225574</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="ToolWindowManager">
     <frame x="65" y="24" width="1301" height="744" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.15295926" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.15295926" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -715,6 +703,10 @@
   </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="user homepage being built" />
+    <option name="LAST_COMMIT_MESSAGE" value="user homepage being built" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
