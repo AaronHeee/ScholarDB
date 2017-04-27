@@ -110,7 +110,7 @@ class SurveyAnswer:
             for key in user_info_dict.keys():
                 if key not in available_privacy:
                     user_info_dict.pop(key)
-            json['privacy'] = dict(zip([translation_dict_r[i] for i in user_info_dict.keys()],[translation_dict_r[i] for i in user_info_dict.values()]))
+            json['privacy'] = dict(zip([translation_dict_r[i] for i in user_info_dict.keys()],[i for i in user_info_dict.values()]))
             json['uno'] = uno
             json_list.append(json)
 
@@ -209,6 +209,8 @@ def delete_survey(sno):
     cursor.execute("DELETE FROM QUESTION WHERE SNO = %d" % sno)
     cursor.execute("DELETE FROM SCHOLAR_OWN_SURVEY WHERE SNO = %d" % sno)
     cursor.execute("DELETE FROM PUBLICITY_SURVEY WHERE SNO = %d" % sno)
+    cursor.execute("DELETE FROM PRIVACY WHERE SNO = %d" % sno)
+    cursor.execute("DELETE FROM SURVEY_SUBJECT WHERE SNO = %d" % sno)
     cursor.execute("DELETE FROM SURVEY WHERE SNO = %d" % sno)
     db.commit()
     db.close()

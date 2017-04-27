@@ -17,7 +17,7 @@ def add_survey_to_list(subject=None, user='root', pwd='dbpjdbpj'):
     if condition != None and condition != []:
         sql += ' WHERE '
         sql += ' AND '.join(condition)
-
+    sql += 'AND STAGE ="OPEN"'
     return sql
 
 def add_task_to_list(datatype=None, user='root', pwd='dbpjdbpj'):
@@ -25,6 +25,7 @@ def add_task_to_list(datatype=None, user='root', pwd='dbpjdbpj'):
     sql = "SELECT TASK.TNO,TYPE,TITLE,DESCRIPTION,PAYMENT,OPENTIME FROM TASK"
     if datatype != '' and datatype != None:
         sql += ",FILE,TASK_WITH_FILE WHERE TASK.TNO=TASK_WITH_FILE.TNO AND FILE.FNO=TASK_WITH_FILE.FNO AND FILE.DATATYPE='%s'" % datatype
+    sql += 'AND STAGE ="OPEN"'
     print sql
     return sql
 
@@ -116,6 +117,7 @@ def search(subject=None, datatype=None, type=None, pattern=None, order=None, isD
 
     if isDesc == '1':
         sql += "OR DESCRIPTION LIKE '%" + pattern + "%'"
+
     sql += "ORDER BY " + order
 
     print sql

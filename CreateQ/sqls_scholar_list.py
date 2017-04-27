@@ -53,6 +53,7 @@ def load_json(list_res):
             sql = "SELECT WHAT FROM SURVEY_SUBJECT WHERE SNO = %d" % tup[1]
             cursor.execute(sql)
             l = cursor.fetchall()
+            print l
             dict["subject1"] = l[0][0] if len(l) >= 1 else ""
             dict["subject2"] = l[1][0] if len(l) >= 2 else ""
             dict["subject3"] = l[2][0] if len(l) >= 3 else ""
@@ -60,9 +61,11 @@ def load_json(list_res):
             sql = "SELECT DATATYPE,NUM,NOW FROM TASK_WITH_FILE, FILE WHERE TASK_WITH_FILE.FNO=FILE.FNO AND TNO =%d" % tup[1]
             cursor.execute(sql)
             l = cursor.fetchall()
-            dict["datatype"] = l[0][0]
-            dict["num"] = l[0][1]
-            dict["now"] = l[0][2]
+
+            if l:
+                dict["datatype"] = l[0][0]
+                dict["num"] = l[0][1]
+                dict["now"] = l[0][2]
         res.append(dict)
 
     db.commit()

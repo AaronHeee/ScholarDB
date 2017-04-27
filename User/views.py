@@ -3,8 +3,28 @@ from django.shortcuts import render,HttpResponse
 from userctrl import register,login_mail,get_basic_info
 from django.http import HttpResponse,JsonResponse
 from common_file import *
+from sql_index import *
 from sql_scholar import *
 # Create your views here.
+
+def index(request):
+    login_user, uno, pwd, usertype = get_basic_from_session(request)
+    if request.method == 'GET':
+        if 'load_statistics' in request.GET.keys():
+            return JsonResponse(get_statistics())
+        if 'load_public_survey' in request.GET.keys():
+            min = int(request.GET['min'])
+            max = int(request.GET['max'])
+            json_list = get_public_survey(min,max)
+            print json_list
+            return JsonResponse(json_list,safe=False)
+        if 'load_public_task' in request.GET.keys():
+            min = int(request.GET['min'])
+            max = int(request.GET['max'])
+            json_list = get_public_task(min, max)
+            print json_list
+            return JsonResponse(json_list, safe=False)
+    return render(request, "index.html", {"username": login_user})
 
 def scholars_register(request):
     login_user = request.session.get("username", "")
@@ -54,21 +74,18 @@ def login(request):
 def scholar_info(request):
     login_user,uno,pwd,usertype = get_basic_from_session(request)
     if request.method == 'GET':
-        target_uno = int(request.GET.get('tuno',"-1"))
+        target_uno = int(request.GET.get('tuno',uno))
         if 'load_user_info' in request.GET.keys():
             s = Scholar()
-
             s.load_basic_info_from_db(target_uno)
             return JsonResponse(s.to_json())
-        if 'load_project_info' in request.GET.keys():
+        if 'load_project_info' in request.GET.keys() and usertype == 'Scholar':
             return JsonResponse(project_list_of_scholar(target_uno),safe=False)
         if 'load_participation_info' in request.GET.keys():
             return JsonResponse(participation_list(target_uno),safe=False)
+        return render(request,"scholar_detail.html",{'username':login_user,'uno':uno,'tuno':target_uno,
+                                                     'usertype':usertype})
 
-        return render(request,"scholar_detail.html",{'username':login_user,'uno':uno,'tuno':target_uno})
-
-def volunteer_info(request):
-    return HttpResponse(1)
 def logout(request):
     try:
         del request.session["username"]

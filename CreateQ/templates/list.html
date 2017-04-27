@@ -199,8 +199,6 @@
     <script src="{% static "js/bootstrap-wysihtml5-0.0.2.js"%}"></script>
     <script src="{% static "js/jquery.uniform.min.js"%}"></script>
     <script src="{% static "js/select2.min.js"%}"></script>
-    <script src="{% static "js/theme.js"%}"></script>
-
         <!-- call this page plugins -->
     <script src = "{% static "js/survey_chart.js" %}"></script>
     <script>
@@ -281,23 +279,6 @@
             load();
         }
 
-    </script>
-    <script type="text/javascript">
-        $(function () {
-
-            // add uniform plugin styles to html elements
-            $("input:checkbox, input:radio").uniform();
-
-            // select2 plugin for select elements
-            $(".select2").select2({
-                placeholder: "请选择..."
-            });
-
-            // wysihtml5 plugin on textarea
-            $(".wysihtml5").wysihtml5({
-                "font-styles": false
-            });
-        });
     </script>
     <script type="text/javascript">
         $(function () {

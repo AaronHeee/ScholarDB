@@ -32,15 +32,15 @@ def participation_list(uno):
     db = connect_db()
     cursor = db.cursor()
     json = []
-    cursor.execute("SELECT SNO,TITLE,SUBMIT_TIME FROM PARTICIPATION WHERE UNO = %d" % uno)
+    cursor.execute("SELECT PARTICIPATION.SNO,TITLE,SUBMIT_TIME,PAYMENT,STATUS FROM PARTICIPATION,SURVEY WHERE UNO = %d AND SURVEY.SNO = PARTICIPATION.SNO" % uno)
     tups = cursor.fetchall()
-    cursor.execute("SELECT TNO,TITLE,SUBMIT_TIME FROM PARTICIPATION WHERE UNO = %d" % uno)
+    cursor.execute("SELECT PARTICIPATION_TASK.TNO,TITLE,SUBMIT_TIME,PAYMENT,STATUS FROM PARTICIPATION_TASK,TASK WHERE UNO = %d AND TASK.TNO = PARTICIPATION_TASK.TNO" % uno)
     tups2 = cursor.fetchall()
     for tup in tups:
-        tjson = {'NO':tup[0],'TITLE':tup[1],'SUBMIT_TIME':tup[2],'TYPE':'SURVEY'}
+        tjson = {'NO':tup[0],'TITLE':tup[1],'SUBMIT_TIME':tup[2],'TYPE':'SURVEY','PAYMENT':tup[3],'STATUS':translation_dict_r[tup[4]]}
         json.append(tjson)
     for tup in tups2:
-        tjson = {'NO':tup[0],'TITLE':tup[1],'SUBMIT_TIME':tup[2],'TYPE':'TASK'}
+        tjson = {'NO':tup[0],'TITLE':tup[1],'SUBMIT_TIME':tup[2],'TYPE':'TASK','PAYMENT':tup[3],'STATUS':translation_dict_r[tup[4]]}
         json.append(tjson)
     return json #list
 

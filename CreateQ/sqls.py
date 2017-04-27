@@ -146,8 +146,8 @@ def add_survey_to_db(title, detail, questions, user='root', pwd='dbpjdbpj'):
     cursor = db.cursor()
     # title
 
-    sql = "INSERT INTO SURVEY(SNO,TITLE,DESCRIPTION,MINAGE,MAXAGE,GENDER_RESTRICT,SURVEY_RESTRICT,PAYMENT,STAGE,OPENTIME) VALUES" \
-          "(NULL,'%s','%s',%d,%d,'%s','%s',%d,'OPEN','%s')" % (
+    sql = "INSERT INTO SURVEY(SNO,TITLE,DESCRIPTION,MINAGE,MAXAGE,GENDER_RESTRICT,SURVEY_RESTRICT,PAYMENT,STAGE,OPENTIME,TYPE) VALUES" \
+          "(NULL,'%s','%s',%d,%d,'%s','%s',%d,'OPEN','%s','SURVEY')" % (
           title.title, title.description, detail.min_age, detail.max_age,
           detail.gender_restrict, detail.survey_restrict, detail.payment, detail.opentime)
     print sql
