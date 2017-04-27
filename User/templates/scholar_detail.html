@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {% load staticfiles %}
+	<title>个人信息</title>
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- bootstrap -->
+    <link href="{% static "css/bootstrap/bootstrap.css" %}" rel="stylesheet" />
+    <link href="{% static "css/bootstrap/bootstrap-responsive.css" %}" rel="stylesheet" />
+    <link href="{% static "css/bootstrap/bootstrap-overrides.css"%}" type="text/css" rel="stylesheet" />
+
+    <!-- global styles -->
+    <link rel="stylesheet" type="text/css" href="{% static "css/layout.css" %}" />
+    <link rel="stylesheet" type="text/css" href="{% static "css/elements.css" %}" />
+    <link rel="stylesheet" type="text/css" href="{% static  "css/icons.css"%}" />
+
+    <!-- libraries -->
+
+    <link rel="stylesheet" type="text/css" href="{% static "css/lib/font-awesome.css"%}" />
+    <link href="{% static "css/lib/bootstrap-wysihtml5.css"%}" type="text/css" rel="stylesheet" />
+    <link href="{% static "css/lib/uniform.default.css"%}" type="text/css" rel="stylesheet" />
+    <link href="{% static "css/lib/select2.css"%}" type="text/css" rel="stylesheet" />
+    <link href="{% static "css/lib/bootstrap.datepicker.css" %}" type="text/css" rel="stylesheet" />
+    <link href="{% static "css/lib/font-awesome.css"%}" type="text/css" rel="stylesheet" />
+
+    <!-- this page specific styles -->
+    <link rel="stylesheet" href="{% static "css/compiled/form-showcase.css"%}" type="text/css" media="screen" />
+    <link rel="stylesheet" href="{% static "css/compiled/form-wizard.css"%}" type="text/css" media="screen" />
+
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /></head>
+<body>
+{% include "common_nav_bar.html" %}
+{% include "common_side_bar.html" %}
+<div style = "display: none">
+{% include "elements.html" %}
+</div>
+
+	<!-- main container -->
+    <div class="content">
+        <div class="container-fluid">
+            <div id="pad-wrapper" class="user-profile">
+                <!-- header -->
+                <div class="row-fluid header" style="padding-bottom: 30px" >
+                    <h3 id = 'tuname'>Name<small>学者</small></h3>
+                </div>
+                <br/>
+                <div class="row-fluid profile">
+                    <!-- bio, new note & orders column -->
+                    <div class="span9 bio">
+                        <div class="profile-box">
+                            <h5><b>组织课题:</b></h5>
+                            <br />
+
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th class="span5">
+                                                任务简介
+                                            </th>
+                                            <th class="span4">
+                                                <span class="line"></span>发布日期
+                                            </th>
+                                            <th class="span2">
+                                                <span class="line"></span>酬劳
+                                            </th>
+                                            <th class="span4 align-right">
+                                                <span class="line"></span>限制条件
+                                            </th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody id = "qpar">
+                                        <!-- row -->
+                                    </tbody>
+                                </table>
+                        </div>
+                        <div class="profile-box">
+                            <h5><b>参与课题</b></h5>
+                            <br />
+
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th class="span5">
+                                                任务名
+                                            </th>
+                                            <th class="span4">
+                                                <span class="line"></span>参与日期
+                                            </th>
+                                            <th class="span2">
+                                                <span class="line"></span>酬劳
+                                            </th>
+                                            <th class="span4 align-right">
+                                                <span class="line"></span>当前状态
+                                            </th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody id = "qpar">
+                                        <!-- row -->
+                                    </tbody>
+                                </table>
+                        </div>
+                    </div>
+
+                    <!-- side address column -->
+                    <div class="span3 address pull-right">
+                        <h5>基本信息</h5>
+                        <br>
+                        <ul>
+                            <li id = "inst">inst</li>
+                            <li id = "city">city</li>
+                            <li id = "nation">nation</li>
+                             <li class="ico-li">
+                                <i class="ico-mail"></i>
+                                <a href="#" id = "mail">mail</a>
+                            </li>
+                            <li id = "money">money</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end main container -->
+
+
+	<!-- scripts -->
+    <script src="{% static "js/jquery-latest.js" %}"></script>
+    <script src="{% static "js/bootstrap.min.js"%}"></script>
+    <script src="{% static "js/theme.js"%}"></script>
+    <script src="{% static "js/survey_chart.js" %}"></script>
+    <script>
+        var tuno = {{ tuno }};
+        var uno = {{ uno }};
+        load_scholar_info();
+        load_project_info();
+        function load_scholar_info(){
+            $.getJSON('{% url "scholar_info" %}',{'load_user_info':'true','tuno':tuno},function(res){
+                document.getElementById("tuname").innerHTML = res.uname + '<small>学者</small>';
+                document.getElementById("inst").innerHTML = res.inst;
+                document.getElementById("nation").innerHTML = res.nation;
+                document.getElementById("city").innerHTML = res.city;
+                document.getElementById("mail").innerHTML = res.mail;
+                document.getElementById("money").innerHTML = res.money;
+            })
+        }
+        function load_project_info(){
+            $.getJSON('{% url "scholar_info" %}',{'load_project_info':'true','tuno':tuno},function(res){
+                for(var i = 0;i<res.length;++i){
+                    add_list_item_wrapper(res[i],"qpar")
+                }
+            });
+        }
+        function load_participation_info(){
+            $.getJSON('{% url "scholar_info" %}',{'load_participation_info':'true','tuno':tuno},function(res){
+                for(var i =0;i<res.length;++i)
+                {
+
+                }
+            }
+        }
+        function  add_list_item_wrapper(item,parid) {
+            var ele = add_list_item(item,parid);
+            var href = ele.getElementsByClassName("name title")[0].href;
+            href = href.replace(/view_questions/,'manage');
+            href = href.replace(/view_files/,'manage');
+            ele.getElementsByClassName("name title")[0].href = href;
+        }
+    </script>
+
+</body>
+</html>

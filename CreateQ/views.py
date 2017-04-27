@@ -10,16 +10,6 @@ from files import *
 from sqls_ans import *
 
 
-def scale_db_username(uno, usertype):
-    return 'scholar_%d' % uno if usertype == 'Scholar' else 'volunteer_%d' % uno
-
-def get_basic_from_session(request):
-    login_user = request.session.get("username", "")
-    uno = int(request.session.get("uno", 0))
-    pwd = request.session.get("pwd", "")
-    usertype = request.session.get("usertype", "")
-    return login_user,uno,pwd,usertype
-
 def new_survey(request):
     login_user,uno,pwd,usertype = get_basic_from_session(request)
 #    if login_user == '':
@@ -129,7 +119,7 @@ def list(request):
         res = get_list_from_db(subject=subject,datatype=datatype,type=type, order=order, user=scale_db_username(uno, usertype),pwd=pwd)
         return JsonResponse(res, safe=False)
 
-    if "search" in request.GET.keys() and request.GET["search"] == 'true':
+    elif "search" in request.GET.keys() and request.GET["search"] == 'true':
         subject = request.GET.get("subject", None).split(' ')
         datatype = request.GET.get("datatype", None)
         type = request.GET.get("type",None)
@@ -139,8 +129,8 @@ def list(request):
         res = search(subject=subject, datatype=datatype, type=type, pattern=pattern, order=order, isDesc=isDesc, user=scale_db_username(uno, usertype), pwd=pwd)
         print res
         return JsonResponse(res, safe=False)
-
-    return render(request, 'list.html', {"username": login_user})
+    else:
+        return render(request, 'list.html', {"username": login_user})
 
 def scholar_list(request):
     login_user, uno, pwd, usertype = get_basic_from_session(request)
@@ -170,14 +160,17 @@ def scholar_list(request):
 
 def manage_survey(request):
     login_user, uno, pwd, usertype = get_basic_from_session(request)
+    access = ''
     if request.method == 'GET':
         sno = request.GET.get("sno",-1)
         sno = int(sno)
         if sno == -1:
             return HttpResponse("Survey error")
         #check authorization
-        if not check_authorization(uno,sno,['OWNER']):
+        if not check_authorization(uno,sno,['OWNER','COOPERATOR']):
             return HttpResponse("You have no access for view pending answers in this survey")
+        if check_authorization(uno,sno,['OWNER']):
+            access = 'OWNER'
         if "load_contributor" in request.GET.keys():
             json = load_contributor(sno)
             print json
@@ -186,7 +179,7 @@ def manage_survey(request):
             sa = SurveyAnswer()
             json = sa.to_json_list_by_user(sno)
             print json
-            return JsonResponse(json,safe=False)
+            return  JsonResponse(json,safe=False)
         if "load_summary" in request.GET.keys():
             json = load_summary_management(sno)
             print json
@@ -195,4 +188,36 @@ def manage_survey(request):
             tuno =  int(request.GET['delete_id'][1:])
             delete_answer(tuno,sno)
             return HttpResponse("Success")
-        return render(request,'manage_survey.html',{'username':login_user,'sno':sno})
+        if "search_user" in request.GET.keys():
+            name = request.GET['name']
+            json = search_scholar_by_name(name)
+            print json
+            return JsonResponse(json,safe = False)
+        if "add_contributor" in request.GET.keys():
+            uno = int(request.GET['uno'])
+            add_contributor(uno,sno)
+        if "close" in request.GET.keys():
+            #注意：这里仅针对了调研
+            publicity = request.GET['publicity'].replace(",","")
+            print publicity
+            if check_authorization(uno,sno,['OWNER']):
+                close_survey(sno,publicity)
+                return HttpResponse("修改成功")
+        if "delete" in request.GET.keys():
+            if check_authorization(uno, sno, ['OWNER']):
+                delete_survey(sno)
+                return HttpResponse("修改成功")
+        if "load_date_number" in request.GET.keys():
+            json = load_date_number(sno)
+            print json
+            return JsonResponse(json, safe=False)
+        if "load_gender" in request.GET.keys():
+            json = load_gender(sno)
+            print "gender:",json
+            return JsonResponse(json, safe=False)
+        if "load_location" in request.GET.keys():
+            json = load_location(sno)
+            print "location:",json
+            return JsonResponse(json, safe=False)
+
+        return render(request,'manage_survey.html',{'username':login_user,'sno':sno,'access':access})
