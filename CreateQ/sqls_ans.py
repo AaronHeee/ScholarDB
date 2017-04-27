@@ -208,6 +208,8 @@ def delete_survey(sno):
     cursor.execute("DELETE FROM QUESTION WHERE SNO = %d" % sno)
     cursor.execute("DELETE FROM SCHOLAR_OWN_SURVEY WHERE SNO = %d" % sno)
     cursor.execute("DELETE FROM PUBLICITY_SURVEY WHERE SNO = %d" % sno)
+    cursor.execute("DELETE FROM PRIVACY WHERE SNO = %d" % sno)
+    cursor.execute("DELETE FROM SURVEY_SUBJECT WHERE SNO = %d" % sno)
     cursor.execute("DELETE FROM SURVEY WHERE SNO = %d" % sno)
     db.commit()
     db.close()

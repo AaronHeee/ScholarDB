@@ -15,10 +15,11 @@ Including another URLconf
 """
 from django.conf.urls import url,include
 from django.contrib import admin
-from CreateQ import views as CreateQ_view
+from User import views as user_views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^users/',include('User.urls')),
-    url(r'^project/',include('CreateQ.urls'))
+    url(r'^project/',include('CreateQ.urls')),
+    url(r'^',user_views.index,name='index'),
 ]

@@ -77,12 +77,12 @@ def upload_data(request,name):
     myFile = request.FILES.get(name, None)  # 获取上传的文件，如果没有文件，则默认为None
     if not myFile:
         print "No file upload!"
-    destination = open(os.path.join("/home/aaron/Desktop/receiver",name,myFile.name), 'wb+')  # 打开特定的文件进行二进制的写操作
+    destination = open(os.path.join("/home/aucson/Desktop/receiver",name,myFile.name), 'wb+')  # 打开特定的文件进行二进制的写操作
     for chunk in myFile.chunks():  # 分块写入文件
         destination.write(chunk)
     destination.close()
     print "upload over!"
-    return [os.path.join("/home/aaron/Desktop/receiver",name),myFile.name]
+    return [os.path.join("/home/aucson/Desktop/receiver",name),myFile.name]
 
 def new_task(request):
     login_user = request.session.get("username", "")
@@ -119,7 +119,7 @@ def list(request):
         res = get_list_from_db(subject=subject,datatype=datatype,type=type, order=order, user=scale_db_username(uno, usertype),pwd=pwd)
         return JsonResponse(res, safe=False)
 
-    elif "search" in request.GET.keys() and request.GET["search"] == 'true':
+    if "search" in request.GET.keys() and request.GET["search"] == 'true':
         subject = request.GET.get("subject", None).split(' ')
         datatype = request.GET.get("datatype", None)
         type = request.GET.get("type",None)
@@ -129,8 +129,8 @@ def list(request):
         res = search(subject=subject, datatype=datatype, type=type, pattern=pattern, order=order, isDesc=isDesc, user=scale_db_username(uno, usertype), pwd=pwd)
         print res
         return JsonResponse(res, safe=False)
-    else:
-        return render(request, 'list.html', {"username": login_user})
+
+    return render(request, 'list.html', {"username": login_user})
 
 def scholar_list(request):
     login_user, uno, pwd, usertype = get_basic_from_session(request)

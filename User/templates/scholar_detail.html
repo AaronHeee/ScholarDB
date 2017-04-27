@@ -46,14 +46,23 @@
             <div id="pad-wrapper" class="user-profile">
                 <!-- header -->
                 <div class="row-fluid header" style="padding-bottom: 30px" >
-                    <h3 id = 'tuname'>Name<small>学者</small></h3>
+                    <h2 id = 'tuname'>Name
+                        <small>
+                            {% if usertype == 'Scholar' %}
+                                学者
+                            {% else %}
+                                志愿者
+                            {% endif %}
+                        </small>
+                    </h2>
                 </div>
                 <br/>
                 <div class="row-fluid profile">
                     <!-- bio, new note & orders column -->
                     <div class="span9 bio">
+                        {% if usertype == 'Scholar' %}
                         <div class="profile-box">
-                            <h5><b>组织课题:</b></h5>
+                            <h5><i class="icon-check"><b>组织课题</b></i></h5>
                             <br />
 
                                 <table class="table table-hover">
@@ -79,8 +88,10 @@
                                     </tbody>
                                 </table>
                         </div>
+                        {% endif %}
+                        {% if uno == tuno %}
                         <div class="profile-box">
-                            <h5><b>参与课题</b></h5>
+                            <h5><i class="icon-check"><b>参与课题</b></i></h5>
                             <br />
 
                                 <table class="table table-hover">
@@ -101,7 +112,7 @@
                                         </tr>
                                     </thead>
 
-                                    <tbody id = "qpar">
+                                    <tbody id = "participation-table">
                                         <!-- row -->
                                     </tbody>
                                 </table>
@@ -111,18 +122,28 @@
                     <!-- side address column -->
                     <div class="span3 address pull-right">
                         <h5>基本信息</h5>
-                        <br>
-                        <ul>
-                            <li id = "inst">inst</li>
-                            <li id = "city">city</li>
-                            <li id = "nation">nation</li>
-                             <li class="ico-li">
+                        <hr SIZE=3>
+                        <dl class="list-group">
+                            <dt>教育机构</dt>
+                            <dd id = "inst" class="list-group-item">inst</dd>
+                            <dt>城市</dt>
+                            <dd id = "city" class="list-group-item">city</dd>
+                            <dt>国家</dt>
+                            <dd id = "nation" class="list-group-item">nation</dd>
+                            <dt>邮箱</dt>
+                             <dd class="list-group-item">
                                 <i class="ico-mail"></i>
                                 <a href="#" id = "mail">mail</a>
-                            </li>
-                            <li id = "money">money</li>
-                        </ul>
+                            </dd>
+                            <dt>余额</dt>
+                            <dd id = "money" class="list-group-item">money</dd>
+                        </dl>
+                        <hr>
+                        <h5>合作者</h5>
+                        <div class="alert alert-info"><i class="icon-lightbulb">合作者作为一个特殊组别，可以完成“仅合作者”限</i></div>
+
                     </div>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -138,8 +159,12 @@
     <script>
         var tuno = {{ tuno }};
         var uno = {{ uno }};
+
         load_scholar_info();
+        {% if usertype == 'Scholar' %}
         load_project_info();
+        {% endif %}
+        load_participation_info();
         function load_scholar_info(){
             $.getJSON('{% url "scholar_info" %}',{'load_user_info':'true','tuno':tuno},function(res){
                 document.getElementById("tuname").innerHTML = res.uname + '<small>学者</small>';
@@ -150,6 +175,7 @@
                 document.getElementById("money").innerHTML = res.money;
             })
         }
+        {% if usertype == 'Scholar' %}
         function load_project_info(){
             $.getJSON('{% url "scholar_info" %}',{'load_project_info':'true','tuno':tuno},function(res){
                 for(var i = 0;i<res.length;++i){
@@ -157,13 +183,13 @@
                 }
             });
         }
+        {% endif %}
         function load_participation_info(){
             $.getJSON('{% url "scholar_info" %}',{'load_participation_info':'true','tuno':tuno},function(res){
-                for(var i =0;i<res.length;++i)
-                {
-
+                for(var i =0;i<res.length;++i) {
+                    add_list_item2(res[i],"participation-table");
                 }
-            }
+            })
         }
         function  add_list_item_wrapper(item,parid) {
             var ele = add_list_item(item,parid);
@@ -171,6 +197,18 @@
             href = href.replace(/view_questions/,'manage');
             href = href.replace(/view_files/,'manage');
             ele.getElementsByClassName("name title")[0].href = href;
+        }
+        function add_list_item2(item,parid){
+            var ele = document.getElementById("list-item").cloneNode(true);
+            ele.id = item.NO;
+            ele.getElementsByClassName("name title")[0].innerHTML = item.TITLE;
+            ele.getElementsByClassName("text")[0].innerHTML = item.TYPE;
+            ele.getElementsByClassName("time")[0].innerHTML = item.SUBMIT_TIME;
+            ele.getElementsByClassName("payment")[0].innerHTML = item.PAYMENT;
+            ele.getElementsByClassName("align-right restrict")[0].innerHTML = item.STATUS;
+            var par = document.getElementById(parid);
+            par.appendChild(ele);
+            return ele;
         }
     </script>
 

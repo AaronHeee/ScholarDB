@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ScholarDB-与世界分享数据</title>
+    {% load staticfiles %}
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link href="{% static "css/bootstrap/bootstrap.css" %}" rel="stylesheet" />
+    <link href="{% static "css/bootstrap/bootstrap-responsive.css" %}" rel="stylesheet" />
+    <link href="{% static "css/bootstrap/bootstrap-overrides.css"%}" type="text/css" rel="stylesheet" />
+
+    <!-- global styles -->
+    <link rel="stylesheet" type="text/css" href="{% static "css/layout.css" %}" />
+    <link rel="stylesheet" type="text/css" href="{% static "css/elements.css" %}" />
+    <link rel="stylesheet" type="text/css" href="{% static  "css/icons.css"%}" />
+
+    <!-- libraries -->
+
+    <link rel="stylesheet" type="text/css" href="{% static "css/lib/font-awesome.css"%}" />
+    <link href="{% static "css/lib/font-awesome.css"%}" type="text/css" rel="stylesheet" />
+
+    <!-- this page specific styles -->
+    <link rel="stylesheet" href="{% static "css/compiled/index.css" %}" type="text/css" media="screen" />
+    <link rel="stylesheet" href="{% static "css/compiled/ui-elements.css" %}" type="text/css" media="screen" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /></head>
+<body>
+{% include "common_nav_bar.html" %}
+{% include "common_side_bar.html" %}
+
+<div style = "display: none">
+    {% include "elements.html" %}
+</div>
+	<!-- main container -->
+    <div class="content">
+
+        <!-- settings changer -->
+
+        <div class="container-fluid">
+
+            <!-- upper main stats -->
+            <div id="main-stats">
+                <div class="row-fluid stats-row">
+                    <div class="span3 stat">
+                        <div class="data">
+                            <span class="number" id="open-num">2457</span>
+                            开放任务
+                        </div>
+                    </div>
+                    <div class="span3 stat">
+                        <div class="data">
+                            <span class="number" id="public-num">3240</span>
+                            开源数据集
+                        </div>
+                    </div>
+                    <div class="span3 stat">
+                        <div class="data">
+                            <span class="number" id="scholar-num">322</span>
+                            学者
+                        </div>
+                    </div>
+                    <div class="span3 stat last">
+                        <div class="data">
+                            <span class="number" id="volunteer-num">2,340</span>
+                            志愿者
+                        </div>
+                    </div>
+                </div>
+                <div class="row-fluid filter-block">
+                    <div class="span12">
+                        <div class="carousel slide" id="carousel-22196" style="max-height: 300px">
+                            <ol class="carousel-indicators">
+                                <li data-slide-to="0" data-target="#carousel-22196">
+                                </li>
+                                <li data-slide-to="1" data-target="#carousel-22196">
+                                </li>
+                                <li data-slide-to="2" data-target="#carousel-22196" class="active">
+                                </li>
+                            </ol>
+                            <div class="carousel-inner">
+                                <div class="item" style="max-height: 300px">
+                                    <img alt="" src="{% static "img/7.jpg" %}"/>
+                                    <div class="carousel-caption">
+                                        <h4>
+                                            ScholarDB简介
+                                        </h4>
+                                        <p>
+                                            ScholarDB是一个面向科研的调研网站，主要支持两大类型的任务：数据标注与调研问卷。
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="item"  style="max-height: 300px">
+                                    <img alt="" src="{% static "img/8.jpg" %}" />
+                                    <div class="carousel-caption">
+                                        <h4>
+                                            ScholarDB用户
+                                        </h4>
+                                        <p>
+                                            ScholarDB的用户可以分为两大类：学者与志愿者。学者可以发布任务，志愿者可以完成任务并获得奖励。
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="item active"  style="max-height: 300px">
+                                    <img alt="" src="{% static "img/9.jpg" %}" />
+                                    <div class="carousel-caption">
+                                        <h4>
+                                            ScholarDB功能
+                                        </h4>
+                                        <p>
+                                            ScholarDB学者可以统计，筛选，可视化数据。学者还可以互相组成研究小组，更可以开源并分享数据集！
+                                        </p>
+                                    </div>
+                                </div>
+                            </div> <a data-slide="prev" href="#carousel-22196" class="left carousel-control">‹</a> <a data-slide="next" href="#carousel-22196" class="right carousel-control">›</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br/>
+            <div class = "row-fluid">
+                   <div class = "span12">
+                        <div class="hero-unit">
+                          <h3>登录ScholarDB以使用完整功能</h3>
+                          <p>学者/志愿者</p>
+                          <p>
+                            <a class="btn btn-success" href="{% url "login" %}">
+                              登录
+                            </a>
+                            <a class="btn btn-primary" href="{% url "scholars_register" %}">
+                              注册为学者
+                            </a>
+                            <a class="btn btn-primary" href="{% url "volunteers_register" %}">
+                              注册为志愿者
+                            </a>
+                          </p>
+                        </div>
+                   </div>
+            </div>
+
+            <br>
+            <br>
+            <div class="row-fluid">
+
+                <div class="span12">
+                    <h3 align="center">开源标注数据集<small>TASK</small></h3>
+                    <br>
+                    <br>
+                </div>
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th class="span5">
+                                课题名称
+                            </th>
+                            <th class="span4">
+                                <span class="line"></span>贡献者
+                            </th>
+                            <th class="span2">
+                                <span class="line"></span>机构
+                            </th>
+                            <th class="span4 align-right">
+                                <span class="line"></span>创建时间
+                            </th>
+                        </tr>
+                    </thead>
+
+                    <tbody id = "participation-table">
+                        <!-- row -->
+                    </tbody>
+                </table>
+                <a onclick="max+=10;load_public_task()">显示更多..</a>
+            </div>
+            <br/>
+            <br/>
+            <div class="row-fluid">
+
+                <div class="span12">
+                    <h3 align="center">开源调研集<small>SURVEY</small></h3>
+                    <br>
+                    <br>
+                </div>
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th class="span5">
+                                课题名称
+                            </th>
+                            <th class="span4">
+                                <span class="line"></span>贡献者
+                            </th>
+                            <th class="span2">
+                                <span class="line"></span>机构
+                            </th>
+                            <th class="span4 align-right">
+                                <span class="line"></span>创建时间
+                            </th>
+                        </tr>
+                    </thead>
+
+                    <tbody id = "participation-table-2">
+                        <!-- row -->
+                    </tbody>
+                </table>
+                <a onclick="max2+=10;load_public_task()">显示更多..</a>
+            </div>
+            <!-- end upper main stats -->
+
+        </div>
+    </div>
+
+
+	<script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+	<script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <script src="{% static "js/jquery-latest.js" %}"></script>
+    <script src="{% static "js/bootstrap.js"%}"></script>
+    <script src="{% static "js/theme.js"%}"></script>
+    <script src="{% static "js/jquery-ui-1.10.2.custom.min.js"%}"></script>
+    <script src="{% static "js/jquery.uniform.min.js"%}"></script>
+    <script src="{% static "js/survey_chart.js" %}"></script>
+    <script>
+        var min = 0;
+        var max = 10;
+        var min2 = 0;
+        var max2 = 10;
+        load_statistics()
+        load_public_survey();
+        load_public_task();
+        function load_statistics() {
+            $.getJSON('{% url 'index' %}',{'load_statistics':true},function(res){
+                document.getElementById("open-num").innerHTML = res.open_cnt;
+                document.getElementById("public-num").innerHTML = res.public_cnt;
+                document.getElementById("scholar-num").innerHTML = res.scholar_cnt;
+                document.getElementById("volunteer-num").innerHTML = res.volunteer_cnt;
+            })
+        }
+        function load_public_survey(){
+            $.getJSON('{% url 'index' %}',{'load_public_survey':true,'min':min2,'max':max2},function(res){
+                document.getElementById("participation-table-2").innerHTML = "";
+                for(var i = 0;i<res.length;++i)
+                    add_index_list_item(res[i],"participation-table-2",'SURVEY');
+            })
+        }
+        function load_public_task(){
+            $.getJSON('{% url 'index' %}',{'load_public_task':true,'min':min,'max':max},function(res){
+                document.getElementById("participation-table").innerHTML = "";
+                for(var i = 0;i<res.length;++i)
+                    add_index_list_item(res[i],"participation-table",'TASK');
+            })
+        }
+        function add_index_list_item(json,parid,type)
+        {
+            var par = document.getElementById(parid);
+            var ele = document.getElementById("index-list-item").cloneNode(true);
+            ele.getElementsByClassName("name title")[0].innerHTML = json.TITLE;
+            if(type == 'SURVEY'){
+                ele.getElementsByClassName("name title")[0].href = "{% url "manage" %}" + "?sno=" + json.SNO;
+            }
+            else if(type=='TASK'){
+                ele.getElementsByClassName("name title")[0].href = "{% url "manage" %}" + "?tno=" + json.TNO;
+            }
+            ele.getElementsByClassName("contributor")[0].innerHTML = json.UNAME;
+            ele.getElementsByClassName("inst")[0].innerHTML = json.INST;
+            ele.getElementsByClassName("time pull-right")[0].innerHTML = json.OPENTIME;
+            par.appendChild(ele);
+        }
+    </script>
+
+
+</body>
+</html>
