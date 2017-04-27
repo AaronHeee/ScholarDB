@@ -141,6 +141,7 @@ function add_list_survey_item(json,parid){
         add_label(subject_par,json.subject3,"success")
     }
     parele.appendChild(ele);
+    return ele;
 }
 
 function add_list_task_item(json,parid){
@@ -156,6 +157,7 @@ function add_list_task_item(json,parid){
         add_label(subject_par,json.datatype,"info")
     }
     parele.appendChild(ele);
+    return ele;
 }
 
 function add_scholar_list_task_item(json,parid){
@@ -177,6 +179,7 @@ function add_scholar_list_task_item(json,parid){
     else ele.getElementsByClassName("processing")[0].innerHTML = (Math.floor(now/num))+"又"+(now%num)+"/"+num+"份";
 
     parele.appendChild(ele);
+
 }
 
 function add_scholar_list_survey_item(json,parid){
@@ -217,10 +220,10 @@ function add_scholar_list_survey_item(json,parid){
 
 function add_list_item(json,parid){
     if (json.type == "SURVEY") {
-        add_list_survey_item(json, parid);
+        return add_list_survey_item(json, parid);
     }
     else {
-        add_list_task_item(json, parid);
+        return add_list_task_item(json, parid);
     }
 }
 

@@ -28,6 +28,7 @@
     <link rel="stylesheet" href="{% static "css/compiled/form-wizard.css"%}" type="text/css" media="screen" />
     <link rel="stylesheet" href="{% static "css/compiled/user-list.css" %}" type="text/css" media="screen" />
     <link rel="stylesheet" href="{% static "css/compiled/index.css" %}" type="text/css" media="screen" />
+    <link rel="stylesheet" href="{% static "css/compiled/ui-elements.css" %}" type="text/css" media="screen" />
 
     <!--[if lt IE 9]>
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -40,22 +41,6 @@
 <div style = "display: none">
     {% include "elements.html" %}
 </div>
-    <div id="myModal" class="modal hide" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-          <h5 id="myModalLabel">编辑调研合作者<small>#{{ sno }}</small></h5>
-      </div>
-      <div class="modal-body align-center">
-            <input type="text" class="input-medium search-query center">
-            <button class="btn">添加</button>
-            <ul id="scholar-search-result">
-            </ul>
-      </div>
-      <div class="modal-footer">
-        <button class="btn" data-dismiss="modal" aria-hidden="true">关闭</button>
-        <button class="btn btn-primary">保存</button>
-      </div>
-    </div>
 	<!-- main container -->
     <div class="content">
         <div class="container-fluid">
@@ -78,24 +63,30 @@
                                 </div>
                                 <div class="span4 stat">
                                     <div class="data">
-                                        <i class="icon-group icon-2x">&nbsp;&nbsp;</i>
+                                        <i class="icon-group icon-2x"  id="contributor-detail" data-html="true" data-original-title="项目状态">&nbsp;&nbsp;</i>
                                         <span class="number" id="contributor-cnt"></span>
                                         合作学者
-                                        <a href="#myModal" data-toggle="modal">编辑</a>
+                                        <a id='detail-btn1' onclick = "onclick_user_search()" data-html="true" data-original-title="合作学者">详细</a>
                                     </div>
                                 </div>
                                 <div class="span4 stat">
                                     <div class="data">
-                                        <i class="icon-tag icon-2x">&nbsp;&nbsp;</i>
+                                        <i class="icon-tag icon-2x" id="project-status-detail" data-html="true" data-original-title="项目状态">&nbsp;&nbsp;</i>
                                         <span class="number" id="stage"></span>
                                         项目状态
-                                        <a href="#myModal" data-toggle="modal">编辑</a>
+                                        <a id='detail-btn2' onclick="onclick_project_detail()" >详细</a>
                                     </div>
 
                                 </div>
                             </div>
                         </div>
                         <hr/>
+                        <blockquote>
+                                <h5 id="survey-title"></h5>
+                                <h6 id ="survey-description">
+                                </h6>
+                                创建于：<h6 class="help-block" id="survey-opentime"></h6>
+                        </blockquote>
                         <div class="tabbable" id="tabs-679254">
                             <ul class="nav nav-tabs">
                                 <li class = "active">
@@ -119,8 +110,6 @@
                             </div>
 
                         </div>
-
-
                 </div>
             </div>
         </div>
@@ -132,8 +121,12 @@
     <script src="{% static "js/jquery-latest.js" %}"></script>
     <script src="{% static "js/bootstrap.js"%}"></script>
     <script src="{% static "js/theme.js"%}"></script>
+    <script src="{% static "js/jquery-ui-1.10.2.custom.min.js"%}"></script>
     <script src="{% static "js/jquery.uniform.min.js"%}"></script>
     <script src="{% static "js/select2.min.js"%}"></script>
+    <script src="{% static "js/wysihtml5-0.3.0.js"%}"></script>
+    <script src="{% static "js/bootstrap.datepicker.js" %}"></script>
+    <script src="{% static "js/survey_chart.js" %}"></script>
     <script>
         var sno = {{ sno }};
         load_contributor();
@@ -142,6 +135,15 @@
         function load_contributor(){
             $.getJSON("{% url "manage" %}",{"load_contributor":"true","sno":sno},function(res){
                 document.getElementById("contributor-cnt").innerHTML = res.contributor_cnt;
+                var ul_ele = document.getElementById("current-contributor");
+                ul_ele.innerHTML = "";
+                for(var item in res.contributor){
+                    var li = document.createElement('li');
+                    li.innerHTML = "{0} {1}".format(res.contributor[item].uname,res.contributor[item].inst);
+                    if(res.contributor[item].access == "owner")
+                        li.innerHTML = '<strong>' + li.innerHTML + '</strong>';
+                    ul_ele.appendChild(li);
+                }
             })
         }
         function load_by_user() {
@@ -155,41 +157,95 @@
               //document.write(JSON.stringify(res));
               document.getElementById("answer-cnt").innerHTML = res.answer_cnt;
               document.getElementById("stage").innerHTML = res.stage;
+              document.getElementById("publicity").innerHTML = res.publicity;
+              document.getElementById("survey-title").innerHTML =  res.title;
+              document.getElementById("survey-description").innerHTML = res.description;
+              document.getElementById("survey-opentime").innerHTML = new Date(res.opentime).toLocaleString();
             })
         }
-        function search_user(name){
+        var tid = 2000;
+        function search_scholar(name){
             $.getJSON("{% url "manage" %}",{"search_user":"true","sno":sno,"name":name},function(res){
               var ul = document.getElementById("scholar-search-result");
-              ul.innerHTML = "";
-              for(var item in res) {
-                  var ele = document.createElement('a');
-                  ele.innerHTML = name+" "+res.inst;
-                  ul.onclick = add_contributor(name);
-                  ul.appendChild(ele);
+              ul.innerHTML = "<br/>";
+              for(var i in res){
+                  var li = document.createElement('li');
+                  li.innerHTML = res[i].uname + "(#"+ res[i].uno + ")" +" "+ res[i].inst;
+                  li.id = res[i].uno;
+                  var a_ele = "<a onclick = 'add_contributor(this.parentNode.id)'>添加</a>";
+                  li.innerHTML += a_ele;
+                  ul.appendChild(li);
               }
-            })
+               $("#content").html(document.getElementById("search-user-tiny").innerHTML);
+                tid++;
+            });
         }
-        function add_contributor(name){
-            $.getJSON("{% url "manage" %}",{"add_contributor":"true","sno":sno,"name":name});
+        function add_contributor(uno){
+            $.get("{% url "manage" %}",{"add_contributor":"true","sno":sno,"uno":uno});
             alert("添加成功");
         }
+        function close_survey(){
+            var set_public = document.getElementById("set-public").value;
+            if(document.getElementById('stage') != 'OPEN' || confirm("确定修改？关闭调研无法撤销") == true)
+                $.get("{% url "manage" %}",{"close":"true","sno":sno,"publicity":set_public},function(res){
+                    if(res != "")
+                        alert(res);
+                })
+        }
+        function delete_survey(){
+            if(confirm("确定删除调研？该操作不可撤销") == true)
+                $.get("{% url "manage" %}",{"delete":"true","sno":sno})
+        }
 
+        function onclick_user_search()
+        {
+            var ele = $("#contributor-detail");
+            ele.popover('toggle');
+            $("#content").html(document.getElementById("search-user-tiny").innerHTML);
+        }
+        function onclick_project_detail() {
+            var ele = $("#project-status-detail");
+            ele.popover('toggle');
+            var inner_ele = document.getElementById("project-detail");
+            $("#content2").html(inner_ele.innerHTML);
+            inner_ele.getElementsByTagName("select")[0].id = "";
+        }
+        $("#contributor-detail").popover({placement:'bottom',content:'<div id="content"></div>',trigger:"manual"});
+        $("#project-status-detail").popover({placement:'bottom',content:'<div id="content2"></div>',trigger:"manual"});
     </script>
     <script type="text/javascript">
         $(function () {
-
-            // add uniform plugin styles to html elements
-            $("input:checkbox, input:radio").uniform();
-
-            // select2 plugin for select elements
-            $(".select2").select2({
-                placeholder: "请选择..."
+            // jQuery UI Sliders
+            $(".slider-sample1").slider({
+                value: 100,
+                min: 1,
+                max: 500
+            });
+            $(".slider-sample2").slider({
+                range: "min",
+                value: 130,
+                min: 1,
+                max: 500
+            });
+            $(".slider-sample3").slider({
+                range: true,
+                min: 0,
+                max: 500,
+                values: [ 40, 170 ],
             });
 
-            // wysihtml5 plugin on textarea
-            $(".wysihtml5").wysihtml5({
-                "font-styles": false
+// Inline datepicker
+            $("#inline-datepicker").datepicker();
+
+            // Switch slide buttons
+            $('.slider-button').click(function() {
+                if ($(this).hasClass("on")) {
+                    $(this).removeClass('on').html($(this).data("off-text"));
+                } else {
+                    $(this).addClass('on').html($(this).data("on-text"));
+                }
             });
+
         });
     </script>
 </body>

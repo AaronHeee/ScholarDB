@@ -191,14 +191,14 @@
         load();
 
         function load(){
-            $.getJSON('{% url "view" %}',{'load':'true','sno':sno},function(res){
+            $.getJSON('{% url "view_question" %}',{'load':'true','sno':sno},function(res){
                 qno_rec = load_questions(res,qid,"qform");
                 qid = qno_rec.length;
             });
         }
 
         function check_and_load_brief(){
-            $.getJSON('{% url "view" %}',{'check':'true','sno':sno},function(res){
+            $.getJSON('{% url "view_question" %}',{'check':'true','sno':sno},function(res){
               if(!res.result){
                   document.getElementById("btn-next").disabled = "disabled";
                   document.getElementById("check-legibility").innerHTML = '未通过校验，请选择其他调研，原因：'+ res.errtext;
@@ -301,7 +301,7 @@
         });
         function post_json()
         {
-            $.post("/project/view/",{'res':list,'time_consumed':time_consumed,'sno':sno});
+            $.post("{% url "view_question" %}",{'res':list,'time_consumed':time_consumed,'sno':sno});
         }
     </script>
     <script type="text/javascript">

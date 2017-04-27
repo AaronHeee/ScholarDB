@@ -1,6 +1,9 @@
+# encoding=utf-8
 from django.shortcuts import render,HttpResponse
 from userctrl import register,login_mail,get_basic_info
-from django.http import HttpResponse
+from django.http import HttpResponse,JsonResponse
+from common_file import *
+from sql_scholar import *
 # Create your views here.
 
 def scholars_register(request):
@@ -48,6 +51,22 @@ def login(request):
             return HttpResponse("Success" + login_user)
     return render(request,"good_login.html",{"username:":login_user})
 
+def scholar_info(request):
+    login_user,uno,pwd,usertype = get_basic_from_session(request)
+    if request.method == 'GET':
+        target_uno = int(request.GET.get('tuno',"-1"))
+        if 'load_user_info' in request.GET.keys():
+            s = Scholar()
+
+            s.load_basic_info_from_db(target_uno)
+            return JsonResponse(s.to_json())
+        if 'load_project_info' in request.GET.keys():
+            return JsonResponse(project_list_of_scholar(target_uno),safe=False)
+
+        return render(request,"scholar_detail.html",{'username':login_user,'uno':uno,'tuno':target_uno})
+
+def volunteer_info(request):
+    return HttpResponse(1)
 def logout(request):
     try:
         del request.session["username"]

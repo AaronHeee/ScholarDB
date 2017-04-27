@@ -3,8 +3,22 @@ import MySQLdb
 import time
 
 #Created by auson
-
 from common_file import connect_db
+
+class UniversalProject: #Adapter for class SurveyTitle OR TaskInfo
+    def __init__(self,no = -1,type = None,project=None):
+        self.type = type
+        self.project = project
+
+    def to_json(self):
+        attr_l = ['title','description','opentime','payment','publicity']
+        json = {}
+        for item in attr_l:
+            json[item] = getattr(self.project,item,'')
+        json['no'] = getattr(self.project,'tno',getattr(self.project,'sno',''))
+        json['type'] = self.type
+        print json
+        return json
 
 
 class SurveyTitle:
@@ -12,11 +26,21 @@ class SurveyTitle:
         self.description = ''
         self.title = ''
         self.subject = []
-
+        self.opentime = ''
+        self.payment = 0
+        self.publicity = ''
     def parse(self, post):
         self.title = post['JSON1[title]']
         self.description = post['JSON1[description]']
         self.subject = post['JSON1[subject]'][:-1].split(',')
+    def load_from_db(self,sno):
+        db = connect_db()
+        cursor = db.cursor()
+        cursor.execute('SELECT TITLE,DESCRIPTION,OPENTIME,PAYMENT FROM SURVEY WHERE SNO = %d' % sno)
+        self.title,self.description,self.opentime,self.payment = cursor.fetchone()[0:4]
+        cursor.execute('SELECT PUBLICITY FROM PUBLICITY_SURVEY WHERE SNO = %d' % sno)
+        self.publicity = cursor.fetchone()[0]
+        db.close()
 
 class SurveyDetail:
     def __init__(self):
@@ -87,7 +111,37 @@ class SurveyQuestions:
                 q.choice.append(item[0])
         self.question_list.append(q.to_dict())
 
+class TaskInfo:
+    def __init__(self):
+        self.tno = -1 #Aucson 0427
+        self.title = ''
+        self.description = ''
+        self.deadline = ''
+        self.payment = ''
+        self.stage = ''
+        self.owner = ''
+        self.opentime = ''
+        self.rawdata = ''
+        self.example = ''
+    def parse(self,post,rawdata,example,owner,time):
+        self.title = post['title']
+        self.description = post['description']
+        self.deadline = post['deadline']
+        self.payment = post['payment']
+        self.rawdata = rawdata
+        self.example = example
+        self.owner = owner
+        self.opentime = time
+    def load_from_db(self,tno):
+        db = connect_db()
+        cursor = db.cursor()
+        cursor.execute('SELECT TITLE,DESCRIPTION,OPENTIME,PAYMENT FROM TASK WHERE TNO = %d' % tno)
+        self.title, self.description, self.opentime, self.payment = cursor.fetchone()[0:4]
+        db.close()
+
+
 def add_survey_to_db(title, detail, questions, user='root', pwd='dbpjdbpj'):
+    # args type - SurveyTitle, SurveyDetail, SurveyQuestion
     db = connect_db()
     cursor = db.cursor()
     # title
@@ -126,46 +180,6 @@ def add_survey_to_db(title, detail, questions, user='root', pwd='dbpjdbpj'):
                 cursor.execute(sql)
     db.commit()
     db.close()
-
-def add_survey_to_db(title, detail, questions, user='root', pwd='dbpjdbpj'):
-    db = connect_db()
-    cursor = db.cursor()
-    # title
-
-    sql = "INSERT INTO SURVEY(SNO,TITLE,DESCRIPTION,MINAGE,MAXAGE,GENDER_RESTRICT,SURVEY_RESTRICT,PAYMENT,STAGE,OPENTIME,TYPE) VALUES" \
-          "(NULL,'%s','%s',%d,%d,'%s','%s',%d,'OPEN','%s','SURVEY')" % (
-          title.title, title.description, detail.min_age, detail.max_age,
-          detail.gender_restrict, detail.survey_restrict, detail.payment, detail.opentime)
-    cursor.execute(sql)
-    cursor.execute("SELECT MAX(SNO) FROM SURVEY")
-    sno = cursor.fetchall()[0][0]
-
-    cursor.execute("SELECT UNO FROM USERINFO WHERE UNAME = '%s'" % detail.owner)
-    uno = cursor.fetchall()[0][0]
-
-    sql = "INSERT INTO SCHOLAR_OWN_SURVEY(UNO,SNO,ACCESS) VALUES(%d,%d,'owner')" % (uno, sno)
-    cursor.execute(sql)
-
-    for subject in title.subject:
-        sql = "INSERT INTO SURVEY_SUBJECT(SNO,WHAT) VALUES(%d,'%s')" % (sno, subject)
-        cursor.execute(sql)
-    for privacy in detail.privacy:
-        sql = "INSERT INTO PRIVACY(SNO,WHAT) VALUES (%d,'%s')" % (sno, privacy)
-        cursor.execute(sql)
-    for question in questions.question_list:
-        sql = "INSERT INTO QUESTION(QNO,SNO,TITLE,SUPPLEMENT,SUPPLEMENT_TYPE,TYPE) VALUES" \
-              "(NULL,%d,'%s','%s','%s', '%s')" % (sno, question.title, question.supplement, question.supplement_type,
-                                                 question.type+" "+ question.input_type)
-        cursor.execute(sql)
-        if question.type == 'qsc':
-            cursor.execute("SELECT MAX(QNO) FROM QUESTION")
-            qno = cursor.fetchall()[0][0]
-            for i, choice in enumerate(question.choice):
-                sql = "INSERT INTO CHOICE(CNO,PLACE,QNO,CONTENT) VALUES(NULL,%d,%d,'%s')" % (i, qno, choice)
-                cursor.execute(sql)
-    db.commit()
-    db.close()
-
 
 def check_legibility(sno,uno):
     # whether volunteer meets requirements
@@ -234,29 +248,6 @@ def load_questions(sno):
         sq.append(tup,tup2)
     return sq
 
-
-class TaskInfo:
-    def __init__(self):
-        self.title = ''
-        self.description = ''
-        self.deadline = ''
-        self.payment = ''
-        self.stage = ''
-        self.owner = ''
-        self.opentime = ''
-        self.rawdata = ''
-        self.example = ''
-    def parse(self,post,rawdata,example,owner,time):
-        self.title = post['title']
-        self.description = post['description']
-        self.deadline = post['deadline']
-        self.payment = post['payment']
-        self.rawdata = rawdata
-        self.example = example
-        self.owner = owner
-        self.opentime = time
-
-
 def add_task_to_db(task=None,name=None,num=None,datatype=None):
     db = connect_db()
     cursor = db.cursor()
@@ -289,5 +280,3 @@ def add_task_to_db(task=None,name=None,num=None,datatype=None):
 
     db.commit()
     db.close()
-
-    return sq
