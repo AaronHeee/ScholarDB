@@ -21,5 +21,6 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^users/',include('User.urls')),
     url(r'^project/',include('CreateQ.urls')),
-    url(r'^',user_views.index,name='index'),
+    url(r'^$',user_views.index,name='index'),
+    url(r'^document/',user_views.document,name='document'),
 ]

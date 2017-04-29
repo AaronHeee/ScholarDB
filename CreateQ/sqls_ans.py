@@ -121,7 +121,8 @@ def check_authorization(uno,sno,access_list):
     cursor = db.cursor()
     for access in access_list:
         cursor.execute("SELECT * FROM SCHOLAR_OWN_SURVEY WHERE ACCESS = '%s' AND UNO = %d AND SNO = %d" % (access,uno,sno))
-        if cursor.fetchone:
+        res = cursor.fetchone()
+        if res:
             return True
     return False
 

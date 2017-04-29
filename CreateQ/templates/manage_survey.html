@@ -82,6 +82,7 @@
                             </div>
                         </div>
                         <hr/>
+                        {% if able %}
                         <blockquote>
                                 <h5 id="survey-title"></h5>
                                 <h6 id ="survey-description">
@@ -121,6 +122,21 @@
                             </div>
 
                         </div>
+                        {% else %}
+                        <h3>这个数据集不是开源数据集，或者调研尚未结束</h3>
+                        <br>
+                        <br>
+                        <blockquote>
+                            你可以跳转至负责人主页，联系负责人将你加入合作者列表<br/>
+                            或者，你也可以联系合作者们，并请求线下提供数据集。
+                            <small>ScholarDB只能帮你这么多了。</small>
+                        </blockquote>
+                        <hr>
+                        <div class="alert alert-block alert-info">
+                            <h5>贴心的用户搜索框<p class="help-block">你在用户中心也能找到它</p></h5>
+                            <input class="search" placeholder="搜索学者/志愿者ID" onchange="window.location='{% url "scholar_info"%}' + '?tuno=' + this.value">
+                        </div>
+                        {% endif %}
                 </div>
             </div>
         </div>
@@ -153,7 +169,7 @@
                 ul_ele.innerHTML = "";
                 for(var item in res.contributor){
                     var li = document.createElement('li');
-                    li.innerHTML = "{0} {1}".format(res.contributor[item].uname,res.contributor[item].inst);
+                    li.innerHTML = "{0} {1}(#{2})".format(res.contributor[item].uname,res.contributor[item].inst,res.contributor[item].uno);
                     if(res.contributor[item].access == "owner")
                         li.innerHTML = '<strong>' + li.innerHTML + '</strong>';
                     ul_ele.appendChild(li);

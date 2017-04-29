@@ -148,7 +148,7 @@ function add_list_task_item(json,parid){
     var parele = document.getElementById(parid);
     var ele = document.getElementById("list-item").cloneNode(true);
     ele.getElementsByClassName("name title")[0].innerHTML = json.title;
-    ele.getElementsByClassName("name title")[0].href = "/project/view_files?tno=" + String(json.no);
+    ele.getElementsByClassName("name title")[0].href = "/project/view_files/?tno=" + String(json.no);
     ele.getElementsByClassName("time")[0].innerHTML = json.opentime;
     ele.getElementsByClassName("help-block description")[0].innerHTML = json.description;
     ele.getElementsByClassName("payment")[0].innerHTML = json.payment;
@@ -164,7 +164,8 @@ function add_scholar_list_task_item(json,parid){
     var num = json.num,now = json.now;
     var parele = document.getElementById(parid);
     var ele = document.getElementById("scholar-list-item").cloneNode(true);
-    ele.getElementsByClassName("icon-eye-close")[0].className = "icon-eye-open";
+    if(json.publicity == "PUBLIC")
+        ele.getElementsByClassName("icon-eye-close")[0].className = "icon-eye-open";
     ele.getElementsByClassName("name title")[0].innerHTML = json.title;
     ele.getElementsByClassName("name title")[0].href = "/project/manage/?tno=" + String(json.no);
     ele.getElementsByClassName("time")[0].innerHTML = json.opentime;
@@ -185,7 +186,7 @@ function add_scholar_list_task_item(json,parid){
 function add_scholar_list_survey_item(json,parid){
     var parele = document.getElementById(parid);
     var ele = document.getElementById("scholar-list-item").cloneNode(true);
-    if(json.survey_restrict == "任何人") ele.getElementsByClassName("icon-eye-close")[0].className = "icon-eye-open";
+    if(json.publicity == "PUBLIC") ele.getElementsByClassName("icon-eye-close")[0].className = "icon-eye-open";
     ele.getElementsByClassName("name title")[0].innerHTML = json.title;
     ele.getElementsByClassName("name title")[0].href = "/project/manage/?sno=" + String(json.no);
     ele.getElementsByClassName("name title")[0].class = "icon-eye-open";

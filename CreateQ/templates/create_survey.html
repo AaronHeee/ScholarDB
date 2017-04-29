@@ -53,6 +53,7 @@
 
                 <div class="row-fluid form-wrapper">
                     <!-- left column -->
+                    {% if able %}
                     <div class="span12">
                             <div id="fuelux-wizard" class="wizard row-fluid">
                                 <ul class="wizard-steps">
@@ -200,10 +201,15 @@
                                 </div>
 
                             </div>
-                        </div>
+
+                    </div>
+                    {% else %}
+                        <div class="alert alert-block">抱歉，只有学者可以创建调研。</div>
+                    {% endif %}
                 </div>
             </div>
         </div>
+        {% if able %}
         <div class="wizard-actions">
             <button type="button" disabled="" class="btn-glow primary btn-prev">
                 <i class="icon-chevron-left"></i> 上一步
@@ -216,7 +222,7 @@
                 发布！
             </button>
         </div>
-
+        {% endif %}
                     <!-- side right column -->
     </div>
 

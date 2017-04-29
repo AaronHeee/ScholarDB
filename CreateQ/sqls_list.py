@@ -14,7 +14,7 @@ def add_survey_to_list(subject=None, user='root', pwd='dbpjdbpj'):
             if sub == '' or sub == ' ':
                 continue
             condition.append("SNO IN (SELECT SNO FROM SURVEY_SUBJECT WHERE WHAT = '%s')" % sub)
-    if condition != None and condition != []
+    if condition != None and condition != []:
         sql += ' WHERE '
         sql += ' AND '.join(condition)
         sql += ' AND '
@@ -28,13 +28,9 @@ def add_task_to_list(datatype=None, user='root', pwd='dbpjdbpj'):
     sql = "SELECT TASK.TNO,TYPE,TITLE,DESCRIPTION,PAYMENT,OPENTIME FROM TASK"
     if datatype != '' and datatype != None:
         sql += ",FILE,TASK_WITH_FILE WHERE TASK.TNO=TASK_WITH_FILE.TNO AND FILE.FNO=TASK_WITH_FILE.FNO AND FILE.DATATYPE='%s' AND" % datatype
-<<<<<<< HEAD
-    sql += ' STAGE ="OPEN"'
-=======
     else:
         sql += " WHERE "
     sql += " STAGE ='OPEN'"
->>>>>>> temp
     print sql
     return sql
 

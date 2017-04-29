@@ -12,10 +12,11 @@ from sqls_ans import *
 
 def new_survey(request):
     login_user,uno,pwd,usertype = get_basic_from_session(request)
-#    if login_user == '':
-#        return HttpResponseRedirect("/users/login/")
-#    if usertype != 'Scholar':
-#        return HttpResponse('Forbidden')
+    able = True
+    if login_user == '':
+        return HttpResponseRedirect("/users/login/")
+    if usertype != 'Scholar':
+        able = False
     if request.method == "POST":
         dict = request.POST
         print dict
@@ -27,11 +28,9 @@ def new_survey(request):
         survey_questions = SurveyQuestions()
         survey_questions.parse(request.POST)
         add_survey_to_db(survey_title, survey_detail, survey_questions, user='scholar_%d' % uno, pwd=pwd)
-        return render(request, 'scholar_list.html', {"username": login_user})
+        return render(request, 'scholar_list.html', {"username": login_user,"able":able})
     else:
-        return render(request, 'create_survey.html', {"username": login_user})
-
-    return render(request, 'create_survey.html', {"username": login_user})
+        return render(request, 'create_survey.html', {"username": login_user,"able":able})
 
 def post_survey(request):
     return HttpResponse("fail")
@@ -85,9 +84,13 @@ def upload_data(request,name):
     return [os.path.join("/home/aucson/Desktop/receiver",name),myFile.name]
 
 def new_task(request):
-    login_user = request.session.get("username", "")
+    #login_user = request.session.get("username", "")
+    login_user, uno, pwd, usertype = get_basic_from_session(request)
+    able =True
     if login_user == '':
-        return HttpResponse("Forbidden")
+        return HttpResponseRedirect("/users/login/")
+    if usertype != 'Scholar':
+        able = False
     if request.method == "POST":
         rawdata_path = upload_data(request,"rawdata")
         name = rawdata_path[1]
@@ -98,17 +101,18 @@ def new_task(request):
         taskinfo = TaskInfo()
         taskinfo.parse(request.POST, os.path.join(rawdata_path[0],rawdata_path[1]), os.path.join(example_path[0],example_path[1]), login_user, time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()))
         add_task_to_db(taskinfo,name,num,datatype)
-        return render(request, 'create_task.html', {"username": login_user})
+        return render(request, 'create_task.html', {"username": login_user,"able":able})
     else:
         print request.method
-        return render(request, 'create_task.html', {"username": login_user})
+        return render(request, 'create_task.html', {"username": login_user,"able":able})
 
 def post_task(request):
     return HttpResponse("fail")
 
 def list(request):
     login_user, uno, pwd, usertype = get_basic_from_session(request)
-
+    if login_user == '':
+        return HttpResponseRedirect("/users/login/")
     if "load" in request.GET.keys() and request.GET["load"] == 'true':
         subject = request.GET.get("subject", None).split(' ')
         datatype = request.GET.get("datatype", None)
@@ -134,7 +138,8 @@ def list(request):
 
 def scholar_list(request):
     login_user, uno, pwd, usertype = get_basic_from_session(request)
-
+    if login_user == '':
+        return HttpResponseRedirect("/users/login/")
     if "load" in request.GET.keys() and request.GET["load"] == 'true':
         subject = request.GET.get("subject", None).split(' ')
         datatype = request.GET.get("datatype", None)
@@ -142,7 +147,7 @@ def scholar_list(request):
         order = request.GET.get("order",None)
         type = request.GET.get("type",None)
         print order
-        res = get_scholar_list_from_db(uno=uno, subject=subject,datatype=datatype,type=type, order=order, user=scale_db_username(uno, usertype),pwd=pwd)
+        res = get_scholar_list_from_db(uno=uno, subject=subject,datatype=datatype,type=type, order=order, user=scale_db_username(uno, usertype),pwd=pwd,onlyforme=False)
         return JsonResponse(res, safe=False)
 
     if "search" in request.GET.keys() and request.GET["search"] == 'true':
@@ -161,14 +166,19 @@ def scholar_list(request):
 def manage_survey(request):
     login_user, uno, pwd, usertype = get_basic_from_session(request)
     access = ''
+    able = True
+    if login_user == '':
+        return HttpResponseRedirect("/users/login/")
     if request.method == 'GET':
         sno = request.GET.get("sno",-1)
         sno = int(sno)
+        summary = load_summary_management(sno)
         if sno == -1:
             return HttpResponse("Survey error")
         #check authorization
         if not check_authorization(uno,sno,['OWNER','COOPERATOR']):
-            return HttpResponse("You have no access for view pending answers in this survey")
+            if summary['stage'] == 'OPEN' or summary['publicity'] == u'私有':
+                able = False
         if check_authorization(uno,sno,['OWNER']):
             access = 'OWNER'
         if "load_contributor" in request.GET.keys():
@@ -179,11 +189,10 @@ def manage_survey(request):
             sa = SurveyAnswer()
             json = sa.to_json_list_by_user(sno)
             print json
-            return  JsonResponse(json,safe=False)
-        if "load_summary" in request.GET.keys():
-            json = load_summary_management(sno)
-            print json
             return JsonResponse(json,safe=False)
+        if "load_summary" in request.GET.keys():
+            print summary
+            return JsonResponse(summary,safe=False)
         if "delete_id" in request.GET.keys():
             tuno =  int(request.GET['delete_id'][1:])
             delete_answer(tuno,sno)
@@ -220,4 +229,4 @@ def manage_survey(request):
             print "location:",json
             return JsonResponse(json, safe=False)
 
-        return render(request,'manage_survey.html',{'username':login_user,'sno':sno,'access':access})
+        return render(request,'manage_survey.html',{'username':login_user,'sno':sno,'access':access,'able':able})

@@ -40,7 +40,7 @@
                     {% csrf_token %}
                     <input class="span12" id="mail" name = "mail" type="email" placeholder="注册邮箱"/>
                     <input class="span12" id="pwd" name = "pwd" type="password" placeholder="密码" />
-                    <div class="remember">
+                    <div class="remember" style="visibility: hidden">
                         <input type="checkbox" name = "auto"  value = "true"/>
                         <label for="remember-me">自动登录</label>
                     </div>
