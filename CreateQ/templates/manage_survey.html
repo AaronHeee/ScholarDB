@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>调研回收</title>
+	<title>ScholarDB-调研回收</title>
     {% load staticfiles %}
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
@@ -15,8 +15,6 @@
     <link rel="stylesheet" type="text/css" href="{% static  "css/icons.css"%}" />
 
     <!-- libraries -->
-
-    <link rel="stylesheet" type="text/css" href="{% static "css/lib/font-awesome.css"%}" />
     <link href="{% static "css/lib/bootstrap-wysihtml5.css"%}" type="text/css" rel="stylesheet" />
     <link href="{% static "css/lib/uniform.default.css"%}" type="text/css" rel="stylesheet" />
     <link href="{% static "css/lib/select2.css"%}" type="text/css" rel="stylesheet" />
@@ -48,8 +46,17 @@
             <div id="pad-wrapper">
                 <!-- users table -->
                     <div class="row-fluid header">
-                        <div class="span3">
-                            <h2>调研详细信息<small>#{{ sno }}</small></h2>
+                        <div class="span12">
+                            {% if is_task %}
+                                <h2>任务详细信息
+                                    <small>TASK#{{ tno }}</small>
+                                </h2>
+                            {% else %}
+                                <h2>调研详细信息
+                                    <small>SURVEY#{{ sno }}</small>
+                                </h2>
+                            {% endif %}
+
                         </div>
                     </div>
                     <div class="row-fluid filter-block">
@@ -123,7 +130,7 @@
 
                         </div>
                         {% else %}
-                        <h3>这个数据集不是开源数据集，或者调研尚未结束</h3>
+                        <h3 class="icon-eye-close"> 这个数据集不是开源数据集，或者调研尚未结束</h3>
                         <br>
                         <br>
                         <blockquote>
@@ -141,29 +148,33 @@
             </div>
         </div>
     </div>
+</div>
     <!-- end main container -->
 
 
 	<!-- scripts -->
+
     <script src="{% static "js/jquery-latest.js" %}"></script>
-    <script src="{% static "js/bootstrap.js"%}"></script>
+    <script src="{% static "js/bootstrap.min.js"%}"></script>
     <script src="{% static "js/theme.js"%}"></script>
-    <script src="{% static "js/jquery-ui-1.10.2.custom.min.js"%}"></script>
+    <script src="{% static "js/wysihtml5-0.3.0.js"%}"></script>
+    <script src="{% static "js/bootstrap-wysihtml5-0.0.2.js"%}"></script>
     <script src="{% static "js/jquery.uniform.min.js"%}"></script>
     <script src="{% static "js/select2.min.js"%}"></script>
-    <script src="{% static "js/wysihtml5-0.3.0.js"%}"></script>
-    <script src="{% static "js/bootstrap.datepicker.js" %}"></script>
-    <script src="{% static "js/survey_chart.js" %}"></script>
+    <script src = "{% static "js/survey_chart.js" %}"></script>
+
     <script src="{% static "js/echarts.js" %}"></script>
     <script src="{% static "js/china.js" %}"></script>
 
     <script>
         var sno = {{ sno }};
+        var tno = {{ tno }};
+        var project_type;
         load_contributor();
         load_by_user();
         load_summary();
         function load_contributor(){
-            $.getJSON("{% url "manage" %}",{"load_contributor":"true","sno":sno},function(res){
+            $.getJSON("{% url "manage" %}",{"load_contributor":"true","sno":sno,"tno":tno},function(res){
                 document.getElementById("contributor-cnt").innerHTML = res.contributor_cnt;
                 var ul_ele = document.getElementById("current-contributor");
                 ul_ele.innerHTML = "";
@@ -177,13 +188,17 @@
             })
         }
         function load_by_user() {
-            $.getJSON("{% url "manage" %}",{"load_by_user":"true","sno":sno},function(res){
+            $.getJSON("{% url "manage" %}",{"load_by_user":"true","sno":sno,"tno":tno},function(res){
               //document.write(JSON.stringify(res));
-              answer_group_by_user("accordion2",sno,res);
+              answer_group_by_user("accordion2",sno,res,tno,project_type);
             })
         }
         function load_summary() {
-            $.getJSON("{% url "manage" %}",{"load_summary":"true","sno":sno},function(res){
+            if(sno != -1)
+                project_type = "SURVEY";
+            else
+                project_type = "TASK";
+            $.getJSON("{% url "manage" %}",{"load_summary":"true","sno":sno,"tno":tno},function(res){
               //document.write(JSON.stringify(res));
               document.getElementById("answer-cnt").innerHTML = res.answer_cnt;
               document.getElementById("stage").innerHTML = res.stage;
@@ -195,7 +210,7 @@
         }
         var tid = 2000;
         function search_scholar(name){
-            $.getJSON("{% url "manage" %}",{"search_user":"true","sno":sno,"name":name},function(res){
+            $.getJSON("{% url "manage" %}",{"search_user":"true","sno":sno,"name":name,"tno":tno},function(res){
               var ul = document.getElementById("scholar-search-result");
               ul.innerHTML = "<br/>";
               for(var i in res){
@@ -211,20 +226,20 @@
             });
         }
         function add_contributor(uno){
-            $.get("{% url "manage" %}",{"add_contributor":"true","sno":sno,"uno":uno});
+            $.get("{% url "manage" %}",{"add_contributor":"true","sno":sno,"uno":uno,"tno":tno});
             alert("添加成功");
         }
         function close_survey(){
             var set_public = document.getElementById("set-public").value;
             if(document.getElementById('stage') != 'OPEN' || confirm("确定修改？关闭调研无法撤销") == true)
-                $.get("{% url "manage" %}",{"close":"true","sno":sno,"publicity":set_public},function(res){
+                $.get("{% url "manage" %}",{"close":"true","sno":sno,"publicity":set_public,"tno":tno},function(res){
                     if(res != "")
                         alert(res);
                 })
         }
         function delete_survey(){
             if(confirm("确定删除调研？该操作不可撤销") == true)
-                $.get("{% url "manage" %}",{"delete":"true","sno":sno})
+                $.get("{% url "manage" %}",{"delete":"true","sno":sno,"tno":tno})
         }
 
         function onclick_user_search()
@@ -247,56 +262,21 @@
 
     <script>
         function load_date_number() {
-            $.getJSON("{% url "manage" %}",{"load_date_number":"true","sno":sno},function(res){
+            $.getJSON("{% url "manage" %}",{"load_date_number":"true","sno":sno,"tno":tno},function(res){
               echarts_date_number("date_number",sno,res);
             })
         }
         function load_gender(){
-            $.getJSON("{% url "manage" %}",{"load_gender":"true","sno":sno},function(res){
+            $.getJSON("{% url "manage" %}",{"load_gender":"true","sno":sno,"tno":tno},function(res){
               echarts_gender("gender",sno,res);
             })
         }
         function load_location(){
-            $.getJSON("{% url "manage" %}",{"load_location":"true","sno":sno},function(res){
+            $.getJSON("{% url "manage" %}",{"load_location":"true","sno":sno,"tno":tno},function(res){
               echarts_location("loaction",sno,res);
             })
         }
     </script>
 
-    <script type="text/javascript">
-        $(function () {
-            // jQuery UI Sliders
-            $(".slider-sample1").slider({
-                value: 100,
-                min: 1,
-                max: 500
-            });
-            $(".slider-sample2").slider({
-                range: "min",
-                value: 130,
-                min: 1,
-                max: 500
-            });
-            $(".slider-sample3").slider({
-                range: true,
-                min: 0,
-                max: 500,
-                values: [ 40, 170 ],
-            });
-
-// Inline datepicker
-            $("#inline-datepicker").datepicker();
-
-            // Switch slide buttons
-            $('.slider-button').click(function() {
-                if ($(this).hasClass("on")) {
-                    $(this).removeClass('on').html($(this).data("off-text"));
-                } else {
-                    $(this).addClass('on').html($(this).data("on-text"));
-                }
-            });
-
-        });
-    </script>
 </body>
 </html>

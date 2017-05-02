@@ -56,7 +56,10 @@ def load_json(list_res):
             #added by AuCson 0428: PUBLICITY:
             sql = "SELECT PUBLICITY FROM PUBLICITY_SURVEY WHERE SNO = %d" % tup[1]
             cursor.execute(sql)
-            dict["publicity"] = cursor.fetchone()[0]
+            try:
+                dict["publicity"] = cursor.fetchone()[0]
+            except TypeError:
+                dict['publicity'] =  ''
             #end add
             sql = "SELECT WHAT FROM SURVEY_SUBJECT WHERE SNO = %d" % tup[1]
             cursor.execute(sql)
@@ -69,7 +72,10 @@ def load_json(list_res):
             #added by Aucson 0428
             sql = "SELECT PUBLICITY FROM PUBLICITY_TASK WHERE TNO = %d" % tup[1]
             cursor.execute(sql)
-            dict["publicity"] = cursor.fetchone()[0]
+            try:
+                dict["publicity"] = cursor.fetchone()[0]
+            except TypeError:
+                dict['publicity'] =  ''
             #end add
             sql = "SELECT DATATYPE,NUM,NOW FROM TASK_WITH_FILE, FILE WHERE TASK_WITH_FILE.FNO=FILE.FNO AND TNO =%d" % tup[1]
             cursor.execute(sql)

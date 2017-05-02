@@ -6,7 +6,6 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	{% load staticfiles %}
     <!-- bootstrap -->
-    <link rel="stylesheet" href="https://apps.bdimg.com/libs/bootstrap/3.2.0/css/bootstrap.min.css">
     <link href="{% static "css/bootstrap/bootstrap.css" %}" rel="stylesheet" />
     <link href="{% static "css/bootstrap/bootstrap-responsive.css" %}" rel="stylesheet" />
     <link href="{% static "css/bootstrap/bootstrap-overrides.css"%}" type="text/css" rel="stylesheet" />
@@ -155,7 +154,7 @@
             <button type="button" disabled="" class="btn-glow primary btn-prev">
                 <i class="icon-chevron-left"></i> 上一步
             </button>
-            <button type="button" class="btn-glow primary btn-next" data-last="Finish" id="btn-next">
+            <button type="button" class="btn-glow primary btn-next" data-last="Finish" id="btn-next" disabled="disabled">
                 下一步 <i class="icon-chevron-right"></i>
             </button>
 
@@ -163,7 +162,7 @@
                 返回列表
             </button>
         </div>
-                    <!-- side right column -->
+
     </div>
 
     <!-- end main container -->
@@ -175,7 +174,6 @@
     <script src="{% static "js/bootstrap-wysihtml5-0.0.2.js"%}"></script>
     <script src="{% static "js/jquery.uniform.min.js"%}"></script>
     <script src="{% static "js/select2.min.js"%}"></script>
-    <script src="{% static "js/theme.js"%}"></script>
 
         <!-- call this page plugins -->
 
@@ -204,6 +202,8 @@
                   document.getElementById("check-legibility").innerHTML = '未通过校验，请选择其他调研，原因：'+ res.errtext;
                   document.getElementById("check-legibility").className = "alert alert-danger";
               }
+              else
+                  document.getElementById("btn-next").removeAttribute("disabled");
               if(res.privacy != "") {
                   document.getElementById("show-privacy").innerHTML += '<br/>' + res.privacy;
               }
@@ -302,6 +302,8 @@
         function post_json()
         {
             $.post("{% url "view_question" %}",{'res':list,'time_consumed':time_consumed,'sno':sno});
+            alert("提交成功！感谢您的参与，下次继续努力！");
+            window.location = "{% url "list" %}"
         }
     </script>
     <script type="text/javascript">

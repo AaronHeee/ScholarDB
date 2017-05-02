@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="login-bg">
 <head>
-	<title>Detail Admin - Sign in</title>
+	<title>登录ScholarDB</title>
 
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	{% load staticfiles %}
@@ -70,21 +70,6 @@
     <script src="{% static "js/theme.js" %}"></script>
 
     <!-- pre load bg imgs -->
-    <script type="text/javascript">
-        $(function () {
-            // bg switcher
-            var $btns = $(".bg-switch .bg");
-            $btns.click(function (e) {
-                e.preventDefault();
-                $btns.removeClass("active");
-                $(this).addClass("active");
-                var bg = $(this).data("img");
-
-                $("html").css("background-image", "url('img/bgs/" + bg + "')");
-            });
-
-        });
-    </script>
 
 </body>
 </html>

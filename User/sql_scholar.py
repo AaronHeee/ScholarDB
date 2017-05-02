@@ -87,6 +87,20 @@ def participation_list(uno):
         json.append(tjson)
     return json #list
 
+def search_scholar_by_name(name,also_by_id = True):
+    db = connect_db()
+    user_list = []
+    cursor = db.cursor()
+    sql = "SELECT SCHOLAR.UNO,UNAME,INST FROM SCHOLAR,USERINFO WHERE SCHOLAR.UNO = USERINFO.UNO AND UNAME = '%s'" % name
+    if also_by_id:
+        sql += " OR SCHOLAR.UNO = USERINFO.UNO AND SCHOLAR.UNO = '%s'" % name
+    cursor.execute(sql)
+    users = cursor.fetchall()
+    for tup in users:
+        tdict = {'uno':tup[0],'uname':tup[1],'inst':tup[2]}
+        user_list.append(tdict)
+    db.close()
+    return user_list
 
 
 

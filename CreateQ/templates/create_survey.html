@@ -340,7 +340,8 @@
         function post_json()
         {
             $.post("/project/new_survey/",{"JSON1":JSONstep1,"JSON2":JSONstep2,"JSON3":JSONstep3});
-            window.location="/project/scholar_list/";
+
+            window.location="{% url "list" %}";
         }
     </script>
 

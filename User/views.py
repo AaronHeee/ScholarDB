@@ -34,7 +34,7 @@ def scholars_register(request):
         sqlres,log = register(result[0],result[1],result[2],result[3],result[4],result[5],result[6],result[7],
                          result[8],'Scholar',0)
         if(sqlres):
-            return HttpResponse("Success")
+            return HttpResponseRedirect('/users/login/')
         else:
             return HttpResponse("Fail due to:"+log)
     return render(request,"scholar_register_.html",{"username":login_user})
@@ -46,7 +46,7 @@ def volunteer_register(request):
         result = [request.POST[i] for i in query]
         sqlres,log = register(result[0],result[1],result[2],result[3],result[4],result[5],result[6],'','','Volunteer',0)
         if(sqlres):
-            return HttpResponse("Success")
+            return HttpResponseRedirect('/users/login/')
         else:
             return HttpResponse("Fail due to:"+log)
     return render(request,"volunteer_register_.html",{"username":login_user})
@@ -65,7 +65,7 @@ def login(request):
             request.session["username"],request.session["uno"],request.session["usertype"] = get_basic_info(mail)
             request.session["pwd"] = pwd
             login_user = request.session.get("username","")
-            return HttpResponseRedirect("/index")
+            return HttpResponseRedirect("/")
     return render(request,"good_login.html",{"username:":login_user})
 
 def user_info(request):
@@ -99,7 +99,7 @@ def logout(request):
         del request.session["uno"]
     except KeyError:
         pass
-    return HttpResponseRedirect("/index")
+    return HttpResponseRedirect("/")
 
 def document(request):
     return render(request,"scholardb_document.html")

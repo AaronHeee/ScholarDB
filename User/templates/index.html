@@ -66,8 +66,8 @@
                     </div>
                 </div>
                 <div class="row-fluid filter-block">
-                    <div class="span12">
-                        <div class="carousel slide" id="carousel-22196" style="max-height: 300px">
+                    <div class="span12" >
+                        <div class="carousel slide" id="carousel-22196" style="width: 100%">
                             <ol class="carousel-indicators">
                                 <li data-slide-to="0" data-target="#carousel-22196">
                                 </li>
@@ -76,9 +76,9 @@
                                 <li data-slide-to="2" data-target="#carousel-22196" class="active">
                                 </li>
                             </ol>
-                            <div class="carousel-inner">
-                                <div class="item" style="max-height: 300px">
-                                    <img alt="" src="{% static "img/7.jpg" %}"/>
+                            <div class="carousel-inner" style="width: 100%">
+                                <div class="item" style="width: 100%">
+                                    <img class= "ppt" alt="" src="{% static "img/7.jpg" %}" style="width: 100%;height: 300px"/>
                                     <div class="carousel-caption">
                                         <h4>
                                             ScholarDB简介
@@ -88,8 +88,8 @@
                                         </p>
                                     </div>
                                 </div>
-                                <div class="item"  style="max-height: 300px">
-                                    <img alt="" src="{% static "img/8.jpg" %}" />
+                                <div class="item" style="width: 100%">
+                                    <img class= "ppt" alt="" src="{% static "img/8.jpg" %}" style="width: 100%;height: 300px" />
                                     <div class="carousel-caption">
                                         <h4>
                                             ScholarDB用户
@@ -99,8 +99,8 @@
                                         </p>
                                     </div>
                                 </div>
-                                <div class="item active"  style="max-height: 300px">
-                                    <img alt="" src="{% static "img/9.jpg" %}" />
+                                <div class="item active" style="width: 100%">
+                                    <img class= "ppt" alt="" src="{% static "img/9.jpg" %}" style="width: 100%;height: 300px" />
                                     <div class="carousel-caption">
                                         <h4>
                                             ScholarDB功能
@@ -115,6 +115,7 @@
                     </div>
                 </div>
             </div>
+
             <br/>
             {% if username == "" %}
             <div class = "row-fluid">
@@ -122,17 +123,18 @@
                         <div class="hero-unit">
                           <h3>登录ScholarDB以使用完整功能</h3>
                           <p>学者/志愿者</p>
-                          <p>
-                            <a class="btn btn-success" href="{% url "login" %}">
-                              登录
-                            </a>
-                            <a class="btn btn-primary" href="{% url "scholars_register" %}">
-                              注册为学者
-                            </a>
-                            <a class="btn btn-primary" href="{% url "volunteers_register" %}">
-                              注册为志愿者
-                            </a>
-                          </p>
+                            <div class="btn-group">
+                                <a class="btn btn-success" href="{% url "login" %}">
+                                  登录
+                                </a>
+                                <a class="btn btn-primary" href="{% url "scholars_register" %}">
+                                  注册为学者
+                                </a>
+
+                                <a class="btn btn-primary" href="{% url "volunteers_register" %}">
+                                  注册为志愿者
+                                </a>
+                            </div>
                         </div>
                    </div>
             </div>
@@ -141,7 +143,7 @@
             <br>
             <div class="row-fluid">
 
-                <div class="span12">
+                <div class="span12" style="align-content: center">
                     <h3 align="center">开源标注数据集<small>TASK</small></h3>
                     <br>
                     <br>

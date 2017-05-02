@@ -1,6 +1,6 @@
 # encoding=utf-8
 from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse,HttpResponseNotFound
 # Create your views here.
 import os
 from sqls import *
@@ -8,6 +8,7 @@ from sqls_list import *
 from sqls_scholar_list import *
 from files import *
 from sqls_ans import *
+from User.sql_scholar import search_scholar_by_name
 
 
 def new_survey(request):
@@ -76,7 +77,7 @@ def upload_data(request,name):
     myFile = request.FILES.get(name, None)  # 获取上传的文件，如果没有文件，则默认为None
     if not myFile:
         print "No file upload!"
-    destination = open(os.path.join("/home/aucson/Desktop/receiver",name,myFile.name), 'wb+')  # 打开特定的文件进行二进制的写操作
+    destination = open(os.path.join("/home/aucson/receiver",name,myFile.name), 'wb+')  # 打开特定的文件进行二进制的写操作
     for chunk in myFile.chunks():  # 分块写入文件
         destination.write(chunk)
     destination.close()
@@ -172,30 +173,44 @@ def manage_survey(request):
     if request.method == 'GET':
         sno = request.GET.get("sno",-1)
         sno = int(sno)
-        summary = load_summary_management(sno)
-        if sno == -1:
-            return HttpResponse("Survey error")
+        tno = int(request.GET.get("tno",-1))
+        override_task = False
+        if sno != -1:
+            no = sno
+        elif tno != -1:
+            no = tno
+            override_task = True
+        else:
+            return HttpResponse("Survey/Task error")
+        if sno != -1 and tno != -1:
+            return HttpResponse("Ambiguous request")
+        try:
+            summary = load_summary_management(no,override_task)
+        except TypeError: # not found sno/tno
+            return HttpResponse("Project not found")
         #check authorization
-        if not check_authorization(uno,sno,['OWNER','COOPERATOR']):
+        if not check_authorization(uno,no,['OWNER','COOPERATOR'],override_task):
             if summary['stage'] == 'OPEN' or summary['publicity'] == u'私有':
                 able = False
-        if check_authorization(uno,sno,['OWNER']):
+        if check_authorization(uno,no,['OWNER'],override_task):
             access = 'OWNER'
         if "load_contributor" in request.GET.keys():
-            json = load_contributor(sno)
+            json = load_contributor(no,override_task)
             print json
             return JsonResponse(json,safe = False)
         if "load_by_user" in request.GET.keys():
-            sa = SurveyAnswer()
-            json = sa.to_json_list_by_user(sno)
-            print json
+            if sno != -1:
+                sa = SurveyAnswer()
+                json = sa.to_json_list_by_user(no)
+            else:
+                json = to_json_list_by_user_task(no)
             return JsonResponse(json,safe=False)
         if "load_summary" in request.GET.keys():
-            print summary
             return JsonResponse(summary,safe=False)
         if "delete_id" in request.GET.keys():
             tuno =  int(request.GET['delete_id'][1:])
-            delete_answer(tuno,sno)
+            if sno != -1:
+                delete_answer(tuno,no)
             return HttpResponse("Success")
         if "search_user" in request.GET.keys():
             name = request.GET['name']
@@ -204,29 +219,30 @@ def manage_survey(request):
             return JsonResponse(json,safe = False)
         if "add_contributor" in request.GET.keys():
             uno = int(request.GET['uno'])
-            add_contributor(uno,sno)
+            add_contributor(uno,no,override_task)
         if "close" in request.GET.keys():
             #注意：这里仅针对了调研
             publicity = request.GET['publicity'].replace(",","")
             print publicity
-            if check_authorization(uno,sno,['OWNER']):
-                close_survey(sno,publicity)
+            if check_authorization(uno,no,['OWNER'],override_task):
+                close_project(no,publicity,override_task)
                 return HttpResponse("修改成功")
         if "delete" in request.GET.keys():
-            if check_authorization(uno, sno, ['OWNER']):
-                delete_survey(sno)
+            if check_authorization(uno, no, ['OWNER']):
+                delete_project(no,override_task)
                 return HttpResponse("修改成功")
         if "load_date_number" in request.GET.keys():
-            json = load_date_number(sno)
+            json = load_date_number(no,override_task)
             print json
             return JsonResponse(json, safe=False)
         if "load_gender" in request.GET.keys():
-            json = load_gender(sno)
+            json = load_gender(no,override_task)
             print "gender:",json
             return JsonResponse(json, safe=False)
         if "load_location" in request.GET.keys():
-            json = load_location(sno)
+            json = load_location(no,override_task)
             print "location:",json
             return JsonResponse(json, safe=False)
 
-        return render(request,'manage_survey.html',{'username':login_user,'sno':sno,'access':access,'able':able})
+        return render(request,'manage_survey.html',{'username':login_user,'sno':sno,'tno':tno,'access':access,
+                                                    'able':able,'is_task':override_task})
