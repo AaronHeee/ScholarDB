@@ -1,6 +1,6 @@
 # encoding=utf-8
 from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseRedirect, JsonResponse,HttpResponseNotFound
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse,HttpResponseNotFound,StreamingHttpResponse,HttpResponseForbidden
 # Create your views here.
 import os
 from sqls import *
@@ -243,6 +243,30 @@ def manage_survey(request):
             json = load_location(no,override_task)
             print "location:",json
             return JsonResponse(json, safe=False)
-
         return render(request,'manage_survey.html',{'username':login_user,'sno':sno,'tno':tno,'access':access,
                                                     'able':able,'is_task':override_task})
+
+def download_csv(request):
+    login_user, uno, pwd, usertype = get_basic_from_session(request)
+    try:
+        sno = int(request.GET.get("sno", -1))
+    except TypeError:
+        return HttpResponse("Invalid sno")
+    if sno == -1:
+        return HttpResponseNotFound("Survey not found")
+    try:
+        summary = load_summary_management(sno)
+    except TypeError:  # not found sno/tno
+        return HttpResponse("Survey not found")
+    if not check_authorization(uno, sno, ['OWNER', 'COOPERATOR']):
+        if summary['stage'] == 'OPEN' or summary['publicity'] == u'私有':
+            return HttpResponseForbidden("You have not access for the file")
+    sa = SurveyAnswer()
+    filename = 'scholardb_survey_export_%d.csv' % sno
+    f = sa.to_csv(sno,filename = filename)
+    response =  StreamingHttpResponse(f.read().encode('utf-8'))
+    response['Content-Disposition'] = 'attachment; filename=%s' % filename
+    response['Content-Length'] = f.tell()
+    f.close()
+    os.remove(filename)
+    return response

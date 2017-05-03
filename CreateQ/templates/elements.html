@@ -175,7 +175,7 @@
             <ul class="list-group">
 
             </ul>
-          <a onclick="
+          <a class = 'delete_answer' onclick="
             var par = this.parentNode.parentNode;
             var id = par.id;
             $.get('{% url 'manage' %}',{'sno':sno,'delete_id':id},function(res){});

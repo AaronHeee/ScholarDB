@@ -25,4 +25,5 @@ urlpatterns = [
     url(r'login/',views.login,name = "login"),
     url(r'logout/',views.logout,name = "logout"),
     url(r'userinfo/',views.user_info,name = "scholar_info"),
+
 ]

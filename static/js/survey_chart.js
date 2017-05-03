@@ -321,7 +321,7 @@ function answer_group_by_user(parid,sno,json_list,tno,project_type) {
         ele.getElementsByClassName("accordion-body collapse");
         ele.getElementsByClassName("accordion-body collapse")[0].id = 'u'+ uno;
         ele.getElementsByClassName("accordion-toggle")[0].name =  ele.getElementsByClassName("accordion-body collapse")[0].id = 'u'+ uno;
-        ele.getElementsByClassName("accordion-toggle")[0].innerHTML = "用户# "+String(uno) + " 于 " + new Date(json_list[i].submit_time).toLocaleString();
+        ele.getElementsByClassName("accordion-toggle")[0].innerHTML = "用户于" + new Date(json_list[i].submit_time).toLocaleString();
         var list_ele = ele.getElementsByClassName("list-group")[0];
         if(project_type == 'SURVEY') {
             list_ele.innerHTML += "<li><strong>回答内容</strong></li>";

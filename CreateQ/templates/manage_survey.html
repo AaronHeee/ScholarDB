@@ -95,6 +95,7 @@
                                 <h6 id ="survey-description">
                                 </h6>
                                 创建于：<h6 class="help-block" id="survey-opentime"></h6>
+                                <a class= "button btn-flat" href="{% url "download_csv" %}?sno={{ sno }}">导出CSV</a>
                         </blockquote>
                         <div class="tabbable" id="tabs-679254">
                             <ul class="nav nav-tabs">
@@ -170,9 +171,11 @@
         var sno = {{ sno }};
         var tno = {{ tno }};
         var project_type;
+        var stage;
         load_contributor();
-        load_by_user();
         load_summary();
+        load_by_user();
+
         function load_contributor(){
             $.getJSON("{% url "manage" %}",{"load_contributor":"true","sno":sno,"tno":tno},function(res){
                 document.getElementById("contributor-cnt").innerHTML = res.contributor_cnt;
@@ -191,6 +194,12 @@
             $.getJSON("{% url "manage" %}",{"load_by_user":"true","sno":sno,"tno":tno},function(res){
               //document.write(JSON.stringify(res));
               answer_group_by_user("accordion2",sno,res,tno,project_type);
+              if(stage!="OPEN") {
+                  var delete_buttons = document.getElementsByClassName("delete_answer");
+                  for (var i = 0; i < delete_buttons.length; ++i) {
+                      delete_buttons[i].style.visibility = 'hidden';
+                  }
+              }
             })
         }
         function load_summary() {
@@ -206,6 +215,7 @@
               document.getElementById("survey-title").innerHTML =  res.title;
               document.getElementById("survey-description").innerHTML = res.description;
               document.getElementById("survey-opentime").innerHTML = new Date(res.opentime).toLocaleString();
+              stage = res.stage;
             })
         }
         var tid = 2000;
@@ -241,7 +251,9 @@
             if(confirm("确定删除调研？该操作不可撤销") == true)
                 $.get("{% url "manage" %}",{"delete":"true","sno":sno,"tno":tno})
         }
-
+        function download_csv(){
+            $.get("{% url "download_csv" %}",{"sno":sno})
+        }
         function onclick_user_search()
         {
             var ele = $("#contributor-detail");

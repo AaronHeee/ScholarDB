@@ -4,6 +4,7 @@ from common_file import *
 import time
 import copy
 from collections import OrderedDict
+import codecs
 
 def tup_to_dict(key_list,res_tup):
     xref = {}
@@ -121,8 +122,24 @@ class SurveyAnswer:
             json['privacy'] = dict(zip([translation_dict_r[i] for i in user_info_dict.keys()],[i for i in user_info_dict.values()]))
             json['uno'] = uno
             json_list.append(json)
-
         return json_list
+
+    def to_csv(self,sno,filename = 'temp.csv'):
+        json_list_by_user = self.to_json_list_by_user(sno,'strconcat')
+        eg = json_list_by_user[0]
+        csv_header = [item for item in eg['qa'].keys()]
+        csv_header += [item for item in eg['privacy'].keys()]
+        csv_content = []
+        for tup_by_user in json_list_by_user:
+            tup = [item for item in tup_by_user['qa'].values()]
+            tup += [item for item in eg['privacy'].values()]
+            csv_content.append(tup)
+        f = codecs.open(filename,'w+','utf-8')
+        f.write(','.join(csv_header)+'\n')
+        for content in csv_content:
+            f.write(','.join(content)+'\n')
+        f.seek(0)
+        return f
 
 def check_authorization(uno,sno,access_list,override_task = False):
     db = connect_db()
@@ -226,6 +243,7 @@ def delete_project(sno,override_task = False):
     db = connect_db()
     cursor = db.cursor()
     cursor.execute("DELETE FROM CHOICE WHERE QNO IN (SELECT QNO FROM QUESTION WHERE SNO = %d)" % sno)
+    cursor.execute("DELETE FROM ANSWER WHERE QNO IN (SELECT QNO FROM QUESTION WHERE SNO = %d)" % sno)
     cursor.execute("DELETE FROM QUESTION WHERE SNO = %d" % sno)
     cursor.execute("DELETE FROM SCHOLAR_OWN_SURVEY WHERE SNO = %d" % sno)
     cursor.execute("DELETE FROM PUBLICITY_SURVEY WHERE SNO = %d" % sno)
