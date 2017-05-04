@@ -100,3 +100,4 @@ def get_basic_info(MAIL):
         db.close()
         print "Not found"
         return ''
+

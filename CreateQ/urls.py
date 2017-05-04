@@ -29,5 +29,6 @@ urlpatterns = [
     url(r'^scholar_list/', CreateQ_view.scholar_list, name= 'scholar_list'),
     url(r'^new/',CreateQ_view.new_survey,name = 'home'),
     url(r'^list/',CreateQ_view.list,name = 'list'),
-    url(r'^manage/',CreateQ_view.manage_survey,name = 'manage')
+    url(r'^manage/',CreateQ_view.manage_survey,name = 'manage'),
+    url(r'^download_csv/',CreateQ_view.download_csv,name = 'download_csv')
 ]

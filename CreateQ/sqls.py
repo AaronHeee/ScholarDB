@@ -5,22 +5,6 @@ import time
 #Created by auson
 from common_file import connect_db
 
-class UniversalProject: #Adapter for class SurveyTitle OR TaskInfo
-    def __init__(self,no = -1,type = None,project=None):
-        self.type = type
-        self.project = project
-
-    def to_json(self):
-        attr_l = ['title','description','opentime','payment','publicity']
-        json = {}
-        for item in attr_l:
-            json[item] = getattr(self.project,item,'')
-        json['no'] = getattr(self.project,'tno',getattr(self.project,'sno',''))
-        json['type'] = self.type
-        print json
-        return json
-
-
 class SurveyTitle:
     def __init__(self):
         self.description = ''

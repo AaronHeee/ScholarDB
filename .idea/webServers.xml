@@ -2,7 +2,11 @@
 <project version="4">
   <component name="WebServers">
     <option name="servers">
+<<<<<<< HEAD
       <webServer id="1b01f9e8-5a72-49eb-a517-30021a651ebf" name="ScholarDB" url="http://115.159.144.241:8000/">
+=======
+      <webServer id="48ee7115-37e8-4ae8-8697-68dd08667d48" name="Tencent" url="http://115.159.144.241">
+>>>>>>> temp2
         <fileTransfer host="115.159.144.241" port="22" rootFolder="/root" accessType="SFTP">
           <advancedOptions>
             <advancedOptions dataProtectionLevel="Private" />

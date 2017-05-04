@@ -39,28 +39,32 @@ def load_json(list_res):
     cursor = db.cursor()
     res = []
     for tup in list_res:
-        dict = {"type": tup[0], "no": tup[1], "title": tup[2], "description": tup[3], "payment": tup[4],
-                "opentime": tup[5]}
-        if tup[0] == 'SURVEY':
-            sql = "SELECT MINAGE,MAXAGE,GENDER_RESTRICT,SURVEY_RESTRICT FROM SURVEY WHERE SNO= %d" % tup[1]
-            cursor.execute(sql)
-            l = cursor.fetchall()
-            dict["min_age"] = l[0][0]
-            dict["max_age"] = l[0][1]
-            dict["gender_restrict"] = l[0][2]
-            dict["survey_restrict"] = l[0][3]
-            sql = "SELECT WHAT FROM SURVEY_SUBJECT WHERE SNO = %d" % tup[1]
-            cursor.execute(sql)
-            l = cursor.fetchall()
-            dict["subject1"] = l[0][0] if len(l) >= 1 else ""
-            dict["subject2"] = l[1][0] if len(l) >= 2 else ""
-            dict["subject3"] = l[2][0] if len(l) >= 3 else ""
-        else:
-            sql = "SELECT DATATYPE FROM TASK_WITH_FILE, FILE WHERE TASK_WITH_FILE.FNO=FILE.FNO AND TNO =%d" % tup[1]
-            cursor.execute(sql)
-            l = cursor.fetchall()
-            dict["datatype"] = l[0][0]
-        res.append(dict)
+        try:
+            dict = {"type": tup[0], "no": tup[1], "title": tup[2], "description": tup[3], "payment": tup[4],
+                    "opentime": tup[5]}
+            if tup[0] == 'SURVEY':
+                sql = "SELECT MINAGE,MAXAGE,GENDER_RESTRICT,SURVEY_RESTRICT FROM SURVEY WHERE SNO= %d" % tup[1]
+                cursor.execute(sql)
+                l = cursor.fetchall()
+                dict["min_age"] = l[0][0]
+                dict["max_age"] = l[0][1]
+                dict["gender_restrict"] = l[0][2]
+                dict["survey_restrict"] = l[0][3]
+                sql = "SELECT WHAT FROM SURVEY_SUBJECT WHERE SNO = %d" % tup[1]
+                cursor.execute(sql)
+                l = cursor.fetchall()
+                dict["subject1"] = l[0][0] if len(l) >= 1 else ""
+                dict["subject2"] = l[1][0] if len(l) >= 2 else ""
+                dict["subject3"] = l[2][0] if len(l) >= 3 else ""
+            else:
+                sql = "SELECT DATATYPE FROM TASK_WITH_FILE, FILE WHERE TASK_WITH_FILE.FNO=FILE.FNO AND TNO =%d" % tup[1]
+                cursor.execute(sql)
+                l = cursor.fetchall()
+                dict["datatype"] = l[0][0]
+            res.append(dict)
+        except Exception:
+            print 'error at sql_list'
+            pass
 
     db.commit()
     db.close()
@@ -78,9 +82,7 @@ def get_list_from_db(subject=None, datatype=None, type=None,order=None, user='ro
     if(l[0][0]==1):
         cursor.execute("DROP VIEW LIST")
 
-    sql = """CREATE VIEW LIST (NO, TYPE, TITLE, DESCRIPTION, PAYMENT, OPENTIME)
-            AS
-            """
+    sql = "CREATE VIEW LIST (NO, TYPE, TITLE, DESCRIPTION, PAYMENT, OPENTIME) AS "
 
     if type == 'SURVEY':
         sql += add_survey_to_list(subject,user,pwd)

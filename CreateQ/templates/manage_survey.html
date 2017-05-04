@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>调研回收</title>
+	<title>ScholarDB-调研回收</title>
     {% load staticfiles %}
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
@@ -15,8 +15,6 @@
     <link rel="stylesheet" type="text/css" href="{% static  "css/icons.css"%}" />
 
     <!-- libraries -->
-
-    <link rel="stylesheet" type="text/css" href="{% static "css/lib/font-awesome.css"%}" />
     <link href="{% static "css/lib/bootstrap-wysihtml5.css"%}" type="text/css" rel="stylesheet" />
     <link href="{% static "css/lib/uniform.default.css"%}" type="text/css" rel="stylesheet" />
     <link href="{% static "css/lib/select2.css"%}" type="text/css" rel="stylesheet" />
@@ -48,8 +46,17 @@
             <div id="pad-wrapper">
                 <!-- users table -->
                     <div class="row-fluid header">
-                        <div class="span3">
-                            <h2>调研详细信息<small>#{{ sno }}</small></h2>
+                        <div class="span12">
+                            {% if is_task %}
+                                <h2>任务详细信息
+                                    <small>TASK#{{ tno }}</small>
+                                </h2>
+                            {% else %}
+                                <h2>调研详细信息
+                                    <small>SURVEY#{{ sno }}</small>
+                                </h2>
+                            {% endif %}
+
                         </div>
                     </div>
                     <div class="row-fluid filter-block">
@@ -82,11 +89,13 @@
                             </div>
                         </div>
                         <hr/>
+                        {% if able %}
                         <blockquote>
                                 <h5 id="survey-title"></h5>
                                 <h6 id ="survey-description">
                                 </h6>
                                 创建于：<h6 class="help-block" id="survey-opentime"></h6>
+                                <a class= "button btn-flat" href="{% url "download_csv" %}?sno={{ sno }}">导出CSV</a>
                         </blockquote>
 
                         <div class="tabbable" id="tabs-679254">
@@ -177,23 +186,44 @@
                                 </div>
                             </div>
                         </div>
+
                     </div>
+
+                        {% else %}
+                        <h3 class="icon-eye-close"> 这个数据集不是开源数据集，或者调研尚未结束</h3>
+                        <br>
+                        <br>
+                        <blockquote>
+                            你可以跳转至负责人主页，联系负责人将你加入合作者列表<br/>
+                            或者，你也可以联系合作者们，并请求线下提供数据集。
+                            <small>ScholarDB只能帮你这么多了。</small>
+                        </blockquote>
+                        <hr>
+                        <div class="alert alert-block alert-info">
+                            <h5>贴心的用户搜索框<p class="help-block">你在用户中心也能找到它</p></h5>
+                            <input class="search" placeholder="搜索学者/志愿者ID" onchange="window.location='{% url "scholar_info"%}' + '?tuno=' + this.value">
+                        </div>
+                        {% endif %}
+                </div>
+>>>>>>> temp2
             </div>
         </div>
     </div>
+</div>
     <!-- end main container -->
 
 
 	<!-- scripts -->
+
     <script src="{% static "js/jquery-latest.js" %}"></script>
-    <script src="{% static "js/bootstrap.js"%}"></script>
+    <script src="{% static "js/bootstrap.min.js"%}"></script>
     <script src="{% static "js/theme.js"%}"></script>
-    <script src="{% static "js/jquery-ui-1.10.2.custom.min.js"%}"></script>
+    <script src="{% static "js/wysihtml5-0.3.0.js"%}"></script>
+    <script src="{% static "js/bootstrap-wysihtml5-0.0.2.js"%}"></script>
     <script src="{% static "js/jquery.uniform.min.js"%}"></script>
     <script src="{% static "js/select2.min.js"%}"></script>
-    <script src="{% static "js/wysihtml5-0.3.0.js"%}"></script>
-    <script src="{% static "js/bootstrap.datepicker.js" %}"></script>
-    <script src="{% static "js/survey_chart.js" %}"></script>
+    <script src = "{% static "js/survey_chart.js" %}"></script>
+
     <script src="{% static "js/echarts.js" %}"></script>
     <script src="{% static "js/china.js" %}"></script>
 
@@ -262,17 +292,21 @@
 
     <script>
         var sno = {{ sno }};
+        var tno = {{ tno }};
+        var project_type;
+        var stage;
         load_contributor();
-        load_by_user();
         load_summary();
+        load_by_user();
+
         function load_contributor(){
-            $.getJSON("{% url "manage" %}",{"load_contributor":"true","sno":sno},function(res){
+            $.getJSON("{% url "manage" %}",{"load_contributor":"true","sno":sno,"tno":tno},function(res){
                 document.getElementById("contributor-cnt").innerHTML = res.contributor_cnt;
                 var ul_ele = document.getElementById("current-contributor");
                 ul_ele.innerHTML = "";
                 for(var item in res.contributor){
                     var li = document.createElement('li');
-                    li.innerHTML = "{0} {1}".format(res.contributor[item].uname,res.contributor[item].inst);
+                    li.innerHTML = "{0} {1}(#{2})".format(res.contributor[item].uname,res.contributor[item].inst,res.contributor[item].uno);
                     if(res.contributor[item].access == "owner")
                         li.innerHTML = '<strong>' + li.innerHTML + '</strong>';
                     ul_ele.appendChild(li);
@@ -280,13 +314,23 @@
             })
         }
         function load_by_user() {
-            $.getJSON("{% url "manage" %}",{"load_by_user":"true","sno":sno},function(res){
+            $.getJSON("{% url "manage" %}",{"load_by_user":"true","sno":sno,"tno":tno},function(res){
               //document.write(JSON.stringify(res));
-              answer_group_by_user("accordion2",sno,res);
+              answer_group_by_user("accordion2",sno,res,tno,project_type);
+              if(stage!="OPEN") {
+                  var delete_buttons = document.getElementsByClassName("delete_answer");
+                  for (var i = 0; i < delete_buttons.length; ++i) {
+                      delete_buttons[i].style.visibility = 'hidden';
+                  }
+              }
             })
         }
         function load_summary() {
-            $.getJSON("{% url "manage" %}",{"load_summary":"true","sno":sno},function(res){
+            if(sno != -1)
+                project_type = "SURVEY";
+            else
+                project_type = "TASK";
+            $.getJSON("{% url "manage" %}",{"load_summary":"true","sno":sno,"tno":tno},function(res){
               //document.write(JSON.stringify(res));
               document.getElementById("answer-cnt").innerHTML = res.answer_cnt;
               document.getElementById("stage").innerHTML = res.stage;
@@ -294,11 +338,12 @@
               document.getElementById("survey-title").innerHTML =  res.title;
               document.getElementById("survey-description").innerHTML = res.description;
               document.getElementById("survey-opentime").innerHTML = new Date(res.opentime).toLocaleString();
+              stage = res.stage;
             })
         }
         var tid = 2000;
         function search_scholar(name){
-            $.getJSON("{% url "manage" %}",{"search_user":"true","sno":sno,"name":name},function(res){
+            $.getJSON("{% url "manage" %}",{"search_user":"true","sno":sno,"name":name,"tno":tno},function(res){
               var ul = document.getElementById("scholar-search-result");
               ul.innerHTML = "<br/>";
               for(var i in res){
@@ -314,22 +359,24 @@
             });
         }
         function add_contributor(uno){
-            $.get("{% url "manage" %}",{"add_contributor":"true","sno":sno,"uno":uno});
+            $.get("{% url "manage" %}",{"add_contributor":"true","sno":sno,"uno":uno,"tno":tno});
             alert("添加成功");
         }
         function close_survey(){
             var set_public = document.getElementById("set-public").value;
             if(document.getElementById('stage') != 'OPEN' || confirm("确定修改？关闭调研无法撤销") == true)
-                $.get("{% url "manage" %}",{"close":"true","sno":sno,"publicity":set_public},function(res){
+                $.get("{% url "manage" %}",{"close":"true","sno":sno,"publicity":set_public,"tno":tno},function(res){
                     if(res != "")
                         alert(res);
                 })
         }
         function delete_survey(){
             if(confirm("确定删除调研？该操作不可撤销") == true)
-                $.get("{% url "manage" %}",{"delete":"true","sno":sno})
+                $.get("{% url "manage" %}",{"delete":"true","sno":sno,"tno":tno})
         }
-
+        function download_csv(){
+            $.get("{% url "download_csv" %}",{"sno":sno})
+        }
         function onclick_user_search()
         {
             var ele = $("#contributor-detail");
@@ -355,21 +402,22 @@
             load_location();
         }
         function load_date_number() {
-            $.getJSON("{% url "manage" %}",{"load_date_number":"true","sno":sno},function(res){
+            $.getJSON("{% url "manage" %}",{"load_date_number":"true","sno":sno,"tno":tno},function(res){
               echarts_date_number("date_number",sno,res);
             })
         }
         function load_gender(){
-            $.getJSON("{% url "manage" %}",{"load_gender":"true","sno":sno},function(res){
+            $.getJSON("{% url "manage" %}",{"load_gender":"true","sno":sno,"tno":tno},function(res){
               echarts_gender("gender",sno,res);
             })
         }
         function load_location(){
-            $.getJSON("{% url "manage" %}",{"load_location":"true","sno":sno},function(res){
+            $.getJSON("{% url "manage" %}",{"load_location":"true","sno":sno,"tno":tno},function(res){
               echarts_location("loaction",sno,res);
             })
         }
     </script>
+
 
     <script>
 
@@ -411,5 +459,7 @@
 
         });
     </script>
+
+
 </body>
 </html>

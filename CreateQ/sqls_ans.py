@@ -4,12 +4,21 @@ from common_file import *
 import time
 import copy
 from collections import OrderedDict
+import codecs
 
 def tup_to_dict(key_list,res_tup):
     xref = {}
     for i,key in enumerate(key_list):
         xref[key] = res_tup[i]
     return xref
+
+def override_sql(sql,override = True):
+    if not override:
+        return sql
+    sql = sql.replace('SNO','TNO')
+    sql = sql.replace('PARTICIPATION','PARTICIPATION_TASK')
+    sql = sql.replace('SURVEY','TASK')
+    return sql
 
 class SurveyAnswer:
     def __init__(self):
@@ -113,24 +122,47 @@ class SurveyAnswer:
             json['privacy'] = dict(zip([translation_dict_r[i] for i in user_info_dict.keys()],[i for i in user_info_dict.values()]))
             json['uno'] = uno
             json_list.append(json)
-
         return json_list
 
-def check_authorization(uno,sno,access_list):
+    def to_csv(self,sno,filename = 'temp.csv'):
+        json_list_by_user = self.to_json_list_by_user(sno,'strconcat')
+        eg = json_list_by_user[0]
+        csv_header = [item for item in eg['qa'].keys()]
+        csv_header += [item for item in eg['privacy'].keys()]
+        csv_content = []
+        for tup_by_user in json_list_by_user:
+            tup = [item for item in tup_by_user['qa'].values()]
+            tup += [item for item in eg['privacy'].values()]
+            csv_content.append(tup)
+        f = codecs.open(filename,'w+','utf-8')
+        f.write(','.join(csv_header)+'\n')
+        for content in csv_content:
+            f.write(','.join(content)+'\n')
+        f.seek(0)
+        return f
+
+def check_authorization(uno,sno,access_list,override_task = False):
     db = connect_db()
     cursor = db.cursor()
     for access in access_list:
-        cursor.execute("SELECT * FROM SCHOLAR_OWN_SURVEY WHERE ACCESS = '%s' AND UNO = %d AND SNO = %d" % (access,uno,sno))
-        if cursor.fetchone:
+        sql = "SELECT * FROM SCHOLAR_OWN_SURVEY WHERE ACCESS = '%s' AND UNO = %d AND SNO = %d" % (access, uno, sno)
+        if override_task:
+            sql = override_sql(sql)
+        cursor.execute(sql)
+        res = cursor.fetchone()
+        if res:
             return True
     return False
 
-def load_contributor(sno):
+def load_contributor(sno,override_task = False):
     json = {'contributor':[],'contributor_cnt':0}
     db = connect_db()
     cursor = db.cursor()
-    cursor.execute(
-        "SELECT USERINFO.UNO,UNAME,INST,ACCESS FROM USERINFO,SCHOLAR,SCHOLAR_OWN_SURVEY WHERE USERINFO.UNO = SCHOLAR.UNO AND USERINFO.UNO = SCHOLAR_OWN_SURVEY.UNO AND SNO = %d" % sno)
+    sql = "SELECT USERINFO.UNO,UNAME,INST,ACCESS FROM USERINFO,SCHOLAR,SCHOLAR_OWN_SURVEY WHERE USERINFO.UNO = SCHOLAR.UNO" \
+          " AND USERINFO.UNO = SCHOLAR_OWN_SURVEY.UNO AND SNO = %d" % sno
+    if override_task:
+        sql = override_sql(sql)
+    cursor.execute(sql)
     # Cooperator --> JSON
     tups = cursor.fetchall()
     for tup in tups:
@@ -140,84 +172,95 @@ def load_contributor(sno):
     db.close()
     return json
 
-def load_summary_management(sno):
+def load_summary_management(sno,override_task = False):
     json = {'answer_cnt':0,'stage':''}
     db = connect_db()
     cursor = db.cursor()
-    cursor.execute("SELECT COUNT(DISTINCT UNO) FROM PARTICIPATION WHERE SNO = %d AND STATUS != 'DELETED'" % sno)
+    sql = "SELECT COUNT(DISTINCT UNO) FROM PARTICIPATION WHERE SNO = %d AND STATUS != 'DELETED'" % sno
+    if override_task:
+        sql = override_sql(sql)
+    cursor.execute(sql)
     json['answer_cnt'] = cursor.fetchone()[0]
-    cursor.execute("SELECT STAGE FROM SURVEY WHERE SNO = %d" % sno)
+    sql = "SELECT STAGE FROM SURVEY WHERE SNO = %d" % sno
+    if override_task:
+        sql = override_sql(sql)
+    cursor.execute(sql)
     json['stage'] = cursor.fetchone()[0]
-    cursor.execute("SELECT PUBLICITY FROM PUBLICITY_SURVEY WHERE SNO = %d" % sno)
-    print "SELECT PUBLICITY FROM PUBLICITY_SURVEY WHERE SNO = %d" % sno
+    sql = "SELECT PUBLICITY FROM PUBLICITY_SURVEY WHERE SNO = %d" % sno
+    if override_task:
+        sql = override_sql(sql)
+    cursor.execute(sql)
     t_publicity = cursor.fetchone()
     if t_publicity:
         json['publicity'] = translation_dict_r[t_publicity[0]]
     else:
         json['publicity'] = "未设置"
-    cursor.execute("SELECT TITLE,DESCRIPTION,OPENTIME FROM SURVEY WHERE SNO = %d" % sno)
+    sql ="SELECT TITLE,DESCRIPTION,OPENTIME FROM SURVEY WHERE SNO = %d" % sno
+    if override_task:
+        sql = override_sql(sql)
+    cursor.execute(sql)
     res = cursor.fetchone()
     json['title'],json['description'],json['opentime'] = res[0],res[1],res[2]
     db.close()
     return json
 
-def delete_answer(uno,sno):
+def delete_answer(uno,sno,override_task = False):
     db = connect_db()
     cursor = db.cursor()
-    cursor.execute("DELETE FROM ANSWER WHERE UNO = %d AND QNO IN (SELECT QNO FROM QUESTION WHERE SNO = %d)" % (uno,sno))
-    cursor.execute("UPDATE PARTICIPATION SET STATUS = 'DELETED' WHERE UNO = %d AND SNO = %d" % (uno,sno))
+    if not override_task:
+        cursor.execute("DELETE FROM ANSWER WHERE UNO = %d AND QNO IN (SELECT QNO FROM QUESTION WHERE SNO = %d)" % (uno,sno))
+    cursor.execute(override_sql("UPDATE PARTICIPATION SET STATUS = 'DELETED' WHERE UNO = %d AND SNO = %d" % (uno,sno),override_task))
     db.commit()
     db.close()
 
-def search_scholar_by_name(name):
-    db = connect_db()
-    user_list = []
-    cursor = db.cursor()
-    cursor.execute("SELECT SCHOLAR.UNO,UNAME,INST FROM SCHOLAR,USERINFO WHERE SCHOLAR.UNO = USERINFO.UNO AND UNAME = '%s'" % name)
-    users = cursor.fetchall()
-    for tup in users:
-        tdict = {'uno':tup[0],'uname':tup[1],'inst':tup[2]}
-        user_list.append(tdict)
-    db.close()
-    return user_list
-
-def add_contributor(uno,sno):
+def add_contributor(uno,sno,override_task = False):
     db = connect_db()
     cursor = db.cursor()
-    cursor.execute("INSERT INTO SCHOLAR_OWN_SURVEY(SNO,UNO,ACCESS) VALUES(%d,%d,'%s')" % (sno,uno,'COOPERATOR'))
+    sql = "INSERT INTO SCHOLAR_OWN_SURVEY(SNO,UNO,ACCESS) VALUES(%d,%d,'%s')" % (sno,uno,'COOPERATOR')
+    if override_task:
+        sql = override_sql(sql)
+    cursor.execute(sql)
     db.commit()
     db.close()
 
-def close_survey(sno,publicity):
+def close_project(sno,publicity,override_task = False):
     db = connect_db()
     cursor = db.cursor()
-    cursor.execute("SELECT * FROM PUBLICITY_SURVEY WHERE SNO = %d" % sno)
+    sql ="SELECT * FROM PUBLICITY_SURVEY WHERE SNO = %d" % sno
+    if override_task:
+        sql = override_sql(sql)
+    cursor.execute(sql)
     if cursor.fetchone():
-        cursor.execute("UPDATE PUBLICITY_SURVEY SET PUBLICITY = '%s' WHERE SNO = %d" % (publicity, sno))
+        cursor.execute(override_sql("UPDATE PUBLICITY_SURVEY SET PUBLICITY = '%s' WHERE SNO = %d" % (publicity, sno),override_task))
     else:
-        cursor.execute("INSERT INTO PUBLICITY_SURVEY(SNO,PUBLICITY) VALUES(%d,'%s')"% (sno,publicity))
-    cursor.execute("UPDATE SURVEY SET STAGE = 'CLOSED' WHERE SNO = %d" % sno)
-
+        cursor.execute(override_sql("INSERT INTO PUBLICITY_SURVEY(SNO,PUBLICITY) VALUES(%d,'%s')"% (sno,publicity),override_task))
+    cursor.execute(override_sql("UPDATE SURVEY SET STAGE = 'CLOSED' WHERE SNO = %d" % sno,override_task))
+    cursor.execute(override_sql("UPDATE PARTICIPATION SET STATUS = 'adopted' WHERE STATUS = 'pending' and SNO = %d" % sno,override_task))
     db.commit()
     db.close()
 
-def delete_survey(sno):
+def delete_project(sno,override_task = False):
     db = connect_db()
     cursor = db.cursor()
     cursor.execute("DELETE FROM CHOICE WHERE QNO IN (SELECT QNO FROM QUESTION WHERE SNO = %d)" % sno)
+    cursor.execute("DELETE FROM ANSWER WHERE QNO IN (SELECT QNO FROM QUESTION WHERE SNO = %d)" % sno)
     cursor.execute("DELETE FROM QUESTION WHERE SNO = %d" % sno)
     cursor.execute("DELETE FROM SCHOLAR_OWN_SURVEY WHERE SNO = %d" % sno)
     cursor.execute("DELETE FROM PUBLICITY_SURVEY WHERE SNO = %d" % sno)
     cursor.execute("DELETE FROM PRIVACY WHERE SNO = %d" % sno)
     cursor.execute("DELETE FROM SURVEY_SUBJECT WHERE SNO = %d" % sno)
+    cursor.execute("UPDATE PARTICIPATION SET STATUS = 'survey_deleted' WHERE sno = %d" % sno)
     cursor.execute("DELETE FROM SURVEY WHERE SNO = %d" % sno)
     db.commit()
     db.close()
 
-def load_date_number(sno):
+def load_date_number(sno,override_task = False):
     db = connect_db()
     cursor = db.cursor()
-    sql = "SELECT DATE_FORMAT(SUBMIT_TIME,'%%Y-%%m-%%d'),COUNT(SNO) FROM PARTICIPATION WHERE SNO=%d GROUP BY DATE_FORMAT(SUBMIT_TIME,'%%Y-%%m-%%d')"% sno
+    sql = "SELECT DATE_FORMAT(SUBMIT_TIME,'%%Y-%%m-%%d'),COUNT(SNO) FROM PARTICIPATION" \
+          " WHERE SNO=%d GROUP BY DATE_FORMAT(SUBMIT_TIME,'%%Y-%%m-%%d')"% sno
+    if override_task:
+        sql = override_sql(sql)
     cursor.execute(sql)
     res = cursor.fetchall()
     date = []
@@ -232,25 +275,31 @@ def load_date_number(sno):
     db.close()
     return json
 
-def load_gender(sno):
+def load_gender(sno,override_task = False):
     db = connect_db()
     cursor = db.cursor()
     json = {}
     sql = "SELECT COUNT(*) FROM PARTICIPATION P,USERINFO U WHERE SNO=%d AND P.UNO=U.UNO AND GENDER='Female'" % sno
+    if override_task:
+        sql = override_sql(sql)
     cursor.execute(sql)
     json['Female']=cursor.fetchall()[0][0]
     sql = "SELECT COUNT(*) FROM PARTICIPATION P,USERINFO U WHERE SNO=%d AND P.UNO=U.UNO AND GENDER='Male'" % sno
+    if override_task:
+        sql = override_sql(sql)
     cursor.execute(sql)
     json['Male'] = cursor.fetchall()[0][0]
     db.close()
     return  json
 
-def load_location(sno):
+def load_location(sno,override_task = False):
     db = connect_db()
     cursor = db.cursor()
     json = []
 
     sql = "SELECT CITY, COUNT(*) FROM PARTICIPATION P,USERINFO U WHERE SNO=%d AND P.UNO=U.UNO GROUP BY CITY" % sno
+    if override_task:
+        sql = override_sql(sql)
     cursor.execute(sql)
     res = cursor.fetchall()
     for i in res:
@@ -261,6 +310,7 @@ def load_location(sno):
     print "location:",json
     db.close()
     return json
+
 
 def load_choice(sno):
     db = connect_db()
@@ -394,5 +444,33 @@ def load_correlation(sno,variable_1,variable_2):
 
 
 
+
+def to_json_list_by_user_task(tno,concat_mode = 'strconcat'):
+    json_list = []
+    db = connect_db()
+    cursor = db.cursor()
+    sql = "SELECT DISTINCT UNO,SUBMIT_TIME FROM PARTICIPATION_TASK WHERE TNO = %d" % tno
+    cursor.execute(sql)
+    users = cursor.fetchall()
+    for tup in users:
+        json = {'uno':tup[0],'submit_time':tup[1]}
+        uno = tup[0]
+        sql = "SELECT FSNO FROM FILE_SLICE WHERE TNO = %d AND UNO = %d" % (tno,uno)
+        cursor.execute(sql)
+        fsno_set = cursor.fetchall()
+        for tup2 in fsno_set:
+            if concat_mode == 'strconcat':
+                if 'fsno' not in json.keys():
+                    json['fsno'] = '第'+str(tup2[0])+'组'
+                else:
+                    json['fsno'] +='，第'+str(tup2[0])+'组'
+            else:
+                if 'fsno' not in json.keys():
+                    json['fsno'] = [tup2[0]]
+                else:
+                    json['fsno'].append(tup2[0])
+        json_list.append(json)
+    return json_list
+>>>>>>> temp2
 
 

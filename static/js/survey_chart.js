@@ -164,7 +164,8 @@ function add_scholar_list_task_item(json,parid){
     var num = json.num,now = json.now;
     var parele = document.getElementById(parid);
     var ele = document.getElementById("scholar-list-item").cloneNode(true);
-    ele.getElementsByClassName("icon-eye-close")[0].className = "icon-eye-open";
+    if(json.publicity == "PUBLIC")
+        ele.getElementsByClassName("icon-eye-close")[0].className = "icon-eye-open";
     ele.getElementsByClassName("name title")[0].innerHTML = json.title;
     ele.getElementsByClassName("name title")[0].href = "/project/manage/?tno=" + String(json.no);
     ele.getElementsByClassName("time")[0].innerHTML = json.opentime;
@@ -185,7 +186,7 @@ function add_scholar_list_task_item(json,parid){
 function add_scholar_list_survey_item(json,parid){
     var parele = document.getElementById(parid);
     var ele = document.getElementById("scholar-list-item").cloneNode(true);
-    if(json.survey_restrict == "任何人") ele.getElementsByClassName("icon-eye-close")[0].className = "icon-eye-open";
+    if(json.publicity == "PUBLIC") ele.getElementsByClassName("icon-eye-close")[0].className = "icon-eye-open";
     ele.getElementsByClassName("name title")[0].innerHTML = json.title;
     ele.getElementsByClassName("name title")[0].href = "/project/manage/?sno=" + String(json.no);
     ele.getElementsByClassName("name title")[0].class = "icon-eye-open";
@@ -312,7 +313,7 @@ function load_qsc(json,qid,eleid) {
 }
 
 var is_first_item = true;
-function answer_group_by_user(parid,sno,json_list) {
+function answer_group_by_user(parid,sno,json_list,tno,project_type) {
     var par = document.getElementById(parid);
     for(var i =0;i<json_list.length;++i) {
         var uno = json_list[i].uno;
@@ -320,18 +321,25 @@ function answer_group_by_user(parid,sno,json_list) {
         ele.getElementsByClassName("accordion-body collapse");
         ele.getElementsByClassName("accordion-body collapse")[0].id = 'u'+ uno;
         ele.getElementsByClassName("accordion-toggle")[0].name =  ele.getElementsByClassName("accordion-body collapse")[0].id = 'u'+ uno;
-        ele.getElementsByClassName("accordion-toggle")[0].innerHTML = "用户# "+String(uno) + " 于 " + new Date(json_list[i].submit_time).toLocaleString();
+        ele.getElementsByClassName("accordion-toggle")[0].innerHTML = "用户于" + new Date(json_list[i].submit_time).toLocaleString();
         var list_ele = ele.getElementsByClassName("list-group")[0];
-        list_ele.innerHTML += "<li><strong>回答内容</strong></li>";
-        for(var q in json_list[i].qa){
-            list_ele.innerHTML += "<li>{0}:{1}</li>".format(q,json_list[i].qa[q]);
+        if(project_type == 'SURVEY') {
+            list_ele.innerHTML += "<li><strong>回答内容</strong></li>";
+            for (var q in json_list[i].qa) {
+                list_ele.innerHTML += "<li>{0}:{1}</li>".format(q, json_list[i].qa[q]);
+            }
+            list_ele.innerHTML += "<br/>";
+            list_ele.innerHTML += "<li><strong>其他信息</strong></li>";
+            for (var p in json_list[i].privacy) {
+                list_ele.innerHTML += "<li>{0}:{1}</li>".format(p, json_list[i].privacy[p]);
+            }
+            list_ele.innerHTML += "<li>回答耗时：" + json_list[i].time_consumed / 1000 + "秒</li>";
         }
-        list_ele.innerHTML += "<br/>";
-        list_ele.innerHTML += "<li><strong>其他信息</strong></li>";
-        for(var p in json_list[i].privacy){
-            list_ele.innerHTML += "<li>{0}:{1}</li>".format(p,json_list[i].privacy[p]);
+        else if(project_type == 'TASK'){
+            list_ele.innerHTML += "<li><strong>完成任务组号</strong></li>";
+            list_ele.innerHTML += "<li>{0}</li>".format(json_list[i].fsno);
         }
-        list_ele.innerHTML += "<li>回答耗时：" + json_list[i].time_consumed / 1000 + "秒</li>";
+
         var inner_ele = ele.getElementsByClassName("accordion-inner")[0];
         if(is_first_item) {
             ele.getElementsByClassName("accordion-body collapse")[0].className = "accordion-body collapse in";

@@ -1,5 +1,4 @@
 {% load staticfiles %}
-<script src = "{% static "js/survey_chart.js" %}"></script>
 
 <div id = "qa-ele" class = "panel panel-default qa">
     <div class="panel-heading">
@@ -176,7 +175,7 @@
             <ul class="list-group">
 
             </ul>
-          <a onclick="
+          <a class = 'delete_answer' onclick="
             var par = this.parentNode.parentNode;
             var id = par.id;
             $.get('{% url 'manage' %}',{'sno':sno,'delete_id':id},function(res){});
