@@ -30,7 +30,7 @@ def add_task_to_list(datatype=None, user='root', pwd='dbpjdbpj'):
         sql += ",FILE,TASK_WITH_FILE WHERE TASK.TNO=TASK_WITH_FILE.TNO AND FILE.FNO=TASK_WITH_FILE.FNO AND FILE.DATATYPE='%s' AND" % datatype
     else:
         sql += " WHERE "
-    sql += " STAGE ='OPEN'"
+    sql += " STAGE = 'OPEN'"
     print sql
     return sql
 

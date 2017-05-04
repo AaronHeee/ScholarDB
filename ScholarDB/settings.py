@@ -25,7 +25,7 @@ SECRET_KEY = '&s+d)nj3v&oesq(eu9+8-zw^16qi5!!w5#u)sg9)f-!dw-ibyr'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [u'192.168.1.107',u'scholardb.iok.la',u'127.0.0.1']
+ALLOWED_HOSTS = [u'192.168.1.107',u'scholardb.iok.la',u'127.0.0.1',u'10.222.68.26']
 
 
 # Application definition

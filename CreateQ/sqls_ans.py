@@ -311,6 +311,140 @@ def load_location(sno,override_task = False):
     db.close()
     return json
 
+
+def load_choice(sno):
+    db = connect_db()
+    cursor = db.cursor()
+    json = []
+
+    sql = "SELECT TITLE,TYPE,QNO FROM QUESTION WHERE TYPE != 'qa text' AND SNO = %d" % sno
+    cursor.execute(sql)
+    qas = cursor.fetchall()
+
+    for qs in qas:
+        choice = {}
+        choice['title'] = qs[0]
+        choice['type'] = qs[1]
+        qno = qs[2]
+        sql = "SELECT CONTENT,COUNT(VALUE) FROM (SELECT CONTENT FROM CHOICE WHERE QNO=%d) AS C " % qno
+        sql += "LEFT JOIN (SELECT VALUE FROM ANSWER WHERE QNO=%d) AS A ON C.CONTENT = A.VALUE " % qno
+        sql += "GROUP BY CONTENT"
+        cursor.execute(sql)
+        chs = cursor.fetchall()
+        choice['choice'] = []
+        choice['number'] = []
+        for ch in chs:
+            choice['choice'].append(ch[0])
+            choice['number'].append(ch[1])
+        print "choice:",choice
+        json.append(choice)
+    print 'json_choice:',json
+    db.close()
+    return json
+
+def load_option(sno):
+    db = connect_db()
+    cursor = db.cursor()
+    json = []
+
+    sql = "SELECT TITLE FROM QUESTION WHERE TYPE != 'qa text' AND SNO = %d" %sno
+    cursor.execute(sql)
+    ops = cursor.fetchall()
+
+    for option in ops:
+        json.append(option[0])
+    db.close()
+    return json
+
+def load_correlation(sno,variable_1,variable_2):
+    db = connect_db()
+    cursor = db.cursor()
+    json = {}
+    xAxis = []
+    yAxis_name = []
+    yAxis_data = []
+
+    json['variable_1'] = variable_1
+    json['variable_2'] = variable_2
+
+    var1 = var2 = 'NULL'
+
+    if variable_1 == u'性别':
+        var1 = 'GENDER'
+    if variable_1 == u'国家':
+        var1 = 'NATION'
+    if variable_1 == u'城市':
+        var1 = 'CITY'
+    if variable_1 == u'用户类型':
+        var1 = 'USERTYPE'
+
+    if var1 == 'NULL':
+        variable_1 = variable_1[4:]
+        print "variable_1:",variable_1
+
+    if variable_2 == u'性别':
+        var2 = 'GENDER'
+    if variable_2 == u'国家':
+        var2 = 'NATION'
+    if variable_2 == u'城市':
+        var2 = 'CITY'
+    if variable_2 == u'用户类型':
+        var2 = 'USERTYPE'
+
+    if var2 == 'NULL':
+        variable_2 = variable_2[4:]
+        print "variable_2:",variable_2
+
+
+    if var1 != "NULL":
+        if var2!="NULL":
+            sql = "SELECT DISTINCT %s FROM USERINFO U,PARTICIPATION P WHERE U.UNO=P.UNO AND P.SNO=%d " % (var2, sno)
+        else:
+            sql = "SELECT DISTINCT CONTENT FROM QUESTION Q,CHOICE C WHERE Q.TITLE = '%s' AND C.QNO = Q.QNO " % variable_2
+        cursor.execute(sql)
+        var2_content = cursor.fetchall()
+        flag = 1
+        for var in var2_content:
+            yAxis_name.append(var[0])
+            if var2!="NULL":
+                sql = "SELECT %s,COUNT(B.UNO) FROM " \
+                      "(SELECT %s,UNO FROM USERINFO WHERE UNO IN (SELECT UNO FROM PARTICIPATION WHERE SNO = %d)) AS A " \
+                      "LEFT JOIN " \
+                      "(SELECT UNO FROM USERINFO WHERE UNO IN (SELECT UNO FROM PARTICIPATION WHERE SNO = %d)AND %s = '%s' ) AS B " \
+                      "ON A.UNO=B.UNO GROUP BY %s" % (var1,var1,sno,sno,var2,var[0],var1)
+            else:
+                sql = "SELECT %s,COUNT(B.UNO) FROM" \
+                      "(SELECT %s,UNO FROM USERINFO WHERE UNO IN (SELECT UNO FROM PARTICIPATION WHERE SNO = %d)) AS A " \
+                      "LEFT JOIN" \
+                      "(SELECT UNO FROM ANSWER WHERE VALUE = '%s' AND UNO IN (SELECT UNO FROM PARTICIPATION WHERE SNO = %d) AND " \
+                      "QNO IN (SELECT QNO FROM QUESTION WHERE TITLE ='%s')) " \
+                      "AS B ON A.UNO = B.UNO GROUP BY %s" % (var1,var1,sno,var[0],sno,variable_2,var1)
+            print "sql",sql
+            cursor.execute(sql)
+            res = cursor.fetchall()
+            tmp = []
+            for val in res:
+                if flag:
+                    xAxis.append(val[0])
+                tmp.append(val[1])
+            flag = 0
+            yAxis_data.append(tmp)
+
+        json['xAxis'] = xAxis
+        json['yAxis_data'] = yAxis_data
+        json['yAxis_name'] = yAxis_name
+
+    print json
+    db.close()
+
+    return json
+
+
+
+
+
+
+
 def to_json_list_by_user_task(tno,concat_mode = 'strconcat'):
     json_list = []
     db = connect_db()
