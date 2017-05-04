@@ -23,4 +23,5 @@ urlpatterns = [
     url(r'^project/',include('CreateQ.urls')),
     url(r'^$',user_views.index,name='index'),
     url(r'^document/',user_views.document,name='document'),
+    url(r'^document_content/',user_views.document_content,name='document_content')
 ]

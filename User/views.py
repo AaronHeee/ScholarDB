@@ -103,3 +103,6 @@ def logout(request):
 
 def document(request):
     return render(request,"scholardb_document.html")
+
+def document_content(request):
+    return render(request,"document_content.htm")
