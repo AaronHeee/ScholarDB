@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Detail Admin - Create Task</title>
+	<title>ScholarDB-创建数据任务</title>
 
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	{% load staticfiles %}
@@ -39,7 +39,8 @@
                 <div class="row-fluid header" style="margin-left:20px;margin-bottom: 20px;">
                         <h1 class="icon-check"> 标注任务</h1>
                 </div>
-                <div class="row-fluid form-wrapper">
+                {% if able %}
+                <div class="row-fluid form-wrap per">
                     <div class="span12 ">
                         <div class="container">
                                 <div class="span11 field-box" style="margin-left: 30px; margin-bottom:10px" >
@@ -83,6 +84,9 @@
                         </div>
                     </div>
                 </div>
+                {% else %}
+                    <div class="alert alert-block">抱歉，只有学者可以创建标注任务。</div>
+                {% endif %}
             </div>
         </div>
     </div>

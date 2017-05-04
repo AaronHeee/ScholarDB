@@ -20,10 +20,10 @@ from User import views
 urlpatterns = [
     url(r'admin/', admin.site.urls),
     url(r'register/scholars',views.scholars_register,name = 'scholars_register'),
-    url(r'register/scholars/action',views.scholars_register,name = "scholars_register_action"),
+    url(r'register/scholars/action',views.scholars_register),
     url(r'register/volunteers',views.volunteer_register,name = 'volunteers_register'),
     url(r'login/',views.login,name = "login"),
     url(r'logout/',views.logout,name = "logout"),
-    url(r'scholarinfo/',views.scholar_info,name = "scholar_info"),
-    url(r'volunteerinfo/',views.scholar_info,name = "volunteer_info")
+    url(r'userinfo/',views.user_info,name = "scholar_info"),
+
 ]

@@ -99,32 +99,32 @@
     <div id="sidebar-nav">
         <ul id="dashboard-menu">
             <li>
-                <a href="home.html">
+                <a href="{% url "index" %}">
                     <i class="icon-home"></i>
-                    <span>Home</span>
+                    <span>首页</span>
                 </a>
             </li>
             <li>
                 <a class="dropdown-toggle" href="#">
                     <i class="icon-edit"></i>
-                    <span>Create...</span>
+                    <span>创建</span>
                     <i class="icon-chevron-down"></i>
                 </a>
                 <ul class="submenu">
-                    <li><a href="project/new_survey/">Survey</a></li>
-                    <li><a href="users/create/task">Data Task</a></li>
+                    <li><a href="{% url "new_survey" %}">创建调研</a></li>
+                    <li><a href="{% url "new_task" %}">创建数据任务</a></li>
                 </ul>
             </li>
             <li>
-                <a href="management.html">
+                <a href="{% url "scholar_list" %}">
                     <i class="icon-signal"></i>
-                    <span>Management</span>
+                    <span>数据集</span>
                 </a>
             </li>
             <li>
-                <a href="gallery.html">
-                    <i class="icon-picture"></i>
-                    <span>Gallery</span>
+                <a href="{% url "list" %}">
+                    <i class="icon-globe"></i>
+                    <span>开放任务</span>
                 </a>
             </li>
             <li>
@@ -134,16 +134,16 @@
                 </div>
                 <a class="dropdown-toggle" href="#">
                     <i class="icon-cog"></i>
-                    <span>My Info</span>
+                    <span>用户中心</span>
                     <i class="icon-chevron-down"></i>
                 </a>
                 <ul class="submenu">
-                    <li><a href="personal-info.html">Personal Info</a></li>
-                    <li><a href="operating-info.html">Operating Info</a></li>
-                    <li><a href="social-info.html">Social Info</a></li>
+                    <li><a href="{% url "scholar_info" %}">用户信息</a></li>
+                    <li><a href="{% url "document" %}">开发文档</a></li>
                 </ul>
             </li>
 
         </ul>
     </div>
     <!-- end sidebar -->
+

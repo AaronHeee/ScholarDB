@@ -5,22 +5,6 @@ import time
 #Created by auson
 from common_file import connect_db
 
-class UniversalProject: #Adapter for class SurveyTitle OR TaskInfo
-    def __init__(self,no = -1,type = None,project=None):
-        self.type = type
-        self.project = project
-
-    def to_json(self):
-        attr_l = ['title','description','opentime','payment','publicity']
-        json = {}
-        for item in attr_l:
-            json[item] = getattr(self.project,item,'')
-        json['no'] = getattr(self.project,'tno',getattr(self.project,'sno',''))
-        json['type'] = self.type
-        print json
-        return json
-
-
 class SurveyTitle:
     def __init__(self):
         self.description = ''
@@ -146,8 +130,8 @@ def add_survey_to_db(title, detail, questions, user='root', pwd='dbpjdbpj'):
     cursor = db.cursor()
     # title
 
-    sql = "INSERT INTO SURVEY(SNO,TITLE,DESCRIPTION,MINAGE,MAXAGE,GENDER_RESTRICT,SURVEY_RESTRICT,PAYMENT,STAGE,OPENTIME) VALUES" \
-          "(NULL,'%s','%s',%d,%d,'%s','%s',%d,'OPEN','%s')" % (
+    sql = "INSERT INTO SURVEY(SNO,TITLE,DESCRIPTION,MINAGE,MAXAGE,GENDER_RESTRICT,SURVEY_RESTRICT,PAYMENT,STAGE,OPENTIME,TYPE) VALUES" \
+          "(NULL,'%s','%s',%d,%d,'%s','%s',%d,'OPEN','%s','SURVEY')" % (
           title.title, title.description, detail.min_age, detail.max_age,
           detail.gender_restrict, detail.survey_restrict, detail.payment, detail.opentime)
     print sql
@@ -254,8 +238,8 @@ def add_task_to_db(task=None,name=None,num=None,datatype=None):
 
     print task.payment
 
-    sql = "INSERT INTO TASK(TITLE,DESCRIPTION,OPENTIME,DEADLINE,PAYMENT,TYPE) VALUES\
-          ('%s','%s','%s','%s','%s','TASK')" % \
+    sql = "INSERT INTO TASK(TITLE,DESCRIPTION,OPENTIME,DEADLINE,PAYMENT,TYPE,STAGE) VALUES\
+          ('%s','%s','%s','%s','%s','TASK','OPEN')" % \
           (task.title,task.description,task.opentime,task.deadline,task.payment)
     print "sql:",sql
     cursor.execute(sql)

@@ -1,11 +1,18 @@
 .login-bg {
-  background: url("../../img/bgs/landscape.jpg") no-repeat center center fixed;
-  filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/bgs/landscape.jpg', sizingMethod='scale');
+  background: url("../../img/bgs/landscape.jpg") no-repeat;
+  filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/bgs/landscape.jpg');
   -ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/bgs/landscape.jpg', sizingMethod='scale')";
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
-  background-size: cover; }
+  background-size: cover;
+}
+
+@media screen{
+  .login-bg{
+    background: url("../../img/bgs/landscape.jpg") no-repeat;
+  }
+}
 
 .login-wrapper {
   position: absolute;

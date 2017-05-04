@@ -4,7 +4,7 @@ import MySQLdb
 import time
 from common_file import connect_db
 
-def add_survey_to_scholar_list(uno=None, subject=None, user='root', pwd='dbpjdbpj'):
+def add_survey_to_scholar_list(uno=None, subject=None, user='root', pwd='dbpjdbpj',onlyforme = True): #onlyforme为false时,uno限制被去除
 
     sql = "SELECT SNO, TYPE, TITLE,DESCRIPTION,PAYMENT,OPENTIME FROM SURVEY WHERE"
     condition = []
@@ -16,14 +16,15 @@ def add_survey_to_scholar_list(uno=None, subject=None, user='root', pwd='dbpjdbp
     if condition != None and condition != []:
         sql += ' AND '.join(condition)
         sql += ' AND'
-
-    sql += " SNO IN (SELECT SNO FROM SCHOLAR_OWN_SURVEY WHERE UNO = %d)" % uno
-
+    if onlyforme:
+        sql += " SNO IN (SELECT SNO FROM SCHOLAR_OWN_SURVEY WHERE UNO = %d)" % uno
+    else:
+        sql += " true"
     print sql
 
     return sql
 
-def add_task_to_scholar_list(uno=None, datatype=None, user='root', pwd='dbpjdbpj'):
+def add_task_to_scholar_list(uno=None, datatype=None, user='root', pwd='dbpjdbpj',onlyforme = True):
 
     sql = "SELECT TASK.TNO,TYPE,TITLE,DESCRIPTION,PAYMENT,OPENTIME FROM TASK"
     if datatype != '' and datatype != None:
@@ -31,8 +32,10 @@ def add_task_to_scholar_list(uno=None, datatype=None, user='root', pwd='dbpjdbpj
 
     else:
         sql += " WHERE"
-
-    sql += " TASK.TNO IN (SELECT TNO FROM SCHOLAR_OWN_TASK WHERE UNO = %d)" %uno
+    if onlyforme:
+        sql += " TASK.TNO IN (SELECT TNO FROM SCHOLAR_OWN_TASK WHERE UNO = %d)" %uno
+    else:
+        sql += " true"
 
     return sql
 
@@ -50,19 +53,38 @@ def load_json(list_res):
             dict["max_age"] = l[0][1]
             dict["gender_restrict"] = l[0][2]
             dict["survey_restrict"] = l[0][3]
+            #added by AuCson 0428: PUBLICITY:
+            sql = "SELECT PUBLICITY FROM PUBLICITY_SURVEY WHERE SNO = %d" % tup[1]
+            cursor.execute(sql)
+            try:
+                dict["publicity"] = cursor.fetchone()[0]
+            except TypeError:
+                dict['publicity'] =  ''
+            #end add
             sql = "SELECT WHAT FROM SURVEY_SUBJECT WHERE SNO = %d" % tup[1]
             cursor.execute(sql)
             l = cursor.fetchall()
+            print l
             dict["subject1"] = l[0][0] if len(l) >= 1 else ""
             dict["subject2"] = l[1][0] if len(l) >= 2 else ""
             dict["subject3"] = l[2][0] if len(l) >= 3 else ""
         else:
+            #added by Aucson 0428
+            sql = "SELECT PUBLICITY FROM PUBLICITY_TASK WHERE TNO = %d" % tup[1]
+            cursor.execute(sql)
+            try:
+                dict["publicity"] = cursor.fetchone()[0]
+            except TypeError:
+                dict['publicity'] =  ''
+            #end add
             sql = "SELECT DATATYPE,NUM,NOW FROM TASK_WITH_FILE, FILE WHERE TASK_WITH_FILE.FNO=FILE.FNO AND TNO =%d" % tup[1]
             cursor.execute(sql)
             l = cursor.fetchall()
-            dict["datatype"] = l[0][0]
-            dict["num"] = l[0][1]
-            dict["now"] = l[0][2]
+
+            if l:
+                dict["datatype"] = l[0][0]
+                dict["num"] = l[0][1]
+                dict["now"] = l[0][2]
         res.append(dict)
 
     db.commit()
@@ -71,7 +93,7 @@ def load_json(list_res):
     return res
 
 
-def get_scholar_list_from_db(uno=None, subject=None, datatype=None, type=None,order=None, user='root', pwd='123456'):
+def get_scholar_list_from_db(uno=None, subject=None, datatype=None, type=None,order=None, user='root', pwd='123456',onlyforme = True):
     db = connect_db()
     cursor = db.cursor()
 
@@ -86,13 +108,13 @@ def get_scholar_list_from_db(uno=None, subject=None, datatype=None, type=None,or
             """
 
     if type == 'SURVEY':
-        sql += add_survey_to_scholar_list(uno,subject,user,pwd)
+        sql += add_survey_to_scholar_list(uno,subject,user,pwd,onlyforme)
 
     if type == 'TASK':
-        sql += add_task_to_scholar_list(uno,datatype,user,pwd)
+        sql += add_task_to_scholar_list(uno,datatype,user,pwd,onlyforme)
 
     if type == "BOTH":
-        sql += add_survey_to_scholar_list(uno,subject,user,pwd) + " UNION " + add_task_to_scholar_list(uno,datatype,user,pwd)
+        sql += add_survey_to_scholar_list(uno,subject,user,pwd,onlyforme) + " UNION " + add_task_to_scholar_list(uno,datatype,user,pwd,onlyforme)
 
     print sql
 
