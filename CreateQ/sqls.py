@@ -254,8 +254,8 @@ def add_task_to_db(task=None,name=None,num=None,datatype=None):
 
     print task.payment
 
-    sql = "INSERT INTO TASK(TITLE,DESCRIPTION,OPENTIME,DEADLINE,PAYMENT,TYPE) VALUES\
-          ('%s','%s','%s','%s','%s','TASK')" % \
+    sql = "INSERT INTO TASK(TITLE,DESCRIPTION,OPENTIME,DEADLINE,PAYMENT,TYPE,STAGE) VALUES\
+          ('%s','%s','%s','%s','%s','TASK','OPEN')" % \
           (task.title,task.description,task.opentime,task.deadline,task.payment)
     print "sql:",sql
     cursor.execute(sql)

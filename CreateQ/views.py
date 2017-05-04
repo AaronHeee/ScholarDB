@@ -73,16 +73,20 @@ def complete_survey(request):
         return HttpResponseRedirect("/users/login/")
 
 # for new_task
+def mkdir(path):
+    isExists = os.path.exists(path)
+
+
 def upload_data(request,name):
     myFile = request.FILES.get(name, None)  # 获取上传的文件，如果没有文件，则默认为None
     if not myFile:
         print "No file upload!"
-    destination = open(os.path.join("/home/aucson/Desktop/receiver",name,myFile.name), 'wb+')  # 打开特定的文件进行二进制的写操作
+    destination = open(os.path.join("/home/aaron/Desktop/receiver",name,myFile.name), 'wb+')  # 打开特定的文件进行二进制的写操作
     for chunk in myFile.chunks():  # 分块写入文件
         destination.write(chunk)
     destination.close()
     print "upload over!"
-    return [os.path.join("/home/aucson/Desktop/receiver",name),myFile.name]
+    return [os.path.join("/home/aaron/Desktop/receiver",name),myFile.name]
 
 def new_task(request):
     login_user = request.session.get("username", "")
@@ -219,5 +223,18 @@ def manage_survey(request):
             json = load_location(sno)
             print "location:",json
             return JsonResponse(json, safe=False)
+        if "load_choice" in request.GET.keys():
+            json = load_choice(sno)
+            return JsonResponse(json,safe=False)
+        #用于加载相关性的可选选项信息：
+        if "load_option" in request.GET.keys():
+            json = load_option(sno)
+            print "options:",json
+            return JsonResponse(json,safe=False)
+        if "load_correlaion" in request.GET.keys():
+            variable_1 = request.GET.get("variable_1", -1)
+            variable_2 = request.GET.get("variable_2", -1)
+            json = load_correlation(sno,variable_1,variable_2)
+            return JsonResponse(json,safe=False)
 
         return render(request,'manage_survey.html',{'username':login_user,'sno':sno,'access':access})

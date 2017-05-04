@@ -113,7 +113,7 @@ function add_list_survey_item(json,parid){
     var parele = document.getElementById(parid);
     var ele = document.getElementById("list-item").cloneNode(true);
     ele.getElementsByClassName("name title")[0].innerHTML = json.title;
-    ele.getElementsByClassName("name title")[0].href = "/project/view_questions?sno=" + String(json.no);
+    ele.getElementsByClassName("name title")[0].href = "/project/view_questions/?sno=" + String(json.no);
     ele.getElementsByClassName("time")[0].innerHTML = json.opentime;
     ele.getElementsByClassName("help-block description")[0].innerHTML = json.description;
     ele.getElementsByClassName("payment")[0].innerHTML = json.payment;
@@ -148,7 +148,7 @@ function add_list_task_item(json,parid){
     var parele = document.getElementById(parid);
     var ele = document.getElementById("list-item").cloneNode(true);
     ele.getElementsByClassName("name title")[0].innerHTML = json.title;
-    ele.getElementsByClassName("name title")[0].href = "/project/view_files?tno=" + String(json.no);
+    ele.getElementsByClassName("name title")[0].href = "/project/view_files/?tno=" + String(json.no);
     ele.getElementsByClassName("time")[0].innerHTML = json.opentime;
     ele.getElementsByClassName("help-block description")[0].innerHTML = json.description;
     ele.getElementsByClassName("payment")[0].innerHTML = json.payment;
@@ -395,6 +395,7 @@ function echarts_gender(parid,sno,json_list){
                text: '回答者男女比例'
            },
            tooltip: {},
+           radius: '10%',
            series: [{
                name: '男女比例',
                type: 'pie',
@@ -623,7 +624,7 @@ var option = {
     title: {
         text: '回答者地域分布',
         subtext: '仅限中国',
-        left: 'center',
+        // left: 'center',
         textStyle: {
             color: '#fff'
         }
@@ -717,7 +718,83 @@ var option = {
     ]
 }
     myChart.setOption(option);
-
 }
+
+function echarts_choice(parid,i,sno,json_list){
+    var myChart = echarts.init(document.getElementById(parid + i));
+    console.log(json_list);
+    var type = (json_list.type == "qsc single"?"单选":"多选") + "题：" + json_list.title;
+    var choice = json_list.choice;
+    var number = json_list.number;
+    var option = {
+           title: {
+               text: type
+           },
+           tooltip: {},
+           // legend: {
+           //     data:[type]
+           // },
+           xAxis: {
+               type:"value"
+           },
+           yAxis: {
+               type:"category",
+               data: choice
+           },
+           series: [{
+               name: '选择次数',
+               type: 'bar',
+               data: number
+           }]
+       };
+       myChart.setOption(option);
+}
+
+function create_series(length,type,name,data){
+    var series = new Array();
+    for (var i=0; i<length ; i++){
+        var pattern = new Object();
+        pattern.name=name[i];
+        pattern.type=type;
+        pattern.data=data[i];
+        series[i] = pattern;
+    }
+    return series;
+}
+
+function echarts_correlation(parid,type,sno,json_list){
+    var myChart = echarts.init(document.getElementById(parid));
+    if (json_list.variable_1[0]!="选" && json_list.variable_2[0]!= "选"){
+        var title = json_list.variable_1 + "-" + json_list.variable_2 + "相关性" + type;
+    }
+
+    else{
+        var title = "相关性" + type;
+    }
+    type = type=="柱状图"?'bar':'line';
+    var xAxis = json_list.xAxis;
+    var data = json_list.yAxis_data;
+    var series = create_series(data.length,type,json_list.yAxis_name,json_list.yAxis_data);
+    console.log(series);
+    var option = {
+           title: {
+               text: title
+           },
+           tooltip: {},
+           legend: {
+               data:json_list.yAxis_name
+           },
+           xAxis: {
+               type:"category",
+               data: xAxis
+           },
+           yAxis: {
+               type:"value"
+           },
+           series: series
+       };
+       myChart.setOption(option);
+}
+
 
 
