@@ -471,6 +471,5 @@ def to_json_list_by_user_task(tno,concat_mode = 'strconcat'):
                     json['fsno'].append(tup2[0])
         json_list.append(json)
     return json_list
->>>>>>> temp2
 
 

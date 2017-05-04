@@ -268,7 +268,6 @@ def manage_survey(request):
 
         return render(request,'manage_survey.html',{'username':login_user,'sno':sno,'tno':tno,'access':access,
                                                     'able':able,'is_task':override_task})
->>>>>>> temp2
 
 def download_csv(request):
     login_user, uno, pwd, usertype = get_basic_from_session(request)
