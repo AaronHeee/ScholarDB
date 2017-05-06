@@ -257,7 +257,8 @@ def close_project(sno,publicity,override_task = False):
                            "WHERE SNO = %d AND STATUS != 'DELETED')" % (payment,sno),override_task))
         if override_task:
             tno =sno
-            cursor.execute("SELECT UNO,COUNT(FSNO) FROM PARTICIPATION_TASK WHERE FNO IN (SELECT FNO FROM FILE WHERE TNO = %d) GROUP BY UNO" % tno)
+            cursor.execute("SELECT UNO,COUNT(FSNO) FROM PARTICIPATION_TASK WHERE FNO IN (SELECT FNO FROM FILE WHERE TNO = %d) "
+                           "GROUP BY UNO" % tno)
             slice_rec = cursor.fetchall()
             slice_cnt = 0
             for tup in slice_rec:
@@ -266,6 +267,9 @@ def close_project(sno,publicity,override_task = False):
             payment = int(cursor.fetchone()[0])
             cursor.execute("UPDATE USERINFO SET MONEY = MONEY - %d * %d WHERE UNO IN (SELECT UNO FROM SCHOLAR OWN TASK "
                            "WHERE ACCESS = 'OWNER' AND TNO = %d)" % (slice_cnt,payment,tno))
+            cursor.execute("SELECT UNO,COUNT(FSNO) FROM PARTICIPATION_TASK WHERE FNO IN (SELECT FNO FROM FILE WHERE TNO = %d) "
+                           "AND STATUS != 'DELETED' GROUP BY UNO" % tno)
+            slice_rec = cursor.fetchall()
             for tup in slice_rec:
                 cursor.execute("UPDATE USERINFO SET MONEY = MONEY + %d * %d WHERE UNO = %d" % (tup[1],payment,tup[0]))
     db.commit()
