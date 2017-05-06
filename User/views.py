@@ -24,6 +24,7 @@ def index(request):
             json_list = get_public_task(min, max)
             print json_list
             return JsonResponse(json_list, safe=False)
+
     return render(request, "index.html", {"username": login_user})
 
 def scholars_register(request):

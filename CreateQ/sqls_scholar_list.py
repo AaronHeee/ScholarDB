@@ -28,12 +28,12 @@ def add_task_to_scholar_list(uno=None, datatype=None, user='root', pwd='dbpjdbpj
 
     sql = "SELECT TASK.TNO,TYPE,TITLE,DESCRIPTION,PAYMENT,OPENTIME FROM TASK"
     if datatype != '' and datatype != None:
-        sql += ",FILE,TASK_WITH_FILE WHERE TASK.TNO=TASK_WITH_FILE.TNO AND FILE.FNO=TASK_WITH_FILE.FNO AND FILE.DATATYPE='%s' AND" % datatype
+        sql += ",FILE WHERE FILE.DATATYPE='%s' AND" % datatype
 
     else:
         sql += " WHERE"
     if onlyforme:
-        sql += " TASK.TNO IN (SELECT TNO FROM SCHOLAR_OWN_TASK WHERE UNO = %d)" %uno
+        sql += " TNO IN (SELECT TNO FROM SCHOLAR_OWN_TASK WHERE UNO = %d)" %uno
     else:
         sql += " true"
 
@@ -77,7 +77,8 @@ def load_json(list_res):
             except TypeError:
                 dict['publicity'] =  ''
             #end add
-            sql = "SELECT DATATYPE,NUM,NOW FROM TASK_WITH_FILE, FILE WHERE TASK_WITH_FILE.FNO=FILE.FNO AND TNO =%d" % tup[1]
+            sql = "SELECT DATATYPE,SUM(SEND),SUM(RECEIVE),COUNT(FSNO) FROM FILE F,FILE_SLICE S WHERE TNO =%d AND F.FNO=S.FNO GROUP BY F.FNO" % tup[1]
+            print sql
             cursor.execute(sql)
             l = cursor.fetchall()
 
@@ -85,6 +86,7 @@ def load_json(list_res):
                 dict["datatype"] = l[0][0]
                 dict["num"] = l[0][1]
                 dict["now"] = l[0][2]
+                dict["slice"] = l[0][3]
         res.append(dict)
 
     db.commit()

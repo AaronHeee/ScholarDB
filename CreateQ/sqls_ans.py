@@ -169,6 +169,12 @@ def load_contributor(sno,override_task = False):
         tjson = {'uno':tup[0],'uname':tup[1],'inst':tup[2],'access':tup[3]}
         json['contributor'].append(tjson)
         json['contributor_cnt'] += 1
+
+    if override_task:
+        sql = "SELECT UNO FROM SCHOLAR_OWN_TASK WHERE TNO = %s" % sno
+        cursor.execute(sql)
+        json['uno_host'] = cursor.fetchone()[0]
+
     db.close()
     return json
 
@@ -178,7 +184,7 @@ def load_summary_management(sno,override_task = False):
     cursor = db.cursor()
     sql = "SELECT COUNT(DISTINCT UNO) FROM PARTICIPATION WHERE SNO = %d AND STATUS != 'DELETED'" % sno
     if override_task:
-        sql = override_sql(sql)
+        sql = "SELECT COUNT(DISTINCT UNO) FROM PARTICIPATION_TASK P,FILE F WHERE F.FNO = P.FNO AND TNO = %d AND STATUS != 'DELETED'" %sno
     cursor.execute(sql)
     json['answer_cnt'] = cursor.fetchone()[0]
     sql = "SELECT STAGE FROM SURVEY WHERE SNO = %d" % sno
@@ -439,23 +445,17 @@ def load_correlation(sno,variable_1,variable_2):
 
     return json
 
-
-
-
-
-
-
 def to_json_list_by_user_task(tno,concat_mode = 'strconcat'):
     json_list = []
     db = connect_db()
     cursor = db.cursor()
-    sql = "SELECT DISTINCT UNO,SUBMIT_TIME FROM PARTICIPATION_TASK WHERE TNO = %d" % tno
+    sql = "SELECT DISTINCT UNO,SUBMIT_TIME FROM PARTICIPATION_TASK P, FILE F WHERE F.FNO=P.FNO AND TNO = %d" % tno
     cursor.execute(sql)
     users = cursor.fetchall()
     for tup in users:
         json = {'uno':tup[0],'submit_time':tup[1]}
         uno = tup[0]
-        sql = "SELECT FSNO FROM FILE_SLICE WHERE TNO = %d AND UNO = %d" % (tno,uno)
+        sql = "SELECT FSNO FROM PARTICIPATION_TASK P, FILE F WHERE F.FNO=P.FNO AND TNO = %d AND UNO = %d" % (tno,uno)
         cursor.execute(sql)
         fsno_set = cursor.fetchall()
         for tup2 in fsno_set:
@@ -471,5 +471,28 @@ def to_json_list_by_user_task(tno,concat_mode = 'strconcat'):
                     json['fsno'].append(tup2[0])
         json_list.append(json)
     return json_list
+
+def  load_slice(tno):
+    db = connect_db()
+    cursor = db.cursor()
+
+    sql = "SELECT FSNO,SEND,RECEIVE FROM FILE F,FILE_SLICE S WHERE F.FNO = S.FNO AND TNO = %s "% tno
+    cursor.execute(sql)
+    res = cursor.fetchall()
+
+    json = {}
+    fsno = []
+    send = []
+    receive = []
+
+    for i in res:
+        fsno.append(i[0]+1)
+        send.append(i[1])
+        receive.append(i[2])
+    json['xAxis'] = fsno
+    json['send'] = send
+    json['receive'] =receive
+
+    return json
 
 
