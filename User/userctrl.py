@@ -101,3 +101,12 @@ def get_basic_info(MAIL):
         print "Not found"
         return ''
 
+def get_money(UNO):
+    uno = int(UNO)
+    db = connect_db()
+    cursor = db.cursor()
+    sql = 'SELECT MONEY FROM USERINFO WHERE UNO = %d'% uno
+    cursor.execute(sql)
+    money = cursor.fetchone()[0]
+    db.close()
+    return money

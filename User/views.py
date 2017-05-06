@@ -107,3 +107,6 @@ def document(request):
 
 def document_content(request):
     return render(request,"document_content.htm")
+
+def easter_egg(request):
+    return HttpResponse("OH!YOU FOUND THE EASTER EGG!")

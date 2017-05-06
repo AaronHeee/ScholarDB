@@ -12,11 +12,12 @@ from sqls_scholar_list import *
 from files import *
 from sqls_ans import *
 from User.sql_scholar import search_scholar_by_name
-
+from User.userctrl import get_money
 init_path = "/home/aaron/Desktop/Files"
 
 def new_survey(request):
     login_user,uno,pwd,usertype = get_basic_from_session(request)
+    money = get_money(uno)
     able = True
     if login_user == '':
         return HttpResponseRedirect("/users/login/")
@@ -32,8 +33,12 @@ def new_survey(request):
         survey_detail.parse(request.POST, login_user, time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()))
         survey_questions = SurveyQuestions()
         survey_questions.parse(request.POST)
+        money_need = survey_detail.maxneed * survey_detail.payment
+        print money_need
+        if money_need > money:
+            return HttpResponse("你看起来余额不足,但是ScholarDB Alpha测试阶段允许透支")
         add_survey_to_db(survey_title, survey_detail, survey_questions, user='scholar_%d' % uno, pwd=pwd)
-        return render(request, 'scholar_list.html', {"username": login_user,"able":able})
+        return HttpResponse("发布成功")
     else:
         return render(request, 'create_survey.html', {"username": login_user,"able":able})
 

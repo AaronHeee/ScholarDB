@@ -5,6 +5,7 @@ import time
 #Created by auson
 from common_file import connect_db
 
+
 class SurveyTitle:
     def __init__(self):
         self.description = ''
@@ -36,7 +37,7 @@ class SurveyDetail:
         self.payment = 0
         self.owner = ''
         self.opentime = ''
-        # 多值属性！
+        self.maxneed = 100
 
     def parse(self, post, owner, submit_time):
         try:
@@ -50,7 +51,7 @@ class SurveyDetail:
         self.payment = max(0, int(post['JSON2[payment]']))
         self.owner = owner
         self.opentime = submit_time
-
+        self.maxneed = max(0,int(post['JSON2[maxneed]']))
 
 class SurveyQuestions:
     def __init__(self):
@@ -126,10 +127,10 @@ def add_survey_to_db(title, detail, questions, user='root', pwd='dbpjdbpj'):
     cursor = db.cursor()
     # title
 
-    sql = "INSERT INTO SURVEY(SNO,TITLE,DESCRIPTION,MINAGE,MAXAGE,GENDER_RESTRICT,SURVEY_RESTRICT,PAYMENT,STAGE,OPENTIME,TYPE) VALUES" \
-          "(NULL,'%s','%s',%d,%d,'%s','%s',%d,'OPEN','%s','SURVEY')" % (
+    sql = "INSERT INTO SURVEY(SNO,TITLE,DESCRIPTION,MINAGE,MAXAGE,GENDER_RESTRICT,SURVEY_RESTRICT,PAYMENT,STAGE,OPENTIME,TYPE,MAXNEED) VALUES" \
+          "(NULL,'%s','%s',%d,%d,'%s','%s',%d,'OPEN','%s','SURVEY',%d)" % (
           title.title, title.description, detail.min_age, detail.max_age,
-          detail.gender_restrict, detail.survey_restrict, detail.payment, detail.opentime)
+          detail.gender_restrict, detail.survey_restrict, detail.payment, detail.opentime,detail.maxneed)
     print sql
     cursor.execute(sql)
     cursor.execute("SELECT MAX(SNO) FROM SURVEY")
@@ -137,7 +138,6 @@ def add_survey_to_db(title, detail, questions, user='root', pwd='dbpjdbpj'):
 
     cursor.execute("SELECT UNO FROM USERINFO WHERE UNAME = '%s'" % detail.owner)
     uno = cursor.fetchall()[0][0]
-
     sql = "INSERT INTO SCHOLAR_OWN_SURVEY(UNO,SNO,ACCESS) VALUES(%d,%d,'owner')" % (uno, sno)
     cursor.execute(sql)
 
