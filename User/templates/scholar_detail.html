@@ -227,8 +227,8 @@
         function  add_list_item_wrapper(item,parid) {
             var ele = add_list_item(item,parid);
             var href = ele.getElementsByClassName("name title")[0].href;
-            href = href.replace(/view_questions/,'manage/');
-            href = href.replace(/view_files/,'manage/');
+            href = href.replace(/view_questions/,'manage_survey/');
+            href = href.replace(/view_files/,'manage_task/');
             ele.getElementsByClassName("name title")[0].href = href;
         }
         function add_list_item2(item,parid){

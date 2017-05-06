@@ -4,12 +4,13 @@
 
 import zipfile
 import re
+import os
 
-def divide_file(path):
+def divide_file(path,zip_name):
     num = 0
     flag = 0
     print path
-    zip_path = path[0]+"/"+path[1]
+    zip_path = os.path.join(path,zip_name)
     total_file = zipfile.ZipFile(zip_path,'r')
     file_list = total_file.namelist()
     length = len(file_list)
@@ -18,29 +19,37 @@ def divide_file(path):
     if length == 0:
         return {'num': 0}
 
-    #将文件分割成若干份，每份中有100个待标记数据
-    while(1):
-        archive_path = path[0] + "/%d" % num
+    temp_path = os.path.join(path,"temp")
+    for file in file_list:
+        total_file.extract(file,temp_path)
 
-        for i in range(0,100):
-            if num * 100 + i >= length:
-                flag = 1
-                break
-            else:
-                total_file.extract(file_list[num*100+i],archive_path)
-        if flag:
-            break
-        num += 1
+    #将文件分割成若干份，每份中有100个待标记数据
+
+    for root,dirs,files in os.walk(temp_path):
+
+        count = -1 #why no zero
+        cycle = 0
+        path_archive = path + "/%d" % cycle + ".zip"
+        zipFile = zipfile.ZipFile(path_archive, 'w')
+
+        for filename in files:
+            if count == 99:
+                zipFile.close()
+                cycle = cycle + 1
+                path_archive = path + "/%d" % cycle + ".zip"
+                zipFile = zipfile.ZipFile(path_archive, 'w')
+            file_path = os.path.join(root,filename)
+            zipFile.write(file_path,filename)
+            count = (count + 1) % 100
+        zipFile.close()
 
     #读取文件的后缀名，假设zip中每个文件格式相同，即读取一个文件即可
     str = total_file.namelist()[1]
-    print "-------------"
-    print str
     datatype = re.search('\..*$',str).group()
 
     print datatype
 
-    return (num,datatype)
+    return (cycle+1,datatype)
 
 def get_datatype(datatype_suffix):
     text = {'.txt','.rtf','.doc','.doc'}

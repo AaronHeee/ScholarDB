@@ -27,7 +27,7 @@ def add_task_to_list(datatype=None, user='root', pwd='dbpjdbpj'):
 
     sql = "SELECT TASK.TNO,TYPE,TITLE,DESCRIPTION,PAYMENT,OPENTIME FROM TASK"
     if datatype != '' and datatype != None:
-        sql += ",FILE,TASK_WITH_FILE WHERE TASK.TNO=TASK_WITH_FILE.TNO AND FILE.FNO=TASK_WITH_FILE.FNO AND FILE.DATATYPE='%s' AND" % datatype
+        sql += ",FILE WHERE FILE.TNO=TASK.TNO AND FILE.DATATYPE='%s' AND" % datatype
     else:
         sql += " WHERE "
     sql += " STAGE = 'OPEN'"
@@ -57,7 +57,7 @@ def load_json(list_res):
                 dict["subject2"] = l[1][0] if len(l) >= 2 else ""
                 dict["subject3"] = l[2][0] if len(l) >= 3 else ""
             else:
-                sql = "SELECT DATATYPE FROM TASK_WITH_FILE, FILE WHERE TASK_WITH_FILE.FNO=FILE.FNO AND TNO =%d" % tup[1]
+                sql = "SELECT DATATYPE FROM FILE WHERE TNO =%d" % tup[1]
                 cursor.execute(sql)
                 l = cursor.fetchall()
                 dict["datatype"] = l[0][0]

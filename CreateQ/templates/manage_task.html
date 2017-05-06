@@ -88,6 +88,7 @@
                                 </div>
                             </div>
                         </div>
+
                         <hr/>
                         {% if able %}
                         <blockquote>
@@ -95,99 +96,15 @@
                                 <h6 id ="survey-description">
                                 </h6>
                                 创建于：<h6 class="help-block" id="survey-opentime"></h6>
-                                <a class= "button btn-flat" href="{% url "download_csv" %}?sno={{ sno }}">导出CSV</a>
+                                <a class= "button btn-flat" id="download_all" onclick="download_all()">下载标注数据</a>
+
                         </blockquote>
 
-                        <div class="tabbable" id="tabs-679254">
-                            <ul class="nav nav-tabs">
-                                <li class = "active">
-                                     <a href="#panel-1" data-toggle="tab" >筛选</a>
-                                </li>
-                                <li>
-                                     <a href="#panel-2" data-toggle="tab" onclick="load_info()">统计</a>
-                                </li>
-                            </ul>
-                            <div class="tab-content">
-                                <div class="tab-pane active" id=panel-1">
-                                    <div class = "accordion" id = "accordion2">
+                        <div style="width:1000px;height: 300px" id="slice-info"></div>
 
-                                    </div>
-                                </div>
-                                <div class="tab-pane" id="panel-2">
-                                    <div class="tabbable">
-                                        <ul class="nav nav-tabs">
-                                            <li class = "active">
-                                                <a href="#information" onclick="load_info()" data-toggle="tab">回答者基本信息</a>
-                                            </li>
-                                            <li>
-                                                <a href="#choices" onclick="load_choice()" data-toggle="tab">数据相关性统计</a>
-                                            </li>
-                                            <li>
-                                                <a href="#dependence" data-toggle="tab" onclick="load_option()">数据相关性统计</a>
-                                            </li>
-                                        </ul>
-                                        <div class="tab-content">
-                                            <div class="tab-pane active" id="information">
-                                                <div class="row well well-small">
-                                                    <div class="span12">
-                                                        <div id="date_number" style="margin-left:60px;width: 900px;height:200px;"> </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row well">
-                                                        <div class="span3">
-                                                            <div id="gender" style="margin-left:60px;width: 260px;height:200px;"> </div>
-                                                        </div>
-                                                        <div class="span3">
-                                                            <div id="age" style="margin-left:60px;width: 400px;height:200px;"> </div>
-                                                        </div>
-                                                </div>
-                                                <div class="row well well-small">
-                                                    <div id="location" class="well well-small" style="margin-top:20px;margin-left:60px;width: 900px;height:500px;"> </div>
-                                                </div>
+                        <div class = "accordion" id = "accordion2">
 
-
-                                            </div>
-
-                                            <div class="tab-pane" id="choices">
-                                            </div>
-
-                                            <div class="tab-pane"  id="dependence">
-                                                    <div class="row well well-small">
-                                                        <div class="row" style = "margin-left:60px">
-                                                            <div class="span3 alert alert-success" style="margin-right:10px">
-                                                                选择2个变量，查看其相关性：
-                                                            </div>
-                                                            <select class="span3" id="variable_1">
-                                                                <option>性别</option>
-                                                                <option>国家</option>
-                                                                <option>城市</option>
-                                                                <option>用户类型</option>
-
-                                                            </select>
-                                                            <select class="span3" id="variable_2">
-                                                                <option>性别</option>
-                                                                <option>国家</option>
-                                                                <option>城市</option>
-                                                                <option>用户类型</option>
-                                                            </select>
-                                                            <select class = "span2" value="柱状图" id="echarts_type">
-                                                                <option>柱状图</option>
-                                                                <option>折线图</option>
-                                                            </select>
-                                                            <button class="btn btn-flat"  onclick="load_correlation()"> 提交 </button>
-                                                        </div>
-                                                        <div class="row-fluid ">
-                                                            <div style="margin-top:20px;margin-left:60px;width: 900px;height:500px;" id="correlation"></div>
-                                                        </div>
-                                                    </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
-
-                    </div>
 
                         {% else %}
                         <h3 class="icon-eye-close"> 这个数据集不是开源数据集，或者调研尚未结束</h3>
@@ -204,11 +121,11 @@
                             <input class="search" placeholder="搜索学者/志愿者ID" onchange="window.location='{% url "scholar_info"%}' + '?tuno=' + this.value">
                         </div>
                         {% endif %}
-                </div>
+                    </div>
             </div>
         </div>
     </div>
-</div>
+
     <!-- end main container -->
 
 
@@ -228,77 +145,39 @@
 
 
     <script>
-        /*实现选择题统计图表*/
-        var count = 0;
-        function add_div(num){
-            var height = (num*45).toString() + "px";
-            var panel = document.getElementById("choices");
-            var newdiv = document.createElement("div");
-            newdiv.innerHTML= "test it!";
-            newdiv.className = "choices well well-small";
-            newdiv.id = "choice" + count++;
-            newdiv.style.height = height;
-            newdiv.style.width = "950px";
-            panel.appendChild(newdiv);
-        }
+        /*加载task分块任务完成图表*/
+        var tno = 58//{{ tno }};
 
-        function remove_div(num){
-            var panel = document.getElementById("choices");
-            var node;
-            for (var i=0;i<num;i++) {
-                if (node=document.getElementById("choice"+i)) panel.removeChild(node);
-            }
-        }
+        load_slice();
 
-        function load_choice() {
-            $.getJSON("{% url "manage_survey" %}",{"load_choice":"true","sno":sno},function(res){
-                var que_num = res.length;
-                remove_div(que_num);
-                for (var i=0; i<que_num; i++) {
-                    var choice_num = res[i].choice.length;
-                    add_div(choice_num);
-                    echarts_choice("choice", i, sno, res[i]);
-                }
-            })
-            count = 0;
-        }
-    </script>
-
-    <script>
-        /*实现相关性统计图*/
-        function load_option(){
-             $.getJSON("{% url "manage_survey" %}",{"load_option":"true","sno":sno},function(res){
-                 var variable_1 = document.getElementById("variable_1");
-                 var variable_2 = document.getElementById("variable_2");
-                 var newoption = document.createElement("option");
-                 var length = res.length;
-                 for(var i=0; i<length; i++){
-                    var temp = "选择题:" + res[i];
-                    variable_2.options.add(new Option(temp));
-                 }
-             })
-        }
-
-        function load_correlation() {
-            $.getJSON("{% url "manage_survey" %}",{"load_correlaion":"true","sno":sno,"variable_1":$("#variable_1").val(),
-                "variable_2":$("#variable_2").val()},function(res){
-                echarts_correlation("correlation",$("#echarts_type").val(),sno,res)
+        function load_slice(){
+            $.getJSON("{% url "manage_task" %}",{"load_slice":"true","tno":tno},function(res){
+                echarts_slice("slice-info",res);
             })
         }
-
     </script>
 
     <script>
         var sno = {{ sno }};
-        var tno = {{ tno }};
-        var project_type ;
+        var tno = {{ tno }} ;
+        var uno_host = 0;
+        var project_type = "TASK";
         var stage;
         load_contributor();
-        load_summary();
         load_by_user();
 
+        function download_all(){
+            $.getJSON("{% url "manage_task" %}",{"download_all":"true","sno":sno,"tno":tno,"uno":uno_host},function(res) {
+                path = "{% static "" %}" + "uno_"+uno + "/tno_"+tno+"/data.zip";
+                alert(path);
+                document.getElementById("download_all").href = path;
+            })
+        }
+
+
         function load_contributor(){
-            $.getJSON("{% url "manage_survey" %}",{"load_contributor":"true","sno":sno,"tno":tno},function(res){
+            $.getJSON("{% url "manage_task" %}",{"load_contributor":"true","sno":sno,"tno":tno},function(res){
+                uno_host = res.uno_host;
                 document.getElementById("contributor-cnt").innerHTML = res.contributor_cnt;
                 var ul_ele = document.getElementById("current-contributor");
                 ul_ele.innerHTML = "";
@@ -312,9 +191,10 @@
             })
         }
         function load_by_user() {
-            $.getJSON("{% url "manage_survey" %}",{"load_by_user":"true","sno":sno,"tno":tno},function(res){
+            $.getJSON("{% url "manage_task" %}",{"load_by_user":"true","tno":tno},function(res){
               //document.write(JSON.stringify(res));
-              answer_group_by_user("accordion2",sno,res,project_type);
+              slice_group_by_user("accordion2",res,tno,project_type);
+              console.log(res);
               if(stage!="OPEN") {
                   var delete_buttons = document.getElementsByClassName("delete_answer");
                   for (var i = 0; i < delete_buttons.length; ++i) {
@@ -323,22 +203,7 @@
               }
             })
         }
-        function load_summary() {
-            if(sno != -1)
-                project_type = "SURVEY";
-            else
-                project_type = "TASK";
-            $.getJSON("{% url "manage_survey" %}",{"load_summary":"true","sno":sno,"tno":tno},function(res){
-              //document.write(JSON.stringify(res));
-              document.getElementById("answer-cnt").innerHTML = res.answer_cnt;
-              document.getElementById("stage").innerHTML = res.stage;
-              document.getElementById("publicity").innerHTML = res.publicity;
-              document.getElementById("survey-title").innerHTML =  res.title;
-              document.getElementById("survey-description").innerHTML = res.description;
-              document.getElementById("survey-opentime").innerHTML = new Date(res.opentime).toLocaleString();
-              stage = res.stage;
-            })
-        }
+
         var tid = 2000;
         function search_scholar(name){
             $.getJSON("{% url "manage_survey" %}",{"search_user":"true","sno":sno,"name":name,"tno":tno},function(res){
@@ -364,9 +229,8 @@
             var set_public = document.getElementById("set-public").value;
             if(document.getElementById('stage') != 'OPEN' || confirm("确定修改？关闭调研无法撤销") == true)
                 $.get("{% url "manage_survey" %}",{"close":"true","sno":sno,"publicity":set_public,"tno":tno},function(res){
-                    if(res != "") {
+                    if(res != "")
                         alert(res);
-                    }
                 })
         }
         function delete_survey(){
@@ -410,12 +274,6 @@
               echarts_gender("gender",sno,res);
             })
         }
-        function load_age(){
-            $.getJSON("{% url "manage_survey" %}",{"load_age":"true","sno":sno,"tno":tno},function(res){
-              echarts_age("age",sno,res);
-            })
-
-        }
         function load_location(){
             $.getJSON("{% url "manage_survey" %}",{"load_location":"true","sno":sno,"tno":tno},function(res){
               echarts_location("loaction",sno,res);
@@ -427,44 +285,6 @@
     <script>
 
     </script>
-
-
-    <script type="text/javascript">
-        $(function () {
-            // jQuery UI Sliders
-            $(".slider-sample1").slider({
-                value: 100,
-                min: 1,
-                max: 500
-            });
-            $(".slider-sample2").slider({
-                range: "min",
-                value: 130,
-                min: 1,
-                max: 500
-            });
-            $(".slider-sample3").slider({
-                range: true,
-                min: 0,
-                max: 500,
-                values: [ 40, 170 ],
-            });
-
-// Inline datepicker
-            $("#inline-datepicker").datepicker();
-
-            // Switch slide buttons
-            $('.slider-button').click(function() {
-                if ($(this).hasClass("on")) {
-                    $(this).removeClass('on').html($(this).data("off-text"));
-                } else {
-                    $(this).addClass('on').html($(this).data("on-text"));
-                }
-            });
-
-        });
-    </script>
-
 
 </body>
 </html>

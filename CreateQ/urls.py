@@ -25,10 +25,13 @@ urlpatterns = [
     url(r'^post_task/',CreateQ_view.post_task,name='post_task'),
     url(r'^list/', CreateQ_view.list, name='list'),
     url(r'^view_questions/',CreateQ_view.view_questions,name = 'view_question'),
-    url(r'^view_files/', CreateQ_view.view_files, name='view'),
+    url(r'^view_files/', CreateQ_view.view_files, name='view_files'),
+    url(r'^upload_slice/',CreateQ_view.upload_slice,name = 'upload_slice'),
+    url(r'^download_data/',CreateQ_view.download_data,name = 'download_data'),
     url(r'^scholar_list/', CreateQ_view.scholar_list, name= 'scholar_list'),
     url(r'^new/',CreateQ_view.new_survey,name = 'home'),
     url(r'^list/',CreateQ_view.list,name = 'list'),
-    url(r'^manage/',CreateQ_view.manage_survey,name = 'manage'),
+    url(r'^manage_survey/',CreateQ_view.manage_survey,name = 'manage_survey'),
+    url(r'^manage_task/',CreateQ_view.manage_task,name = 'manage_task'),
     url(r'^download_csv/',CreateQ_view.download_csv,name = 'download_csv')
 ]

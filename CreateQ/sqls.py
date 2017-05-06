@@ -105,15 +105,11 @@ class TaskInfo:
         self.stage = ''
         self.owner = ''
         self.opentime = ''
-        self.rawdata = ''
-        self.example = ''
-    def parse(self,post,rawdata,example,owner,time):
+    def parse(self,post,owner,time):
         self.title = post['title']
         self.description = post['description']
         self.deadline = post['deadline']
         self.payment = post['payment']
-        self.rawdata = rawdata
-        self.example = example
         self.owner = owner
         self.opentime = time
     def load_from_db(self,tno):
@@ -232,7 +228,7 @@ def load_questions(sno):
         sq.append(tup,tup2)
     return sq
 
-def add_task_to_db(task=None,name=None,num=None,datatype=None):
+def add_task_to_db(task=None):
     db = connect_db()
     cursor = db.cursor()
 
@@ -253,14 +249,28 @@ def add_task_to_db(task=None,name=None,num=None,datatype=None):
     sql = "INSERT INTO SCHOLAR_OWN_TASK(UNO,TNO,ACCESS) VALUES(%d,%d,'owner')" % (uno,tno)
     cursor.execute(sql)
 
-    sql = "INSERT INTO FILE(FNAME,RAWDATA,EXAMPLE,DATATYPE,NUM,NOW) VALUES " \
-          "('%s', '%s','%s','%s', %d, 0)" % (name,task.rawdata, task.example,datatype,num)
+    db.commit()
+    db.close()
+
+    return tno
+
+def add_file_to_db(rawdata,example,tno,datatype,num):
+    db = connect_db()
+    cursor = db.cursor()
+
+    sql = "INSERT INTO FILE(FNAME,ENAME,TNO,DATATYPE) VALUES" \
+          "('%s','%s',%d,'%s')" % (rawdata,example,tno,datatype)
     cursor.execute(sql)
+
     cursor.execute("SELECT MAX(FNO) FROM FILE")
     fno = cursor.fetchone()[0]
-    print fno
-    sql = "INSERT INTO TASK_WITH_FILE(TNO,FNO) VALUES (%d, %d)" % (tno,fno)
-    cursor.execute(sql)
+
+    for i in range(0,num):
+        sql = "INSERT INTO FILE_SLICE(FNO,FSNO,SEND,RECEIVE) VALUES" \
+              "(%d,%d,'0','0')" % (fno,i)
+        print "test____",sql
+        cursor.execute(sql)
 
     db.commit()
     db.close()
+

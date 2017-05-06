@@ -178,7 +178,7 @@
           <a class = 'delete_answer' onclick="
             var par = this.parentNode.parentNode;
             var id = par.id;
-            $.get('{% url 'manage' %}',{'sno':sno,'delete_id':id},function(res){});
+            $.get('{% url 'manage_survey' %}',{'sno':sno,'delete_id':id},function(res){});
             this.disabled = 'disabled';
             this.innerHTML = '已删除';
             ">

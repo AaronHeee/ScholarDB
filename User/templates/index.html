@@ -252,10 +252,10 @@
             var ele = document.getElementById("index-list-item").cloneNode(true);
             ele.getElementsByClassName("name title")[0].innerHTML = json.TITLE;
             if(type == 'SURVEY'){
-                ele.getElementsByClassName("name title")[0].href = "{% url "manage" %}" + "?sno=" + json.SNO;
+                ele.getElementsByClassName("name title")[0].href = "{% url "manage_survey" %}" + "?sno=" + json.SNO;
             }
             else if(type=='TASK'){
-                ele.getElementsByClassName("name title")[0].href = "{% url "manage" %}" + "?tno=" + json.TNO;
+                ele.getElementsByClassName("name title")[0].href = "{% url "manage_survey" %}" + "?tno=" + json.TNO;
             }
             ele.getElementsByClassName("contributor")[0].innerHTML = json.UNAME;
             ele.getElementsByClassName("inst")[0].innerHTML = json.INST;
