@@ -181,11 +181,10 @@ def scholar_list(request):
     if "load" in request.GET.keys() and request.GET["load"] == 'true':
         subject = request.GET.get("subject", None).split(' ')
         datatype = request.GET.get("datatype", None)
-        print "datatype:",datatype
+        publicity = request.GET.get("publicity", None)
         order = request.GET.get("order",None)
         type = request.GET.get("type",None)
-        print order
-        res = get_scholar_list_from_db(uno=uno, subject=subject,datatype=datatype,type=type, order=order, user=scale_db_username(uno, usertype),pwd=pwd,onlyforme=False)
+        res = get_scholar_list_from_db(uno=uno, subject=subject,datatype=datatype,publicity=publicity,type=type, order=order, user=scale_db_username(uno, usertype),pwd=pwd,onlyforme=False)
         return JsonResponse(res, safe=False)
 
     if "search" in request.GET.keys() and request.GET["search"] == 'true':
@@ -273,9 +272,9 @@ def manage_survey(request):
         if "load_summary" in request.GET.keys():
             return JsonResponse(summary,safe=False)
         if "delete_id" in request.GET.keys():
-            tuno =  int(request.GET['delete_id'][1:])
-            if sno != -1:
-                delete_answer(tuno,no)
+            tuno = int(request.GET['delete_id'][1:])
+            print tuno
+            delete_answer(tuno,no,override_task)
             return HttpResponse("Success")
         if "search_user" in request.GET.keys():
             name = request.GET['name']
@@ -286,7 +285,6 @@ def manage_survey(request):
             uno = int(request.GET['uno'])
             add_contributor(uno,no,override_task)
         if "close" in request.GET.keys():
-            #注意：这里仅针对了调研
             publicity = request.GET['publicity'].replace(",","")
             print publicity
             if check_authorization(uno,no,['OWNER'],override_task):
@@ -382,9 +380,10 @@ def manage_task(request):
         if "load_summary" in request.GET.keys():
             return JsonResponse(summary,safe=False)
         if "delete_id" in request.GET.keys():
-            tuno =  int(request.GET['delete_id'][1:])
+            tuno = int(request.GET['delete_id'][1:])
+            print tuno
             if sno != -1:
-                delete_answer(tuno,no)
+                delete_answer(tuno, no)
             return HttpResponse("Success")
         if "search_user" in request.GET.keys():
             name = request.GET['name']
@@ -395,7 +394,6 @@ def manage_task(request):
             uno = int(request.GET['uno'])
             add_contributor(uno,no,override_task)
         if "close" in request.GET.keys():
-            #注意：这里仅针对了调研
             publicity = request.GET['publicity'].replace(",","")
             print publicity
             if check_authorization(uno,no,['OWNER'],override_task):

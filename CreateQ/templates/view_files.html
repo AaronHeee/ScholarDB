@@ -133,7 +133,7 @@
                                 <div class="step-pane" id="step3">
                                     <div class ="span10">
                                         <div class = "alert alert-success" id = "check-legibility">
-                                            如果您已将数据标注完毕，可压缩为.zip文件上传，当学者确认你的成果后，您将获得相应的报酬。
+                                            如果您已将数据标注完毕，请命名为data.zip文件上传，当学者确认你的成果后，您将获得相应的报酬。
                                         </div>
                                         <div class="hero-unit">
                                                 <h2>恭喜您完成标注任务！</h2>
@@ -232,7 +232,6 @@
                 uno = res.uno;
                 tno = res.tno;
                 path = "{% static "" %}" + "uno_"+uno + "/tno_"+tno+"/sender/rawdata"+"/data.zip";
-
                 document.getElementById("download_data").href = path;
 
             })

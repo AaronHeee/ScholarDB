@@ -213,9 +213,12 @@ def load_summary_management(sno,override_task = False):
 def delete_answer(uno,sno,override_task = False):
     db = connect_db()
     cursor = db.cursor()
+    print 'override_task',override_task
     if not override_task:
-        cursor.execute("DELETE FROM ANSWER WHERE UNO = %d AND QNO IN (SELECT QNO FROM QUESTION WHERE SNO = %d)" % (uno,sno))
-    cursor.execute(override_sql("UPDATE PARTICIPATION SET STATUS = 'DELETED' WHERE UNO = %d AND SNO = %d" % (uno,sno),override_task))
+        cursor.execute("UPDATE PARTICIPATION SET STATUS = 'DELETED' WHERE UNO = %d AND SNO = %d" % (uno, sno))
+        cursor.execute("DELETE FROM ANSWER WHERE UNO = %d AND QNO IN (SELECT QNO FROM QUESTION WHERE SNO = %d)" % (uno, sno))
+    else :
+        cursor.execute("UPDATE FILE_SLICE S,FILE F,PARTICIPATION_TASK P SET STATUS = 'DELETED',RECEIVE=RECEIVE-1 WHERE F.FNO = S.FNO AND P.UNO = %d AND F.TNO = %d"%(uno,sno))
     db.commit()
     db.close()
 
@@ -449,13 +452,13 @@ def to_json_list_by_user_task(tno,concat_mode = 'strconcat'):
     json_list = []
     db = connect_db()
     cursor = db.cursor()
-    sql = "SELECT DISTINCT UNO,SUBMIT_TIME FROM PARTICIPATION_TASK P, FILE F WHERE F.FNO=P.FNO AND TNO = %d" % tno
+    sql = "SELECT DISTINCT UNO,SUBMIT_TIME FROM PARTICIPATION_TASK P, FILE F WHERE F.FNO=P.FNO AND TNO = %d AND STATUS != 'DELETED'"% tno
     cursor.execute(sql)
     users = cursor.fetchall()
     for tup in users:
         json = {'uno':tup[0],'submit_time':tup[1]}
         uno = tup[0]
-        sql = "SELECT FSNO FROM PARTICIPATION_TASK P, FILE F WHERE F.FNO=P.FNO AND TNO = %d AND UNO = %d" % (tno,uno)
+        sql = "SELECT FSNO FROM PARTICIPATION_TASK P, FILE F WHERE F.FNO=P.FNO AND TNO = %d AND UNO = %d AND STATUS != 'DELETED' " % (tno,uno)
         cursor.execute(sql)
         fsno_set = cursor.fetchall()
         for tup2 in fsno_set:

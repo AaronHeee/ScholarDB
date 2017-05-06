@@ -4,9 +4,9 @@ import MySQLdb
 import time
 from common_file import connect_db
 
-def add_survey_to_scholar_list(uno=None, subject=None, user='root', pwd='dbpjdbpj',onlyforme = True): #onlyforme为false时,uno限制被去除
+def add_survey_to_scholar_list(uno=None, subject=None, user='root', pwd='dbpjdbpj',onlyforme = True,publicity = 'BOTH'): #onlyforme为false时,uno限制被去除
 
-    sql = "SELECT SNO, TYPE, TITLE,DESCRIPTION,PAYMENT,OPENTIME FROM SURVEY WHERE"
+    sql = "SELECT SNO, TYPE, TITLE,DESCRIPTION,PAYMENT,OPENTIME FROM SURVEY WHERE "
     condition = []
     if subject != [None] and subject != [''] and subject != []:
         for sub in subject:
@@ -16,6 +16,9 @@ def add_survey_to_scholar_list(uno=None, subject=None, user='root', pwd='dbpjdbp
     if condition != None and condition != []:
         sql += ' AND '.join(condition)
         sql += ' AND'
+    if publicity == "PUBLIC" or publicity == "PRIVATE":
+        sql += 'AND SNO IN (SELECT SNO FROM PARTICIPATION_SURVET WHERE SURVEY.SNO = PUBLICITY_SURVEY.SNO AND  PUBLICITY = %s ) AND' % publicity
+
     if onlyforme:
         sql += " SNO IN (SELECT SNO FROM SCHOLAR_OWN_SURVEY WHERE UNO = %d)" % uno
     else:
@@ -24,18 +27,23 @@ def add_survey_to_scholar_list(uno=None, subject=None, user='root', pwd='dbpjdbp
 
     return sql
 
-def add_task_to_scholar_list(uno=None, datatype=None, user='root', pwd='dbpjdbpj',onlyforme = True):
+def add_task_to_scholar_list(uno=None, datatype=None, user='root', pwd='dbpjdbpj',onlyforme = True,publicity = 'BOTH'):
 
-    sql = "SELECT TASK.TNO,TYPE,TITLE,DESCRIPTION,PAYMENT,OPENTIME FROM TASK"
+    sql = "SELECT TASK.TNO,TYPE,TITLE,DESCRIPTION,PAYMENT,OPENTIME FROM TASK "
     if datatype != '' and datatype != None:
         sql += ",FILE WHERE FILE.DATATYPE='%s' AND" % datatype
 
     else:
         sql += " WHERE"
+
+    if publicity == "PUBLIC" or publicity == "PRIVATE":
+        sql += ' TASK.TNO IN (SELECT TNO FROM PARTICIPATION_TASK WHERE TASK.TNO = PUBLICITY_TASK.TNO AND PUBLICITY = %s AND' % publicity
+
     if onlyforme:
         sql += " TNO IN (SELECT TNO FROM SCHOLAR_OWN_TASK WHERE UNO = %d)" %uno
     else:
         sql += " true"
+
 
     return sql
 
@@ -95,7 +103,7 @@ def load_json(list_res):
     return res
 
 
-def get_scholar_list_from_db(uno=None, subject=None, datatype=None, type=None,order=None, user='root', pwd='123456',onlyforme = True):
+def get_scholar_list_from_db(uno=None, subject=None, datatype=None,publicity=None,type=None,order=None, user='root', pwd='123456',onlyforme = True):
     db = connect_db()
     cursor = db.cursor()
 
@@ -110,13 +118,13 @@ def get_scholar_list_from_db(uno=None, subject=None, datatype=None, type=None,or
             """
 
     if type == 'SURVEY':
-        sql += add_survey_to_scholar_list(uno,subject,user,pwd,onlyforme)
+        sql += add_survey_to_scholar_list(uno,subject,user,pwd,onlyforme,publicity)
 
     if type == 'TASK':
-        sql += add_task_to_scholar_list(uno,datatype,user,pwd,onlyforme)
+        sql += add_task_to_scholar_list(uno,datatype,user,pwd,onlyforme,publicity)
 
     if type == "BOTH":
-        sql += add_survey_to_scholar_list(uno,subject,user,pwd,onlyforme) + " UNION " + add_task_to_scholar_list(uno,datatype,user,pwd,onlyforme)
+        sql += add_survey_to_scholar_list(uno,subject,user,pwd,onlyforme,publicity) + " UNION " + add_task_to_scholar_list(uno,datatype,user,pwd,onlyforme,publicity)
 
     print sql
 

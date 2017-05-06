@@ -69,9 +69,9 @@ TODO:
                                     <b class="caret"></b>
                                     </a>
                                 <ul class="dropdown-menu">
-                                    <li><a onclick="refresh_filter_type('OPEN')">仅公开</a></li>
-                                    <li><a onclick="refresh_filter_type('SECRECT')">仅私密</a></li>
-                                    <li><a onclick="refresh_filter_type('BOTH')">重置</a></li>
+                                    <li><a onclick="refresh_filter_publicity('PUBLIC')">仅公开</a></li>
+                                    <li><a onclick="refresh_filter_publicity('PRIVATE')">仅私密</a></li>
+                                    <li><a onclick="publicity='BOTH';clear_list_item('qpar');load()">重置</a></li>
                                 </ul>
                                 <li class="dropdown">
                                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
@@ -229,8 +229,10 @@ TODO:
         var datatype = "";
         var desc = 0;
         var pattern = "";
+        var publicity = "BOTH";
+
         function load(){
-            $.getJSON('{% url "scholar_list" %}',{'load':'true','type':type,'order':order_str,'subject':subject,'datatype':datatype,'title':pattern},function(res){
+            $.getJSON('{% url "scholar_list" %}',{'load':'true','type':type,'publicity':publicity,'order':order_str,'subject':subject,'datatype':datatype,'title':pattern},function(res){
                 for(var i = 0;i<res.length;++i){
                     add_scholar_list_item(res[i],"qpar");
                 }
@@ -266,6 +268,12 @@ TODO:
             clear_list_item("qpar");
             datatype = datatype_t;
             load();
+        }
+        function refresh_filter_publicity(publicity_t){
+            clear_list_item("qpar");
+            publicity_t = publicity;
+            load;
+
         }
         function refresh_filter_type(type_t){
             $(".disabled").removeClass("disabled");
