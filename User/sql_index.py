@@ -29,7 +29,7 @@ def get_public_survey(min,max): #一次显示第Min到第max个
                    " WHERE USERINFO.UNO = SCHOLAR.UNO AND SCHOLAR.UNO = SCHOLAR_OWN_SURVEY.UNO AND SCHOLAR_OWN_SURVEY.SNO = SURVEY.SNO"\
                    " AND SURVEY.SNO = PUBLICITY_SURVEY.SNO AND PUBLICITY = 'PUBLIC' AND ACCESS = 'OWNER' ORDER BY OPENTIME DESC"
 
-    print sql
+    #print sql
     cursor.execute(sql)
     tups = cursor.fetchall()
     for tup in tups:
@@ -44,7 +44,7 @@ def get_public_task(min,max): #一次显示第Min到第max个
     sql= "SELECT TASK.TNO,USERINFO.UNO,UNAME,INST,TITLE,OPENTIME FROM USERINFO,SCHOLAR,SCHOLAR_OWN_TASK,TASK,PUBLICITY_TASK"\
                    " WHERE USERINFO.UNO = SCHOLAR.UNO AND SCHOLAR.UNO = SCHOLAR_OWN_TASK.UNO AND SCHOLAR_OWN_TASK.TNO = TASK.TNO"\
                    " AND TASK.TNO = PUBLICITY_TASK.TNO AND PUBLICITY = 'PUBLIC' AND ACCESS = 'OWNER' ORDER BY OPENTIME DESC"
-    print sql
+    #print sql
     cursor.execute(sql)
     tups = cursor.fetchall()
     for tup in tups:

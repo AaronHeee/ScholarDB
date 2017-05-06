@@ -21,7 +21,7 @@ def load_taskinfo(tno):
     json['example_name'] = res[5]
 
     sql = "SELECT COUNT(FSNO) FROM FILE F, FILE_SLICE S WHERE F.FNO = S.FNO AND F.TNO = %s GROUP BY F.FNO"% tno
-    print sql
+    #print sql
     cursor.execute(sql)
     res = cursor.fetchone()
     json['num'] = res[0]
@@ -65,13 +65,13 @@ def send_index(max_num,num,tno,uno):
         sql = "INSERT INTO PARTICIPATION_TASK(FNO,FSNO,UNO,STATUS) VALUES (%d,%d,%d,'unload')" % (fno,k,uno)
         cursor.execute(sql)
 
-    print "fno",fno
-    print "tno",tno
+    #print "fno",fno
+    #print "tno",tno
 
     db.commit()
     db.close()
 
-    print index
+    #print index
     return index
 
 def sql_upload_slice(tno,uno,submit_time):
@@ -87,7 +87,7 @@ def sql_upload_slice(tno,uno,submit_time):
     fno = int(cursor.fetchone()[0])
 
     sql = "UPDATE PARTICIPATION_TASK SET STATUS='pending',SUBMIT_TIME='%s' WHERE FNO=%d AND UNO=%d"% (submit_time,fno,uno)
-    print sql
+    #print sql
     cursor.execute(sql)
 
     sql = "SELECT FSNO FROM PARTICIPATION_TASK WHERE FNO=%d AND UNO=%d" % (fno,uno)
@@ -96,7 +96,7 @@ def sql_upload_slice(tno,uno,submit_time):
     res = cursor.fetchall()
     for i in res:
         sql = "UPDATE FILE_SLICE SET RECEIVE=RECEIVE+1 WHERE FNO=%d AND FSNO=%d" % (fno,i[0])
-        print sql
+        #print sql
         cursor.execute(sql)
 
     db.commit()

@@ -84,7 +84,6 @@ class SurveyQuestions:
                 q.choice = post['JSON3[%d][choice]' % i][:-1].split(',')
             self.question_list.append(q)
             i += 1
-        print self.question_list
 
     def append(self,tup,choice):
         #cursor.execute("SELECT QNO,TITLE,SUPPLEMENT,SUPPLEMENT_TYPE,TYPE FROM QUESTION WHERE SNO = %d " % sno)
@@ -131,7 +130,6 @@ def add_survey_to_db(title, detail, questions, user='root', pwd='dbpjdbpj'):
           "(NULL,'%s','%s',%d,%d,'%s','%s',%d,'OPEN','%s','SURVEY',%d)" % (
           title.title, title.description, detail.min_age, detail.max_age,
           detail.gender_restrict, detail.survey_restrict, detail.payment, detail.opentime,detail.maxneed)
-    print sql
     cursor.execute(sql)
     cursor.execute("SELECT MAX(SNO) FROM SURVEY")
     sno = cursor.fetchall()[0][0]
@@ -232,20 +230,20 @@ def add_task_to_db(task=None):
     db = connect_db()
     cursor = db.cursor()
 
-    print task.payment
+    #print task.payment
 
     sql = "INSERT INTO TASK(TITLE,DESCRIPTION,OPENTIME,DEADLINE,PAYMENT,TYPE,STAGE) VALUES\
           ('%s','%s','%s','%s','%s','TASK','OPEN')" % \
           (task.title,task.description,task.opentime,task.deadline,task.payment)
-    print "sql:",sql
+    #print "sql:",sql
     cursor.execute(sql)
 
     cursor.execute("SELECT MAX(TNO) FROM TASK")
     tno = cursor.fetchone()[0]
-    print tno
+    #print tno
     cursor.execute("SELECT UNO FROM USERINFO WHERE UNAME = '%s'" % task.owner)
     uno = cursor.fetchone()[0]
-    print uno
+    #print uno
     sql = "INSERT INTO SCHOLAR_OWN_TASK(UNO,TNO,ACCESS) VALUES(%d,%d,'owner')" % (uno,tno)
     cursor.execute(sql)
 
@@ -268,7 +266,7 @@ def add_file_to_db(rawdata,example,tno,datatype,num):
     for i in range(0,num):
         sql = "INSERT INTO FILE_SLICE(FNO,FSNO,SEND,RECEIVE) VALUES" \
               "(%d,%d,'0','0')" % (fno,i)
-        print "test____",sql
+        #print "test____",sql
         cursor.execute(sql)
 
     db.commit()

@@ -54,7 +54,7 @@ class SurveyAnswer:
                 for v in json['res[%d][value][]' % i]:
                     t.value = v
                     self.answer_list.append(copy.deepcopy(t))
-            print self.answer_list
+            #print self.answer_list
             i += 1
 
     def add_to_db(self):
@@ -213,7 +213,7 @@ def load_summary_management(sno,override_task = False):
 def delete_answer(uno,sno,override_task = False):
     db = connect_db()
     cursor = db.cursor()
-    print 'override_task',override_task
+    #print 'override_task',override_task
     if not override_task:
         cursor.execute("UPDATE PARTICIPATION SET STATUS = 'DELETED' WHERE UNO = %d AND SNO = %d" % (uno, sno))
         cursor.execute("DELETE FROM ANSWER WHERE UNO = %d AND QNO IN (SELECT QNO FROM QUESTION WHERE SNO = %d)" % (uno, sno))
@@ -310,7 +310,7 @@ def load_date_number(sno,override_task = False):
         number.append(i[1])
     json["date"] = date
     json["number"] = number
-    print json
+    #print json
     db.close()
     return json
 
@@ -346,7 +346,7 @@ def load_location(sno,override_task = False):
         city['name'] = i[0]
         city['value'] = i[1]
         json.append(city)
-    print "location:",json
+    #print "location:",json
     db.close()
     return json
 
@@ -375,9 +375,9 @@ def load_choice(sno):
         for ch in chs:
             choice['choice'].append(ch[0])
             choice['number'].append(ch[1])
-        print "choice:",choice
+        #print "choice:",choice
         json.append(choice)
-    print 'json_choice:',json
+    #print 'json_choice:',json
     db.close()
     return json
 
@@ -419,7 +419,7 @@ def load_correlation(sno,variable_1,variable_2):
 
     if var1 == 'NULL':
         variable_1 = variable_1[4:]
-        print "variable_1:",variable_1
+        #print "variable_1:",variable_1
 
     if variable_2 == u'性别':
         var2 = 'GENDER'
@@ -432,7 +432,7 @@ def load_correlation(sno,variable_1,variable_2):
 
     if var2 == 'NULL':
         variable_2 = variable_2[4:]
-        print "variable_2:",variable_2
+        #print "variable_2:",variable_2
 
 
     if var1 != "NULL":
@@ -458,7 +458,7 @@ def load_correlation(sno,variable_1,variable_2):
                       "(SELECT UNO FROM ANSWER WHERE VALUE = '%s' AND UNO IN (SELECT UNO FROM PARTICIPATION WHERE SNO = %d) AND " \
                       "QNO IN (SELECT QNO FROM QUESTION WHERE TITLE ='%s')) " \
                       "AS B ON A.UNO = B.UNO GROUP BY %s" % (var1,var1,sno,var[0],sno,variable_2,var1)
-            print "sql",sql
+            #print "sql",sql
             cursor.execute(sql)
             res = cursor.fetchall()
             tmp = []
@@ -473,7 +473,7 @@ def load_correlation(sno,variable_1,variable_2):
         json['yAxis_data'] = yAxis_data
         json['yAxis_name'] = yAxis_name
 
-    print json
+    #print json
     db.close()
 
     return json

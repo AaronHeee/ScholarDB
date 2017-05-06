@@ -16,13 +16,13 @@ def index(request):
             min = int(request.GET['min'])
             max = int(request.GET['max'])
             json_list = get_public_survey(min,max)
-            print json_list
+            #print json_list
             return JsonResponse(json_list,safe=False)
         if 'load_public_task' in request.GET.keys():
             min = int(request.GET['min'])
             max = int(request.GET['max'])
             json_list = get_public_task(min, max)
-            print json_list
+            #print json_list
             return JsonResponse(json_list, safe=False)
 
     return render(request, "index.html", {"username": login_user})
@@ -59,7 +59,7 @@ def login(request):
         pwd = request.POST['pwd']
         res,log = login_mail(mail,pwd)
 
-        print mail,pwd
+        #print mail,pwd
         if not res:
             return render(request,"good_login.html",{"errtext":log})
         else:

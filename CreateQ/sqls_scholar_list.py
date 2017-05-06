@@ -23,7 +23,7 @@ def add_survey_to_scholar_list(uno=None, subject=None, user='root', pwd='dbpjdbp
         sql += " SNO IN (SELECT SNO FROM SCHOLAR_OWN_SURVEY WHERE UNO = %d)" % uno
     else:
         sql += " true"
-    print sql
+    #print sql
 
     return sql
 
@@ -72,7 +72,7 @@ def load_json(list_res):
             sql = "SELECT WHAT FROM SURVEY_SUBJECT WHERE SNO = %d" % tup[1]
             cursor.execute(sql)
             l = cursor.fetchall()
-            print l
+            #print l
             dict["subject1"] = l[0][0] if len(l) >= 1 else ""
             dict["subject2"] = l[1][0] if len(l) >= 2 else ""
             dict["subject3"] = l[2][0] if len(l) >= 3 else ""
@@ -86,7 +86,7 @@ def load_json(list_res):
                 dict['publicity'] =  ''
             #end add
             sql = "SELECT DATATYPE,SUM(SEND),SUM(RECEIVE),COUNT(FSNO) FROM FILE F,FILE_SLICE S WHERE TNO =%d AND F.FNO=S.FNO GROUP BY F.FNO" % tup[1]
-            print sql
+            #print sql
             cursor.execute(sql)
             l = cursor.fetchall()
 
@@ -109,7 +109,7 @@ def get_scholar_list_from_db(uno=None, subject=None, datatype=None,publicity=Non
 
     cursor.execute("SELECT COUNT(*) FROM information_schema.views WHERE table_schema = 'ScholarDB' AND table_name = 'LIST' ")
     l = cursor.fetchall();
-    print l
+    #print l
     if(l[0][0]==1):
         cursor.execute("DROP VIEW LIST")
 
@@ -126,7 +126,7 @@ def get_scholar_list_from_db(uno=None, subject=None, datatype=None,publicity=Non
     if type == "BOTH":
         sql += add_survey_to_scholar_list(uno,subject,user,pwd,onlyforme,publicity) + " UNION " + add_task_to_scholar_list(uno,datatype,user,pwd,onlyforme,publicity)
 
-    print sql
+    #print sql
 
     cursor.execute(sql)
 
@@ -135,7 +135,7 @@ def get_scholar_list_from_db(uno=None, subject=None, datatype=None,publicity=Non
 
     list_res = cursor.fetchall()
 
-    print list_res
+    #print list_res
 
     res = load_json(list_res)
 
@@ -153,13 +153,13 @@ def search(uno=None, subject=None, datatype=None, type=None, pattern=None, order
 
     sql = "SELECT TYPE,NO,TITLE,DESCRIPTION,PAYMENT,OPENTIME FROM LIST WHERE TITLE LIKE '%" + pattern + "%'"
 
-    print "isDesc:",isDesc
+    #print "isDesc:",isDesc
 
     if isDesc == '1':
         sql += "OR DESCRIPTION LIKE '%" + pattern + "%'"
     sql += "ORDER BY " + order
 
-    print sql
+    #print sql
 
     cursor.execute(sql)
 
