@@ -450,7 +450,8 @@ def download_data(request):
     path = os.path.join(init_path,"uno_"+str(uno_2),"tno_"+str(tno),"sender","rawdata")
     index = send_index(max_num,num,tno,uno)
 
-    os.remove(os.path.join(path,'data.zip'))
+    if os.path.exists(os.path.join(path,'data.zip')):
+        os.remove(os.path.join(path,'data.zip'))
 
     f = zipfile.ZipFile(os.path.join(path,'data.zip'), 'w', zipfile.ZIP_DEFLATED)
     for i in index:
