@@ -229,3 +229,5 @@ insert into PUBLICITY_TASK(TNO,PUBLICITY) values(1,'PRIVATE');
 insert into SCHOLAR_OWN_TASK(TNO,UNO,ACCESS) values(1,1000,'OWNER');
 insert into FILE_SLICE(TNO,UNO,FSNO) values(1,1000,2);
 insert into FILE_SLICE(TNO,UNO,FSNO) values(1,1000,4);
+
+alter table SURVEY add MAXNEED INTEGER;

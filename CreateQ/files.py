@@ -9,12 +9,10 @@ import os
 def divide_file(path,zip_name):
     num = 0
     flag = 0
-    print path
     zip_path = os.path.join(path,zip_name)
     total_file = zipfile.ZipFile(zip_path,'r')
     file_list = total_file.namelist()
     length = len(file_list)
-    print length
 
     if length == 0:
         return {'num': 0}
@@ -47,7 +45,6 @@ def divide_file(path,zip_name):
     str = total_file.namelist()[1]
     datatype = re.search('\..*$',str).group()
 
-    print datatype
 
     return (cycle+1,datatype)
 

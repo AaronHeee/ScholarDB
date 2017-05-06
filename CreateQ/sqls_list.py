@@ -31,7 +31,7 @@ def add_task_to_list(datatype=None, user='root', pwd='dbpjdbpj'):
     else:
         sql += " WHERE "
     sql += " STAGE = 'OPEN'"
-    print sql
+    #print sql
     return sql
 
 def load_json(list_res):
@@ -63,7 +63,7 @@ def load_json(list_res):
                 dict["datatype"] = l[0][0]
             res.append(dict)
         except Exception:
-            print 'error at sql_list'
+            #print 'error at sql_list'
             pass
 
     db.commit()
@@ -78,7 +78,7 @@ def get_list_from_db(subject=None, datatype=None, type=None,order=None, user='ro
 
     cursor.execute("SELECT COUNT(*) FROM information_schema.views WHERE table_schema = 'ScholarDB' AND table_name = 'LIST' ")
     l = cursor.fetchall();
-    print l
+    #print l
     if(l[0][0]==1):
         cursor.execute("DROP VIEW LIST")
 
@@ -93,7 +93,7 @@ def get_list_from_db(subject=None, datatype=None, type=None,order=None, user='ro
     if type == "BOTH":
         sql += add_survey_to_list(subject,user,pwd) + " UNION " + add_task_to_list(datatype,user,pwd)
 
-    print sql
+    #print sql
 
     cursor.execute(sql)
 
@@ -102,7 +102,7 @@ def get_list_from_db(subject=None, datatype=None, type=None,order=None, user='ro
 
     list_res = cursor.fetchall()
 
-    print list_res
+    #print list_res
 
     res = load_json(list_res)
 
@@ -120,14 +120,14 @@ def search(subject=None, datatype=None, type=None, pattern=None, order=None, isD
 
     sql = "SELECT TYPE,NO,TITLE,DESCRIPTION,PAYMENT,OPENTIME FROM LIST WHERE TITLE LIKE '%" + pattern + "%'"
 
-    print "isDesc:",isDesc
+    #print "isDesc:",isDesc
 
     if isDesc == '1':
         sql += "OR DESCRIPTION LIKE '%" + pattern + "%'"
 
     sql += "ORDER BY " + order
 
-    print sql
+    #print sql
 
     cursor.execute(sql)
 
