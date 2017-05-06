@@ -178,7 +178,7 @@
           <a class = 'delete_answer' onclick="
             var par = this.parentNode.parentNode;
             var id = par.id;
-            $.get('{% url 'manage_survey' %}',{'sno':sno,'delete_id':id},function(res){});
+            $.get('{% url 'manage_survey' %}',{'sno':sno,'tno':tno,'delete_id':id},function(res){});
             this.disabled = 'disabled';
             this.innerHTML = '已删除';
             ">
@@ -206,10 +206,10 @@
 </div>
 
 <div id = 'project-detail'>
-    <p id="status2" style="font-size: x-small">当前调研状态:<p id="publicity"></p></p>
+    <p id="status2" style="font-size: x-small">当前开放状态:<p id="publicity"></p></p>
     <hr>
     {% if access == 'OWNER' %}
-    <p style="font-size: x-small">修改调研：</p>
+    <p style="font-size: x-small">修改开放状态：</p>
     <p>&nbsp;</p>
     <div class="field-box">
         <div class="ui-select" >

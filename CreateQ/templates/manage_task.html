@@ -95,7 +95,7 @@
                                 <h5 id="survey-title"></h5>
                                 <h6 id ="survey-description">
                                 </h6>
-                                创建于：<h6 class="help-block" id="survey-opentime"></h6>
+                                创建于<h6 class="help-block" id="survey-opentime"></h6>
                                 <a class= "button btn-flat" id="download_all" onclick="download_all()">下载标注数据</a>
 
                         </blockquote>
@@ -164,16 +164,21 @@
         var project_type = "TASK";
         var stage;
         load_contributor();
+        load_summary();
         load_by_user();
 
         function download_all(){
             $.getJSON("{% url "manage_task" %}",{"download_all":"true","sno":sno,"tno":tno,"uno":uno_host},function(res) {
-                path = "{% static "" %}" + "uno_"+uno + "/tno_"+tno+"/data.zip";
-                alert(path);
-                document.getElementById("download_all").href = path;
+                path = "{% static "" %}" + "uno_"+uno_host + "/tno_"+tno+"/data.zip";
+                window.location = path;
             })
         }
 
+        function download_slice(uno_host,tno,uno){
+            path = "{% static "" %}" + "uno_"+uno_host + "/tno_"+tno+"/receiver/"+uno+"/data.zip";
+            alert(path);
+            window.location = path;
+        }
 
         function load_contributor(){
             $.getJSON("{% url "manage_task" %}",{"load_contributor":"true","sno":sno,"tno":tno},function(res){
@@ -190,11 +195,28 @@
                 }
             })
         }
+        function load_summary() {
+            if(sno != -1)
+                project_type = "SURVEY";
+            else
+                project_type = "TASK";
+            $.getJSON("{% url "manage_survey" %}",{"load_summary":"true","sno":sno,"tno":tno},function(res){
+              //document.write(JSON.stringify(res));
+              document.getElementById("answer-cnt").innerHTML = res.answer_cnt;
+              document.getElementById("stage").innerHTML = res.stage;
+              document.getElementById("publicity").innerHTML = res.publicity;
+              document.getElementById("survey-title").innerHTML =  res.title;
+              document.getElementById("survey-description").innerHTML = res.description;
+              document.getElementById("survey-opentime").innerHTML = new Date(res.opentime).toLocaleString();
+              stage = res.stage;
+            })
+        }
         function load_by_user() {
             $.getJSON("{% url "manage_task" %}",{"load_by_user":"true","tno":tno},function(res){
               //document.write(JSON.stringify(res));
-              slice_group_by_user("accordion2",res,tno,project_type);
+              slice_group_by_user("accordion2",res,tno,project_type,uno_host);
               console.log(res);
+              alert(stage);
               if(stage!="OPEN") {
                   var delete_buttons = document.getElementsByClassName("delete_answer");
                   for (var i = 0; i < delete_buttons.length; ++i) {
@@ -228,7 +250,7 @@
         function close_survey(){
             var set_public = document.getElementById("set-public").value;
             if(document.getElementById('stage') != 'OPEN' || confirm("确定修改？关闭调研无法撤销") == true)
-                $.get("{% url "manage_survey" %}",{"close":"true","sno":sno,"publicity":set_public,"tno":tno},function(res){
+                $.get("{% url "manage_task" %}",{"close":"true","sno":sno,"tno":tno,"publicity":set_public},function(res){
                     if(res != "")
                         alert(res);
                 })
@@ -236,9 +258,6 @@
         function delete_survey(){
             if(confirm("确定删除调研？该操作不可撤销") == true)
                 $.get("{% url "manage_survey" %}",{"delete":"true","sno":sno,"tno":tno})
-        }
-        function wdownload_csv(){
-            $.get("{% url "download_csv" %}",{"sno":sno})
         }
         function onclick_user_search()
         {

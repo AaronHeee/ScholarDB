@@ -347,7 +347,7 @@ function answer_group_by_user(parid,sno,json_list,project_type) {
     }
 }
 
-function slice_group_by_user(parid,json_list,tno,project_type) {
+function slice_group_by_user(parid,json_list,tno,project_type,uno_host) {
     var par = document.getElementById(parid);
     console.log(json_list[0].fsno)
     for(var i =0;i<json_list.length;++i) {
@@ -372,10 +372,9 @@ function slice_group_by_user(parid,json_list,tno,project_type) {
         }
         else if(project_type == 'TASK'){
             list_ele.innerHTML += "<li><strong>完成任务组号</strong></li>";
-            list_ele.innerHTML += "<li> {0}</li>".format(json_list[i].fsno);
-            var filename = "/home/aaron/Desktop/Files/uno_1001/tno_58/receiver/1004/example.mp3";
-            list_ele.innerHTML += "<a style='margin-top: 20px' href=" + filename + " download='1004'>下载数据</a>";
-
+            var fsno = json_list[i].fsno + 1;
+            list_ele.innerHTML += "<li> {0}</li>".format(fsno);
+            list_ele.innerHTML += "<a class='btn btn-small' style='margin-top: 20px' id='download_slice_{0}' onclick='download_slice({1},{2},{3})' >下载数据</a>".format(uno,uno_host,tno,uno);
         }
 
         var inner_ele = ele.getElementsByClassName("accordion-inner")[0];
