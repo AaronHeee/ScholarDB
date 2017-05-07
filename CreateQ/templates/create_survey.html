@@ -195,7 +195,9 @@
                                         </h5>
                                         <div class="panel-body">
                                             <p class="help-block">是否为问卷设置金额奖励？</p>
-                                            <input type="number" class = "span10 inline-input" value = "0" id = "payment">
+                                            <input type="number" class = "span10 inline-input" value = "0" id = "payment" min="0">
+                                            <p class="help-block">设置最大问卷数量</p>
+                                            <input type="number" class = "span10 inline-input" value = "100" id = "maxneed" min="0">
                                         </div>
                                     </div>
                                 </div>
@@ -301,6 +303,7 @@
         function step4()
         {
             JSONstep2.payment = document.getElementById("payment").value;
+            JSONstep2.maxneed = document.getElementById("maxneed").value;
         }
         $(document).ajaxSend(function(event, xhr, settings) {
           function getCookie(name) {
@@ -339,8 +342,9 @@
         });
         function post_json()
         {
-            $.post("/project/new_survey/",{"JSON1":JSONstep1,"JSON2":JSONstep2,"JSON3":JSONstep3});
-
+            $.post("/project/new_survey/",{"JSON1":JSONstep1,"JSON2":JSONstep2,"JSON3":JSONstep3},function (res) {
+                alert(res)
+            });
             window.location="{% url "list" %}";
         }
     </script>

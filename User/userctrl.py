@@ -61,11 +61,11 @@ def register(UNAME, PWD, MAIL, AGE, GENDER, NATION, CITY, INST, TTYPE, USERTYPE,
     else:
         raise ValueError('Unknown usertype: %s' % USERTYPE)
 
-    print sql1, sql2
+    #print sql1, sql2
     cursor.execute(sql1)
-    print 1
+    #print 1
     cursor.execute(sql2)
-    print 2
+    #print 2
     # update
     #if USERTYPE == 'Scholar':
     #    grant_scholar(new_uno,PWD,cursor,db)
@@ -98,6 +98,15 @@ def get_basic_info(MAIL):
         return username,uno,usertype
     except KeyError:
         db.close()
-        print "Not found"
+        #print "Not found"
         return ''
 
+def get_money(UNO):
+    uno = int(UNO)
+    db = connect_db()
+    cursor = db.cursor()
+    sql = 'SELECT MONEY FROM USERINFO WHERE UNO = %d'% uno
+    cursor.execute(sql)
+    money = cursor.fetchone()[0]
+    db.close()
+    return money

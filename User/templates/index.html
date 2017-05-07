@@ -78,7 +78,7 @@
                             </ol>
                             <div class="carousel-inner" style="width: 100%">
                                 <div class="item" style="width: 100%">
-                                    <img class= "ppt" alt="" src="{% static "img/7.jpg" %}" style="width: 100%;height: 300px"/>
+                                    <img class= "ppt" alt="" src="{% static "img/7.jpg" %}" style="width: 100%;max-height: 300px"/>
                                     <div class="carousel-caption">
                                         <h4>
                                             ScholarDB简介
@@ -89,7 +89,7 @@
                                     </div>
                                 </div>
                                 <div class="item" style="width: 100%">
-                                    <img class= "ppt" alt="" src="{% static "img/8.jpg" %}" style="width: 100%;height: 300px" />
+                                    <img class= "ppt" alt="" src="{% static "img/8.jpg" %}" style="width: 100%;max-height: 300px" />
                                     <div class="carousel-caption">
                                         <h4>
                                             ScholarDB用户
@@ -100,7 +100,7 @@
                                     </div>
                                 </div>
                                 <div class="item active" style="width: 100%">
-                                    <img class= "ppt" alt="" src="{% static "img/9.jpg" %}" style="width: 100%;height: 300px" />
+                                    <img class= "ppt" alt="" src="{% static "img/9.jpg" %}" style="width: 100%;max-height: 300px" />
                                     <div class="carousel-caption">
                                         <h4>
                                             ScholarDB功能
@@ -252,10 +252,10 @@
             var ele = document.getElementById("index-list-item").cloneNode(true);
             ele.getElementsByClassName("name title")[0].innerHTML = json.TITLE;
             if(type == 'SURVEY'){
-                ele.getElementsByClassName("name title")[0].href = "{% url "manage" %}" + "?sno=" + json.SNO;
+                ele.getElementsByClassName("name title")[0].href = "{% url "manage_survey" %}" + "?sno=" + json.SNO;
             }
             else if(type=='TASK'){
-                ele.getElementsByClassName("name title")[0].href = "{% url "manage" %}" + "?tno=" + json.TNO;
+                ele.getElementsByClassName("name title")[0].href = "{% url "manage_survey" %}" + "?tno=" + json.TNO;
             }
             ele.getElementsByClassName("contributor")[0].innerHTML = json.UNAME;
             ele.getElementsByClassName("inst")[0].innerHTML = json.INST;

@@ -25,7 +25,7 @@ class Scholar:
         cursor.execute("SELECT USERINFO.UNO,UNAME,INST,NATION,CITY,MONEY,MAIL,AGE,GENDER FROM SCHOLAR,USERINFO WHERE SCHOLAR.UNO = USERINFO.UNO "
                        "AND USERINFO.UNO = %d" % uno)
         res = cursor.fetchone()
-        print res
+        #print res
         self.uno,self.uname,self.inst,self.nation,self.city,self.money,self.mail,self.age,self.gender = res[0:9]
         db.close()
 
@@ -68,7 +68,7 @@ def get_user_type(uno):
 
 def project_list_of_scholar(uno):
     json = get_scholar_list_from_db(uno = uno,subject = [],type='BOTH',order = 'OPENTIME DESC',onlyforme=True)
-    print json
+    #print json
     return json
 
 def participation_list(uno):

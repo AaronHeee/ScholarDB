@@ -27,11 +27,11 @@ def add_task_to_list(datatype=None, user='root', pwd='dbpjdbpj'):
 
     sql = "SELECT TASK.TNO,TYPE,TITLE,DESCRIPTION,PAYMENT,OPENTIME FROM TASK"
     if datatype != '' and datatype != None:
-        sql += ",FILE,TASK_WITH_FILE WHERE TASK.TNO=TASK_WITH_FILE.TNO AND FILE.FNO=TASK_WITH_FILE.FNO AND FILE.DATATYPE='%s' AND" % datatype
+        sql += ",FILE WHERE FILE.TNO=TASK.TNO AND FILE.DATATYPE='%s' AND" % datatype
     else:
         sql += " WHERE "
     sql += " STAGE = 'OPEN'"
-    print sql
+    #print sql
     return sql
 
 def load_json(list_res):
@@ -57,13 +57,13 @@ def load_json(list_res):
                 dict["subject2"] = l[1][0] if len(l) >= 2 else ""
                 dict["subject3"] = l[2][0] if len(l) >= 3 else ""
             else:
-                sql = "SELECT DATATYPE FROM TASK_WITH_FILE, FILE WHERE TASK_WITH_FILE.FNO=FILE.FNO AND TNO =%d" % tup[1]
+                sql = "SELECT DATATYPE FROM FILE WHERE TNO =%d" % tup[1]
                 cursor.execute(sql)
                 l = cursor.fetchall()
                 dict["datatype"] = l[0][0]
             res.append(dict)
         except Exception:
-            print 'error at sql_list'
+            #print 'error at sql_list'
             pass
 
     db.commit()
@@ -78,7 +78,7 @@ def get_list_from_db(subject=None, datatype=None, type=None,order=None, user='ro
 
     cursor.execute("SELECT COUNT(*) FROM information_schema.views WHERE table_schema = 'ScholarDB' AND table_name = 'LIST' ")
     l = cursor.fetchall();
-    print l
+    #print l
     if(l[0][0]==1):
         cursor.execute("DROP VIEW LIST")
 
@@ -93,7 +93,7 @@ def get_list_from_db(subject=None, datatype=None, type=None,order=None, user='ro
     if type == "BOTH":
         sql += add_survey_to_list(subject,user,pwd) + " UNION " + add_task_to_list(datatype,user,pwd)
 
-    print sql
+    #print sql
 
     cursor.execute(sql)
 
@@ -102,7 +102,7 @@ def get_list_from_db(subject=None, datatype=None, type=None,order=None, user='ro
 
     list_res = cursor.fetchall()
 
-    print list_res
+    #print list_res
 
     res = load_json(list_res)
 
@@ -120,14 +120,14 @@ def search(subject=None, datatype=None, type=None, pattern=None, order=None, isD
 
     sql = "SELECT TYPE,NO,TITLE,DESCRIPTION,PAYMENT,OPENTIME FROM LIST WHERE TITLE LIKE '%" + pattern + "%'"
 
-    print "isDesc:",isDesc
+    #print "isDesc:",isDesc
 
     if isDesc == '1':
         sql += "OR DESCRIPTION LIKE '%" + pattern + "%'"
 
     sql += "ORDER BY " + order
 
-    print sql
+    #print sql
 
     cursor.execute(sql)
 

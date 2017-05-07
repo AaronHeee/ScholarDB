@@ -4,9 +4,9 @@ import MySQLdb
 import time
 from common_file import connect_db
 
-def add_survey_to_scholar_list(uno=None, subject=None, user='root', pwd='dbpjdbpj',onlyforme = True): #onlyforme为false时,uno限制被去除
+def add_survey_to_scholar_list(uno=None, subject=None, user='root', pwd='dbpjdbpj',onlyforme = True,publicity = 'BOTH'): #onlyforme为false时,uno限制被去除
 
-    sql = "SELECT SNO, TYPE, TITLE,DESCRIPTION,PAYMENT,OPENTIME FROM SURVEY WHERE"
+    sql = "SELECT SNO, TYPE, TITLE,DESCRIPTION,PAYMENT,OPENTIME FROM SURVEY WHERE "
     condition = []
     if subject != [None] and subject != [''] and subject != []:
         for sub in subject:
@@ -16,26 +16,34 @@ def add_survey_to_scholar_list(uno=None, subject=None, user='root', pwd='dbpjdbp
     if condition != None and condition != []:
         sql += ' AND '.join(condition)
         sql += ' AND'
+    if publicity == "PUBLIC" or publicity == "PRIVATE":
+        sql += 'AND SNO IN (SELECT SNO FROM PARTICIPATION_SURVET WHERE SURVEY.SNO = PUBLICITY_SURVEY.SNO AND  PUBLICITY = %s ) AND' % publicity
+
     if onlyforme:
         sql += " SNO IN (SELECT SNO FROM SCHOLAR_OWN_SURVEY WHERE UNO = %d)" % uno
     else:
         sql += " true"
-    print sql
+    #print sql
 
     return sql
 
-def add_task_to_scholar_list(uno=None, datatype=None, user='root', pwd='dbpjdbpj',onlyforme = True):
+def add_task_to_scholar_list(uno=None, datatype=None, user='root', pwd='dbpjdbpj',onlyforme = True,publicity = 'BOTH'):
 
-    sql = "SELECT TASK.TNO,TYPE,TITLE,DESCRIPTION,PAYMENT,OPENTIME FROM TASK"
+    sql = "SELECT TASK.TNO,TYPE,TITLE,DESCRIPTION,PAYMENT,OPENTIME FROM TASK "
     if datatype != '' and datatype != None:
-        sql += ",FILE,TASK_WITH_FILE WHERE TASK.TNO=TASK_WITH_FILE.TNO AND FILE.FNO=TASK_WITH_FILE.FNO AND FILE.DATATYPE='%s' AND" % datatype
+        sql += ",FILE WHERE FILE.DATATYPE='%s' AND" % datatype
 
     else:
         sql += " WHERE"
+
+    if publicity == "PUBLIC" or publicity == "PRIVATE":
+        sql += ' TASK.TNO IN (SELECT TNO FROM PARTICIPATION_TASK WHERE TASK.TNO = PUBLICITY_TASK.TNO AND PUBLICITY = %s AND' % publicity
+
     if onlyforme:
-        sql += " TASK.TNO IN (SELECT TNO FROM SCHOLAR_OWN_TASK WHERE UNO = %d)" %uno
+        sql += " TNO IN (SELECT TNO FROM SCHOLAR_OWN_TASK WHERE UNO = %d)" %uno
     else:
         sql += " true"
+
 
     return sql
 
@@ -64,7 +72,7 @@ def load_json(list_res):
             sql = "SELECT WHAT FROM SURVEY_SUBJECT WHERE SNO = %d" % tup[1]
             cursor.execute(sql)
             l = cursor.fetchall()
-            print l
+            #print l
             dict["subject1"] = l[0][0] if len(l) >= 1 else ""
             dict["subject2"] = l[1][0] if len(l) >= 2 else ""
             dict["subject3"] = l[2][0] if len(l) >= 3 else ""
@@ -77,7 +85,8 @@ def load_json(list_res):
             except TypeError:
                 dict['publicity'] =  ''
             #end add
-            sql = "SELECT DATATYPE,NUM,NOW FROM TASK_WITH_FILE, FILE WHERE TASK_WITH_FILE.FNO=FILE.FNO AND TNO =%d" % tup[1]
+            sql = "SELECT DATATYPE,SUM(SEND),SUM(RECEIVE),COUNT(FSNO) FROM FILE F,FILE_SLICE S WHERE TNO =%d AND F.FNO=S.FNO GROUP BY F.FNO" % tup[1]
+            #print sql
             cursor.execute(sql)
             l = cursor.fetchall()
 
@@ -85,6 +94,7 @@ def load_json(list_res):
                 dict["datatype"] = l[0][0]
                 dict["num"] = l[0][1]
                 dict["now"] = l[0][2]
+                dict["slice"] = l[0][3]
         res.append(dict)
 
     db.commit()
@@ -93,13 +103,13 @@ def load_json(list_res):
     return res
 
 
-def get_scholar_list_from_db(uno=None, subject=None, datatype=None, type=None,order=None, user='root', pwd='123456',onlyforme = True):
+def get_scholar_list_from_db(uno=None, subject=None, datatype=None,publicity=None,type=None,order=None, user='root', pwd='123456',onlyforme = True):
     db = connect_db()
     cursor = db.cursor()
 
     cursor.execute("SELECT COUNT(*) FROM information_schema.views WHERE table_schema = 'ScholarDB' AND table_name = 'LIST' ")
     l = cursor.fetchall();
-    print l
+    #print l
     if(l[0][0]==1):
         cursor.execute("DROP VIEW LIST")
 
@@ -108,15 +118,15 @@ def get_scholar_list_from_db(uno=None, subject=None, datatype=None, type=None,or
             """
 
     if type == 'SURVEY':
-        sql += add_survey_to_scholar_list(uno,subject,user,pwd,onlyforme)
+        sql += add_survey_to_scholar_list(uno,subject,user,pwd,onlyforme,publicity)
 
     if type == 'TASK':
-        sql += add_task_to_scholar_list(uno,datatype,user,pwd,onlyforme)
+        sql += add_task_to_scholar_list(uno,datatype,user,pwd,onlyforme,publicity)
 
     if type == "BOTH":
-        sql += add_survey_to_scholar_list(uno,subject,user,pwd,onlyforme) + " UNION " + add_task_to_scholar_list(uno,datatype,user,pwd,onlyforme)
+        sql += add_survey_to_scholar_list(uno,subject,user,pwd,onlyforme,publicity) + " UNION " + add_task_to_scholar_list(uno,datatype,user,pwd,onlyforme,publicity)
 
-    print sql
+    #print sql
 
     cursor.execute(sql)
 
@@ -125,7 +135,7 @@ def get_scholar_list_from_db(uno=None, subject=None, datatype=None, type=None,or
 
     list_res = cursor.fetchall()
 
-    print list_res
+    #print list_res
 
     res = load_json(list_res)
 
@@ -143,13 +153,13 @@ def search(uno=None, subject=None, datatype=None, type=None, pattern=None, order
 
     sql = "SELECT TYPE,NO,TITLE,DESCRIPTION,PAYMENT,OPENTIME FROM LIST WHERE TITLE LIKE '%" + pattern + "%'"
 
-    print "isDesc:",isDesc
+    #print "isDesc:",isDesc
 
     if isDesc == '1':
         sql += "OR DESCRIPTION LIKE '%" + pattern + "%'"
     sql += "ORDER BY " + order
 
-    print sql
+    #print sql
 
     cursor.execute(sql)
 

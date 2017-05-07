@@ -5,6 +5,7 @@ import time
 #Created by auson
 from common_file import connect_db
 
+
 class SurveyTitle:
     def __init__(self):
         self.description = ''
@@ -36,7 +37,7 @@ class SurveyDetail:
         self.payment = 0
         self.owner = ''
         self.opentime = ''
-        # 多值属性！
+        self.maxneed = 100
 
     def parse(self, post, owner, submit_time):
         try:
@@ -50,7 +51,7 @@ class SurveyDetail:
         self.payment = max(0, int(post['JSON2[payment]']))
         self.owner = owner
         self.opentime = submit_time
-
+        self.maxneed = max(0,int(post['JSON2[maxneed]']))
 
 class SurveyQuestions:
     def __init__(self):
@@ -83,7 +84,6 @@ class SurveyQuestions:
                 q.choice = post['JSON3[%d][choice]' % i][:-1].split(',')
             self.question_list.append(q)
             i += 1
-        print self.question_list
 
     def append(self,tup,choice):
         #cursor.execute("SELECT QNO,TITLE,SUPPLEMENT,SUPPLEMENT_TYPE,TYPE FROM QUESTION WHERE SNO = %d " % sno)
@@ -105,15 +105,11 @@ class TaskInfo:
         self.stage = ''
         self.owner = ''
         self.opentime = ''
-        self.rawdata = ''
-        self.example = ''
-    def parse(self,post,rawdata,example,owner,time):
+    def parse(self,post,owner,time):
         self.title = post['title']
         self.description = post['description']
         self.deadline = post['deadline']
         self.payment = post['payment']
-        self.rawdata = rawdata
-        self.example = example
         self.owner = owner
         self.opentime = time
     def load_from_db(self,tno):
@@ -130,18 +126,16 @@ def add_survey_to_db(title, detail, questions, user='root', pwd='dbpjdbpj'):
     cursor = db.cursor()
     # title
 
-    sql = "INSERT INTO SURVEY(SNO,TITLE,DESCRIPTION,MINAGE,MAXAGE,GENDER_RESTRICT,SURVEY_RESTRICT,PAYMENT,STAGE,OPENTIME,TYPE) VALUES" \
-          "(NULL,'%s','%s',%d,%d,'%s','%s',%d,'OPEN','%s','SURVEY')" % (
+    sql = "INSERT INTO SURVEY(SNO,TITLE,DESCRIPTION,MINAGE,MAXAGE,GENDER_RESTRICT,SURVEY_RESTRICT,PAYMENT,STAGE,OPENTIME,TYPE,MAXNEED) VALUES" \
+          "(NULL,'%s','%s',%d,%d,'%s','%s',%d,'OPEN','%s','SURVEY',%d)" % (
           title.title, title.description, detail.min_age, detail.max_age,
-          detail.gender_restrict, detail.survey_restrict, detail.payment, detail.opentime)
-    print sql
+          detail.gender_restrict, detail.survey_restrict, detail.payment, detail.opentime,detail.maxneed)
     cursor.execute(sql)
     cursor.execute("SELECT MAX(SNO) FROM SURVEY")
     sno = cursor.fetchall()[0][0]
 
     cursor.execute("SELECT UNO FROM USERINFO WHERE UNAME = '%s'" % detail.owner)
     uno = cursor.fetchall()[0][0]
-
     sql = "INSERT INTO SCHOLAR_OWN_SURVEY(UNO,SNO,ACCESS) VALUES(%d,%d,'owner')" % (uno, sno)
     cursor.execute(sql)
 
@@ -232,35 +226,49 @@ def load_questions(sno):
         sq.append(tup,tup2)
     return sq
 
-def add_task_to_db(task=None,name=None,num=None,datatype=None):
+def add_task_to_db(task=None):
     db = connect_db()
     cursor = db.cursor()
 
-    print task.payment
+    #print task.payment
 
     sql = "INSERT INTO TASK(TITLE,DESCRIPTION,OPENTIME,DEADLINE,PAYMENT,TYPE,STAGE) VALUES\
           ('%s','%s','%s','%s','%s','TASK','OPEN')" % \
           (task.title,task.description,task.opentime,task.deadline,task.payment)
-    print "sql:",sql
+    #print "sql:",sql
     cursor.execute(sql)
 
     cursor.execute("SELECT MAX(TNO) FROM TASK")
     tno = cursor.fetchone()[0]
-    print tno
+    #print tno
     cursor.execute("SELECT UNO FROM USERINFO WHERE UNAME = '%s'" % task.owner)
     uno = cursor.fetchone()[0]
-    print uno
+    #print uno
     sql = "INSERT INTO SCHOLAR_OWN_TASK(UNO,TNO,ACCESS) VALUES(%d,%d,'owner')" % (uno,tno)
-    cursor.execute(sql)
-
-    sql = "INSERT INTO FILE(FNAME,RAWDATA,EXAMPLE,DATATYPE,NUM,NOW) VALUES " \
-          "('%s', '%s','%s','%s', %d, 0)" % (name,task.rawdata, task.example,datatype,num)
-    cursor.execute(sql)
-    cursor.execute("SELECT MAX(FNO) FROM FILE")
-    fno = cursor.fetchone()[0]
-    print fno
-    sql = "INSERT INTO TASK_WITH_FILE(TNO,FNO) VALUES (%d, %d)" % (tno,fno)
     cursor.execute(sql)
 
     db.commit()
     db.close()
+
+    return tno
+
+def add_file_to_db(rawdata,example,tno,datatype,num):
+    db = connect_db()
+    cursor = db.cursor()
+
+    sql = "INSERT INTO FILE(FNAME,ENAME,TNO,DATATYPE) VALUES" \
+          "('%s','%s',%d,'%s')" % (rawdata,example,tno,datatype)
+    cursor.execute(sql)
+
+    cursor.execute("SELECT MAX(FNO) FROM FILE")
+    fno = cursor.fetchone()[0]
+
+    for i in range(0,num):
+        sql = "INSERT INTO FILE_SLICE(FNO,FSNO,SEND,RECEIVE) VALUES" \
+              "(%d,%d,'0','0')" % (fno,i)
+        #print "test____",sql
+        cursor.execute(sql)
+
+    db.commit()
+    db.close()
+
