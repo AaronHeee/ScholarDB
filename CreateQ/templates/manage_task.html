@@ -146,7 +146,7 @@
 
     <script>
         /*加载task分块任务完成图表*/
-        var tno = 58//{{ tno }};
+        var tno = {{ tno }};
 
         load_slice();
 
@@ -216,7 +216,6 @@
               //document.write(JSON.stringify(res));
               slice_group_by_user("accordion2",res,tno,project_type,uno_host);
               console.log(res);
-              alert(stage);
               if(stage!="OPEN") {
                   var delete_buttons = document.getElementsByClassName("delete_answer");
                   for (var i = 0; i < delete_buttons.length; ++i) {

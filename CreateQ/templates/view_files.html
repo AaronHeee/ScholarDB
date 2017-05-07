@@ -222,7 +222,7 @@
                 max_num = res.num;
                 payment = res.payment;
                 path = "{% static "" %}" + "uno_"+uno + "/tno_"+tno+"/sender"+"/example/"+example_name;
-                document.getElementById("download_e").href = path;
+                window.laction = path;
             })
         }
 
@@ -232,7 +232,7 @@
                 uno = res.uno;
                 tno = res.tno;
                 path = "{% static "" %}" + "uno_"+uno + "/tno_"+tno+"/sender/rawdata"+"/data.zip";
-                document.getElementById("download_data").href = path;
+                window.location = path;
             })
         }
 

@@ -256,8 +256,9 @@ def add_file_to_db(rawdata,example,tno,datatype,num):
     db = connect_db()
     cursor = db.cursor()
 
-    sql = "INSERT INTO FILE(FNAME,ENAME,TNO,DATATYPE) VALUES" \
+    sql = "INSERT INTO FILE(FNAME,EXAMPLE_NAME,TNO,DATATYPE) VALUES" \
           "('%s','%s',%d,'%s')" % (rawdata,example,tno,datatype)
+    print sql
     cursor.execute(sql)
 
     cursor.execute("SELECT MAX(FNO) FROM FILE")

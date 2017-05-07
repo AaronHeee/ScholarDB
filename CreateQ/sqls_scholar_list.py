@@ -61,6 +61,9 @@ def load_json(list_res):
             dict["max_age"] = l[0][1]
             dict["gender_restrict"] = l[0][2]
             dict["survey_restrict"] = l[0][3]
+            sql = "SELECT COUNT(*) FROM PARTICIPATION WHERE SNO = %d" % tup[1]
+            cursor.execute(sql)
+            dict["num"] = cursor.fetchone()[0]
             #added by AuCson 0428: PUBLICITY:
             sql = "SELECT PUBLICITY FROM PUBLICITY_SURVEY WHERE SNO = %d" % tup[1]
             cursor.execute(sql)

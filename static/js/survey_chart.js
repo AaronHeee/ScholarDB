@@ -191,6 +191,7 @@ function add_scholar_list_survey_item(json,parid){
     ele.getElementsByClassName("time")[0].innerHTML = json.opentime;
     ele.getElementsByClassName("help-block description")[0].innerHTML = json.description;
     ele.getElementsByClassName("payment")[0].innerHTML = json.payment;
+    ele.getElementsByClassName("processing")[0].innerHTML = "回收"+json.num+"份";
     var restrict_par = ele.getElementsByClassName("align-right restrict")[0];
     if(json.gender_restrict!="无限制"){
         add_label(restrict_par,json.gender_restrict,"warning");

@@ -8,7 +8,7 @@ def load_taskinfo(tno):
 
     json = {}
 
-    sql = "SELECT UNO,TITLE,DESCRIPTION,PAYMENT,DEADLINE,ENAME FROM TASK T, SCHOLAR_OWN_TASK S,FILE F WHERE T.TNO = S.TNO AND T.TNO = F.TNO AND S.TNO = %s" % tno
+    sql = "SELECT UNO,TITLE,DESCRIPTION,PAYMENT,DEADLINE,EXAMPLE_NAME FROM TASK T, SCHOLAR_OWN_TASK S,FILE F WHERE T.TNO = S.TNO AND T.TNO = F.TNO AND S.TNO = %s" % tno
     cursor.execute(sql)
 
     res = cursor.fetchone()
