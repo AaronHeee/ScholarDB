@@ -313,6 +313,10 @@ def manage_survey(request):
             #print "location:",json
             return JsonResponse(json, safe=False)
 
+        if "load_age" in request.GET.keys():
+            json = load_age(no)
+            return JsonResponse(json, safe=False)
+
         if "load_choice" in request.GET.keys():
             json = load_choice(sno)
             return JsonResponse(json,safe=False)
