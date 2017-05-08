@@ -451,28 +451,6 @@ function echarts_gender(parid,sno,json_list){
        myChart.setOption(option);
 }
 
-function echarts_age(parid,sno,res){
-     var myChart = echarts.init(document.getElementById(parid));
-     console.log(res);
-     var option = {
-           title: {
-               text: '用户年龄分布图'
-           },
-           tooltip: {},
-           xAxis: {
-               data: ['0-10岁','10-20岁','20-30岁','30-40岁','40-50岁','50-60岁','60-70岁','70-80岁']
-           },
-           yAxis: {},
-           series: [{
-               name: '用户数',
-               type: 'line',
-               data: res
-           }]
-       };
-       myChart.setOption(option);
-}
-
-
 function echarts_location(parid,sno,json_list){
     var myChart = echarts.init(document.getElementById("location"));
     var data = new Array();

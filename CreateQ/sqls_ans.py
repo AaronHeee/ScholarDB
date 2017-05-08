@@ -144,15 +144,23 @@ class SurveyAnswer:
 def check_authorization(uno,sno,access_list,override_task = False):
     db = connect_db()
     cursor = db.cursor()
-    for access in access_list:
-        sql = "SELECT * FROM SCHOLAR_OWN_SURVEY WHERE ACCESS = '%s' AND UNO = %d AND SNO = %d" % (access, uno, sno)
-        if override_task:
-            sql = override_sql(sql)
+    if not override_task:
+        for access in access_list:
+            sql = "SELECT * FROM SCHOLAR_OWN_SURVEY WHERE ACCESS = '%s' AND UNO = %d AND SNO = %d" % (access, uno, sno)
+            cursor.execute(sql)
+            res = cursor.fetchone()
+            if res:
+                return True
+        return False
+    else:
+        sql = "SELECT * FROM SCHOLAR_OWN_TASK WHERE UNO = %d AND TNO = %d" % (uno,sno)
+        print uno,sno
         cursor.execute(sql)
         res = cursor.fetchone()
         if res:
             return True
-    return False
+        else:
+            return False
 
 def load_contributor(sno,override_task = False):
     json = {'contributor':[],'contributor_cnt':0}
@@ -246,7 +254,10 @@ def close_project(sno,publicity,override_task = False):
     else:
         cursor.execute(override_sql("INSERT INTO PUBLICITY_SURVEY(SNO,PUBLICITY) VALUES(%d,'%s')"% (sno,publicity),override_task))
     cursor.execute(override_sql("UPDATE SURVEY SET STAGE = 'CLOSED' WHERE SNO = %d" % sno,override_task))
-    cursor.execute(override_sql("UPDATE PARTICIPATION SET STATUS = 'adopted' WHERE STATUS = 'pending' and SNO = %d" % sno,override_task))
+    if not override_task:
+        cursor.execute(override_sql("UPDATE PARTICIPATION SET STATUS = 'adopted' WHERE STATUS = 'pending' and SNO = %d" % sno,override_task))
+    else:
+        cursor.execute("UPDATE PARTICIPATION_TASK SET STATUS = 'adopted' WHERE STATUS != 'DELETED' AND FNO IN (SELECT FNO FROM FILE WHERE TNO = %d)"%sno)
 
     if stage == 'OPEN':
         if not override_task:
@@ -268,7 +279,7 @@ def close_project(sno,publicity,override_task = False):
                 slice_cnt += tup[1]
             cursor.execute("SELECT PAYMENT FROM TASK WHERE TNO = %d" % tno)
             payment = int(cursor.fetchone()[0])
-            cursor.execute("UPDATE USERINFO SET MONEY = MONEY - %d * %d WHERE UNO IN (SELECT UNO FROM SCHOLAR OWN TASK "
+            cursor.execute("UPDATE USERINFO SET MONEY = MONEY - %d * %d WHERE UNO IN (SELECT UNO FROM SCHOLAR_OWN_TASK "
                            "WHERE ACCESS = 'OWNER' AND TNO = %d)" % (slice_cnt,payment,tno))
             cursor.execute("SELECT UNO,COUNT(FSNO) FROM PARTICIPATION_TASK WHERE FNO IN (SELECT FNO FROM FILE WHERE TNO = %d) "
                            "AND STATUS != 'DELETED' GROUP BY UNO" % tno)
@@ -281,15 +292,25 @@ def close_project(sno,publicity,override_task = False):
 def delete_project(sno,override_task = False):
     db = connect_db()
     cursor = db.cursor()
-    cursor.execute("DELETE FROM CHOICE WHERE QNO IN (SELECT QNO FROM QUESTION WHERE SNO = %d)" % sno)
-    cursor.execute("DELETE FROM ANSWER WHERE QNO IN (SELECT QNO FROM QUESTION WHERE SNO = %d)" % sno)
-    cursor.execute("DELETE FROM QUESTION WHERE SNO = %d" % sno)
-    cursor.execute("DELETE FROM SCHOLAR_OWN_SURVEY WHERE SNO = %d" % sno)
-    cursor.execute("DELETE FROM PUBLICITY_SURVEY WHERE SNO = %d" % sno)
-    cursor.execute("DELETE FROM PRIVACY WHERE SNO = %d" % sno)
-    cursor.execute("DELETE FROM SURVEY_SUBJECT WHERE SNO = %d" % sno)
-    cursor.execute("UPDATE PARTICIPATION SET STATUS = 'survey_deleted' WHERE sno = %d" % sno)
-    cursor.execute("DELETE FROM SURVEY WHERE SNO = %d" % sno)
+    if not override_task:
+        cursor.execute("DELETE FROM CHOICE WHERE QNO IN (SELECT QNO FROM QUESTION WHERE SNO = %d)" % sno)
+        cursor.execute("DELETE FROM ANSWER WHERE QNO IN (SELECT QNO FROM QUESTION WHERE SNO = %d)" % sno)
+        cursor.execute("DELETE FROM QUESTION WHERE SNO = %d" % sno)
+        cursor.execute("DELETE FROM SCHOLAR_OWN_SURVEY WHERE SNO = %d" % sno)
+        cursor.execute("DELETE FROM PUBLICITY_SURVEY WHERE SNO = %d" % sno)
+        cursor.execute("DELETE FROM PRIVACY WHERE SNO = %d" % sno)
+        cursor.execute("DELETE FROM SURVEY_SUBJECT WHERE SNO = %d" % sno)
+        cursor.execute("UPDATE PARTICIPATION SET STATUS = 'survey_deleted' WHERE sno = %d" % sno)
+        cursor.execute("DELETE FROM SURVEY WHERE SNO = %d" % sno)
+    else:
+        tno = sno
+        cursor.execute(
+            "UPDATE PARTICIPATION_TASK SET STATUS = 'survey_deleted' WHERE FNO IN (SELECT FNO FROM FILE WHERE TNO = %d)" % tno)
+        cursor.execute("DELETE FROM FILE_SLICE WHERE FNO IN (SELECT FNO FROM FILE WHERE TNO = %d)" % tno)
+        cursor.execute("DELETE FROM FILE WHERE TNO = %d" % tno)
+        cursor.execute("DELETE FROM SCHOLAR_OWN_TASK WHERE TNO = %d" % tno)
+        cursor.execute("DELETE FROM TASK WHERE TNO = %d" % tno)
+
     db.commit()
     db.close()
 
@@ -297,7 +318,7 @@ def load_date_number(sno,override_task = False):
     db = connect_db()
     cursor = db.cursor()
     sql = "SELECT DATE_FORMAT(SUBMIT_TIME,'%%Y-%%m-%%d'),COUNT(SNO) FROM PARTICIPATION" \
-          " WHERE SNO=%d AND STATUS!='DELETED' GROUP BY DATE_FORMAT(SUBMIT_TIME,'%%Y-%%m-%%d')"% sno
+          " WHERE SNO=%d GROUP BY DATE_FORMAT(SUBMIT_TIME,'%%Y-%%m-%%d')"% sno
     if override_task:
         sql = override_sql(sql)
     cursor.execute(sql)
@@ -318,12 +339,12 @@ def load_gender(sno,override_task = False):
     db = connect_db()
     cursor = db.cursor()
     json = {}
-    sql = "SELECT COUNT(*) FROM PARTICIPATION P,USERINFO U WHERE SNO=%d AND P.UNO=U.UNO AND GENDER='Female' AND STATUS!='DELETED'" % sno
+    sql = "SELECT COUNT(*) FROM PARTICIPATION P,USERINFO U WHERE SNO=%d AND P.UNO=U.UNO AND GENDER='Female'" % sno
     if override_task:
         sql = override_sql(sql)
     cursor.execute(sql)
     json['Female']=cursor.fetchall()[0][0]
-    sql = "SELECT COUNT(*) FROM PARTICIPATION P,USERINFO U WHERE SNO=%d AND P.UNO=U.UNO AND GENDER='Male' AND STATUS!='DELETED'" % sno
+    sql = "SELECT COUNT(*) FROM PARTICIPATION P,USERINFO U WHERE SNO=%d AND P.UNO=U.UNO AND GENDER='Male'" % sno
     if override_task:
         sql = override_sql(sql)
     cursor.execute(sql)
@@ -331,25 +352,12 @@ def load_gender(sno,override_task = False):
     db.close()
     return  json
 
-def load_age(no):
-    db = connect_db()
-    cursor = db.cursor()
-    json = []
-
-    for i in range(8):
-        sql = "SELECT COUNT(U.UNO) FROM PARTICIPATION P,USERINFO U WHERE SNO=%d AND P.UNO=U.UNO AND AGE>=%d AND AGE<%d AND STATUS!='DELETED'" % (no,i*10,(i+1)*10)
-        cursor.execute(sql)
-        json.append(cursor.fetchone()[0])
-
-    print json
-    return json
-
 def load_location(sno,override_task = False):
     db = connect_db()
     cursor = db.cursor()
     json = []
 
-    sql = "SELECT CITY, COUNT(*) FROM PARTICIPATION P,USERINFO U WHERE SNO=%d AND P.UNO=U.UNO AND STATUS!='DELETED' GROUP BY CITY" % sno
+    sql = "SELECT CITY, COUNT(*) FROM PARTICIPATION P,USERINFO U WHERE SNO=%d AND P.UNO=U.UNO GROUP BY CITY" % sno
     if override_task:
         sql = override_sql(sql)
     cursor.execute(sql)
@@ -379,10 +387,8 @@ def load_choice(sno):
         choice['type'] = qs[1]
         qno = qs[2]
         sql = "SELECT CONTENT,COUNT(VALUE) FROM (SELECT CONTENT FROM CHOICE WHERE QNO=%d) AS C " % qno
-        sql += "LEFT JOIN (SELECT VALUE FROM ANSWER,PARTICIPATION WHERE QNO=%d AND ANSWER.UNO = PARTICIPATION.UNO " \
-               "AND STATUS!='DELETED') AS A ON C.CONTENT = A.VALUE " % qno
+        sql += "LEFT JOIN (SELECT VALUE FROM ANSWER WHERE QNO=%d) AS A ON C.CONTENT = A.VALUE " % qno
         sql += "GROUP BY CONTENT"
-        print sql
         cursor.execute(sql)
         chs = cursor.fetchall()
         choice['choice'] = []
@@ -452,7 +458,7 @@ def load_correlation(sno,variable_1,variable_2):
 
     if var1 != "NULL":
         if var2!="NULL":
-            sql = "SELECT DISTINCT %s FROM USERINFO U,PARTICIPATION P WHERE U.UNO=P.UNO AND P.SNO=%d AND STATUS!='DELETED'" % (var2, sno)
+            sql = "SELECT DISTINCT %s FROM USERINFO U,PARTICIPATION P WHERE U.UNO=P.UNO AND P.SNO=%d " % (var2, sno)
         else:
             sql = "SELECT DISTINCT CONTENT FROM QUESTION Q,CHOICE C WHERE Q.TITLE = '%s' AND C.QNO = Q.QNO " % variable_2
         cursor.execute(sql)
@@ -462,13 +468,13 @@ def load_correlation(sno,variable_1,variable_2):
             yAxis_name.append(var[0])
             if var2!="NULL":
                 sql = "SELECT %s,COUNT(B.UNO) FROM " \
-                      "(SELECT %s,UNO FROM USERINFO WHERE UNO IN (SELECT UNO FROM PARTICIPATION WHERE SNO = %d AND STATUS!='DELETED')) AS A " \
+                      "(SELECT %s,UNO FROM USERINFO WHERE UNO IN (SELECT UNO FROM PARTICIPATION WHERE SNO = %d)) AS A " \
                       "LEFT JOIN " \
                       "(SELECT UNO FROM USERINFO WHERE UNO IN (SELECT UNO FROM PARTICIPATION WHERE SNO = %d)AND %s = '%s' ) AS B " \
                       "ON A.UNO=B.UNO GROUP BY %s" % (var1,var1,sno,sno,var2,var[0],var1)
             else:
                 sql = "SELECT %s,COUNT(B.UNO) FROM" \
-                      "(SELECT %s,UNO FROM USERINFO WHERE UNO IN (SELECT UNO FROM PARTICIPATION WHERE SNO = %d AND STATUS!='DELETED')) AS A " \
+                      "(SELECT %s,UNO FROM USERINFO WHERE UNO IN (SELECT UNO FROM PARTICIPATION WHERE SNO = %d)) AS A " \
                       "LEFT JOIN" \
                       "(SELECT UNO FROM ANSWER WHERE VALUE = '%s' AND UNO IN (SELECT UNO FROM PARTICIPATION WHERE SNO = %d) AND " \
                       "QNO IN (SELECT QNO FROM QUESTION WHERE TITLE ='%s')) " \

@@ -13,7 +13,7 @@ from files import *
 from sqls_ans import *
 from User.sql_scholar import search_scholar_by_name
 from User.userctrl import get_money
-init_path = "/home/aaron/Desktop/Files"
+init_path = "/root/Files"
 
 def new_survey(request):
     login_user,uno,pwd,usertype = get_basic_from_session(request)
@@ -98,7 +98,7 @@ def mkdir(path):
         #print "成功创建目录：",path
 
 def write(path,data):
-    destination = open(path, 'wb+')  # 打开特定的文件进行二进制的写操作
+    destination = open(path.encode('utf-8'), 'wb+')  # 打开特定的文件进行二进制的写操作
     for chunk in data.chunks():  # 分块写入文件
         destination.write(chunk)
     destination.close()
@@ -313,10 +313,6 @@ def manage_survey(request):
             #print "location:",json
             return JsonResponse(json, safe=False)
 
-        if "load_age" in request.GET.keys():
-            json = load_age(no)
-            return JsonResponse(json, safe=False)
-
         if "load_choice" in request.GET.keys():
             json = load_choice(sno)
             return JsonResponse(json,safe=False)
@@ -409,7 +405,8 @@ def manage_task(request):
                 close_project(no,publicity,override_task)
                 return HttpResponse("修改成功")
         if "delete" in request.GET.keys():
-            if check_authorization(uno, no, ['OWNER']):
+            print override_task
+            if check_authorization(uno, no, ['OWNER'],override_task):
                 delete_project(no,override_task)
                 return HttpResponse("修改成功")
         if "load_slice" in request.GET.keys():
@@ -459,8 +456,7 @@ def download_data(request):
     path = os.path.join(init_path,"uno_"+str(uno_2),"tno_"+str(tno),"sender","rawdata")
     index = send_index(max_num,num,tno,uno)
 
-    if os.path.exists(os.path.join(path,'data.zip')):
-        os.remove(os.path.join(path,'data.zip'))
+    os.remove(os.path.join(path,'data.zip'))
 
     f = zipfile.ZipFile(os.path.join(path,'data.zip'), 'w', zipfile.ZIP_DEFLATED)
     for i in index:

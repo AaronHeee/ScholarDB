@@ -10,16 +10,16 @@ def divide_file(path,zip_name):
     num = 0
     flag = 0
     zip_path = os.path.join(path,zip_name)
-    total_file = zipfile.ZipFile(zip_path,'r')
+    total_file = zipfile.ZipFile(zip_path.encode('utf-8'),'r')
     file_list = total_file.namelist()
     length = len(file_list)
 
     if length == 0:
         return {'num': 0}
 
-    temp_path = os.path.join(path,"temp")
+    temp_path = os.path.join(path,"temp").encode('utf-8')
     for file in file_list:
-        total_file.extract(file,temp_path)
+        total_file.extract(file.encode('utf-8'),temp_path)
 
     #将文件分割成若干份，每份中有100个待标记数据
 
@@ -28,14 +28,14 @@ def divide_file(path,zip_name):
         count = -1 #why no zero
         cycle = 0
         path_archive = path + "/%d" % cycle + ".zip"
-        zipFile = zipfile.ZipFile(path_archive, 'w')
+        zipFile = zipfile.ZipFile(path_archive.encode('utf-8'), 'w')
 
         for filename in files:
             if count == 99:
                 zipFile.close()
                 cycle = cycle + 1
                 path_archive = path + "/%d" % cycle + ".zip"
-                zipFile = zipfile.ZipFile(path_archive, 'w')
+                zipFile = zipfile.ZipFile(path_archive.encode('utf-8'), 'w')
             file_path = os.path.join(root,filename)
             zipFile.write(file_path,filename)
             count = (count + 1) % 100

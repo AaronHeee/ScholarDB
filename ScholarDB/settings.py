@@ -25,7 +25,7 @@ SECRET_KEY = '&s+d)nj3v&oesq(eu9+8-zw^16qi5!!w5#u)sg9)f-!dw-ibyr'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [u'192.168.1.107',u'scholardb.iok.la',u'127.0.0.1',u'10.222.68.26']
+ALLOWED_HOSTS = [u'192.168.1.107',u'scholardb.iok.la',u'127.0.0.1',u'115.159.144.241']
 
 
 # Application definition
@@ -124,7 +124,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static"),
-    "/home/aaron/Desktop/Files"
+    "/root/Files"
 )
 STATICFILES_FINDERS = (
     "django.contrib.staticfiles.finders.FileSystemFinder",

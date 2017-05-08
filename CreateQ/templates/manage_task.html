@@ -216,7 +216,7 @@
               //document.write(JSON.stringify(res));
               slice_group_by_user("accordion2",res,tno,project_type,uno_host);
               console.log(res);
-              alert(stage);
+              //alert(stage);
               if(stage!="OPEN") {
                   var delete_buttons = document.getElementsByClassName("delete_answer");
                   for (var i = 0; i < delete_buttons.length; ++i) {
@@ -257,7 +257,7 @@
         }
         function delete_survey(){
             if(confirm("确定删除调研？该操作不可撤销") == true)
-                $.get("{% url "manage_survey" %}",{"delete":"true","sno":sno,"tno":tno})
+                $.get("{% url "manage_task" %}",{"delete":"true","sno":sno,"tno":tno})
         }
         function onclick_user_search()
         {

@@ -120,7 +120,7 @@
                                                 <a href="#information" onclick="load_info()" data-toggle="tab">回答者基本信息</a>
                                             </li>
                                             <li>
-                                                <a href="#choices" onclick="load_choice()" data-toggle="tab">选择题数量统计</a>
+                                                <a href="#choices" onclick="load_choice()" data-toggle="tab">数据相关性统计</a>
                                             </li>
                                             <li>
                                                 <a href="#dependence" data-toggle="tab" onclick="load_option()">数据相关性统计</a>
@@ -138,7 +138,7 @@
                                                             <div id="gender" style="margin-left:60px;width: 260px;height:200px;"> </div>
                                                         </div>
                                                         <div class="span3">
-                                                            <div id="age" style="margin-left:100px;width: 590px;height:215px;"> </div>
+                                                            <div id="age" style="margin-left:60px;width: 400px;height:200px;"> </div>
                                                         </div>
                                                 </div>
                                                 <div class="row well well-small">
@@ -399,7 +399,6 @@
             load_date_number();
             load_gender();
             load_location();
-            load_age();
         }
         function load_date_number() {
             $.getJSON("{% url "manage_survey" %}",{"load_date_number":"true","sno":sno,"tno":tno},function(res){

@@ -1,12 +1,12 @@
 #encoding=utf-8
 import MySQLdb
-def connect_db(user = 'root',pwd = '123456',db = 'ScholarDB'):
+def connect_db(user = 'root',pwd = 'dbpjdbpj',db = 'ScholarDB'):
     return MySQLdb.connect("localhost",user,pwd,db,charset = 'utf8')
 
 
 translation_dict = {u"真实姓名": "UNAME", u"性别": "GENDER", u"年龄": "AGE", u"国家": "NATION", u"城市": "CITY",
                     u"男性": 'Male', u"女性": 'FEMALE',u'开源':'PUBLIC',u'私有':'PRIVATE',u'等待学者审核':'pending',
-                    u'被删除':'DELETED',u'调研已删除':'survey_deleted',u'已采纳':'adopted'}
+                    u'被删除':'DELETED',u'调研已删除':'survey_deleted',u'已采纳':'adopted',u'等待下载':'unload'}
 translation_dict_r =  dict(zip(translation_dict.values(),translation_dict.keys()))
 
 

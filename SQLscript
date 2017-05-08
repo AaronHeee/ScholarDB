@@ -149,7 +149,7 @@ alter table SCHOLAR_OWN_TASK convert to character set utf8;
 alter table FILE convert to character set utf8;
 alter table TASK_WITH_FILE convert to character set utf8;
 
-alter table QUESTION drop INPUTTYPE cascade
+alter table QUESTION drop INPUTTYPE cascade;
 
 create table ANSWER(
     QNO INTEGER NOT NULL,
